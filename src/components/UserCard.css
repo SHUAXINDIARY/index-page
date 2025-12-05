@@ -15,6 +15,7 @@
   border-radius: 50%;
   overflow: hidden;
   background: #f0f0f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .user-avatar img {
@@ -33,9 +34,10 @@
 .user-tag {
   font-size: 12px;
   color: #666;
-  background: #f5f5f5;
+  background: rgba(245, 245, 245, 0.8);
+  backdrop-filter: blur(10px);
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 10px;
   display: inline-block;
   margin-top: 4px;
 }
@@ -59,14 +61,15 @@
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
   color: #555;
 }
 
 .menu-item:hover {
   background: rgba(0, 0, 0, 0.05);
+  transform: translateX(4px);
 }
 
 .menu-icon {

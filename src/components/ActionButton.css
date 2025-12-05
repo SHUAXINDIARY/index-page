@@ -1,8 +1,8 @@
 .action-button {
-  background: #ff6b6b;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);
   color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 20px;
   padding: 12px 20px;
   display: flex;
   align-items: center;
@@ -10,14 +10,15 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.4),
+              0 1px 0 rgba(255, 255, 255, 0.3) inset;
 }
 
 .action-button:hover {
-  background: #ff5252;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5),
+              0 1px 0 rgba(255, 255, 255, 0.4) inset;
 }
 
 .action-button:active {

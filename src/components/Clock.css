@@ -1,6 +1,8 @@
 .clock-card {
   padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
 .clock-time {

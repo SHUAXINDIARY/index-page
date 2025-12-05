@@ -5,22 +5,26 @@
 }
 
 .social-link {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 20px;
   padding: 12px 16px;
   display: flex;
   align-items: center;
   gap: 8px;
   text-decoration: none;
   color: #333;
-  transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1),
+              0 1px 0 rgba(255, 255, 255, 0.5) inset;
 }
 
 .social-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15),
+              0 1px 0 rgba(255, 255, 255, 0.6) inset;
 }
 
 .social-icon {
@@ -31,7 +35,7 @@
   height: 32px;
   background: #000;
   color: white;
-  border-radius: 8px;
+  border-radius: 12px;
 }
 
 .juejin-icon {
