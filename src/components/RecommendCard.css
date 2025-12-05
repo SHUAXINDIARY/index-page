@@ -1,0 +1,50 @@
+.recommend-card {
+  width: 320px;
+}
+
+.recommend-header {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.recommend-content {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.recommend-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f0f0f0;
+  flex-shrink: 0;
+}
+
+.recommend-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recommend-info {
+  flex: 1;
+}
+
+.recommend-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 6px 0;
+}
+
+.recommend-description {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
