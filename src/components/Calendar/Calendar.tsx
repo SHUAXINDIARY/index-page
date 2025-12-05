@@ -1,4 +1,4 @@
-import { Card } from './Card';
+import { Card } from '../Card';
 import './Calendar.css';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';

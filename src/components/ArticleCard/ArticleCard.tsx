@@ -1,4 +1,4 @@
-import { Card } from './Card';
+import { Card } from '../Card';
 import './ArticleCard.css';
 import dayjs from 'dayjs';
 

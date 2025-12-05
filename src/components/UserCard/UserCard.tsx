@@ -1,5 +1,5 @@
 import { FileText, FolderOpen, Info, Star, Globe } from 'lucide-react';
-import { Card } from './Card';
+import { Card } from '../Card';
 import './UserCard.css';
 
 interface MenuItem {

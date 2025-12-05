@@ -1,5 +1,5 @@
 import { Play } from 'lucide-react';
-import { Card } from './Card';
+import { Card } from '../Card';
 import './MusicPlayer.css';
 
 export const MusicPlayer = () => {
