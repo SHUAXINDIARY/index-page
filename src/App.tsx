@@ -9,6 +9,7 @@ import { ArticleCard } from './components/ArticleCard';
 import { RecommendCard } from './components/RecommendCard';
 import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
+import { contentConfig } from './config/content';
 
 const App = () => {
   return (
@@ -16,17 +17,20 @@ const App = () => {
       <div className="content-grid">
         {/* Left Column */}
         <div className="left-column">
-          <UserCard />
-          <ArticleCard />
+          <UserCard config={contentConfig.user} />
+          <ArticleCard config={contentConfig.article} />
         </div>
 
         {/* Center Column */}
         <div className="center-column">
-          <ImageCard imageUrl="https://api.dicebear.com/7.x/fun-emoji/svg?seed=cat" alt="cute cat" />
-          <WelcomeCard />
+          <ImageCard 
+            imageUrl={contentConfig.images[0].imageUrl} 
+            alt={contentConfig.images[0].alt} 
+          />
+          <WelcomeCard config={contentConfig.welcome} />
           <div className="center-bottom">
-            <SocialLinks />
-            <RecommendCard />
+            <SocialLinks links={contentConfig.socialLinks} />
+            <RecommendCard config={contentConfig.recommend} />
           </div>
         </div>
 
@@ -37,7 +41,7 @@ const App = () => {
             <Clock />
           </div>
           <Calendar />
-          <MusicPlayer />
+          <MusicPlayer config={contentConfig.music} />
           <div className="decorative-items">
             <div className="decorative-icon">🎵</div>
             <div className="decorative-icon">🎨</div>

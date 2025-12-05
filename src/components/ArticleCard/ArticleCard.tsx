@@ -1,27 +1,19 @@
 import { Card } from '../Card';
 import './ArticleCard.css';
-import dayjs from 'dayjs';
+import type { ArticleInfo } from '../../config/content';
 
-interface Article {
-  title: string;
-  category: string;
-  date: string;
+interface ArticleCardProps {
+  config: ArticleInfo;
 }
 
-export const ArticleCard = () => {
-  const article: Article = {
-    title: '图片懒加载 —— 关于Intersection...',
-    category: '技能提升的秘诀',
-    date: '2025/11/29',
-  };
-
+export const ArticleCard = ({ config }: ArticleCardProps) => {
   return (
     <Card className="article-card">
-      <div className="article-tag">最新文章</div>
-      <div className="article-icon">📝</div>
-      <h4 className="article-title">{article.title}</h4>
-      <p className="article-category">{article.category}</p>
-      <p className="article-date">{article.date}</p>
+      <div className="article-tag">{config.tag}</div>
+      <div className="article-icon">{config.icon}</div>
+      <h4 className="article-title">{config.title}</h4>
+      <p className="article-category">{config.category}</p>
+      <p className="article-date">{config.date}</p>
     </Card>
   );
 };

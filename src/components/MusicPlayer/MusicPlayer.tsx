@@ -1,15 +1,20 @@
 import { Play } from 'lucide-react';
 import { Card } from '../Card';
 import './MusicPlayer.css';
+import type { MusicInfo } from '../../config/content';
 
-export const MusicPlayer = () => {
+interface MusicPlayerProps {
+  config: MusicInfo;
+}
+
+export const MusicPlayer = ({ config }: MusicPlayerProps) => {
   return (
     <Card className="music-player">
       <div className="music-info">
-        <span className="music-label">随机播放</span>
-        <h4 className="music-title">橘凯音乐</h4>
+        <span className="music-label">{config.label}</span>
+        <h4 className="music-title">{config.title}</h4>
         <div className="music-progress">
-          <div className="music-progress-bar" style={{ width: '40%' }}></div>
+          <div className="music-progress-bar" style={{ width: `${config.progress}%` }}></div>
         </div>
       </div>
       <button className="music-play-button">

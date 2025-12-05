@@ -1,24 +1,22 @@
 import { Github } from 'lucide-react';
 import './SocialLinks.css';
+import type { SocialLink } from '../../config/content';
 
-interface SocialLink {
-  icon: React.ReactNode;
-  label: string;
-  url?: string;
+interface SocialLinksProps {
+  links: SocialLink[];
 }
 
-export const SocialLinks = () => {
-  const links: SocialLink[] = [
-    {
-      icon: <Github size={20} />,
-      label: 'Github',
-      url: 'https://github.com',
-    },
-    {
-      icon: <span className="juejin-icon">掘</span>,
-      label: '掘土聚合',
-    },
-  ];
+export const SocialLinks = ({ links }: SocialLinksProps) => {
+  const renderIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'Github':
+        return <Github size={20} />;
+      case 'Juejin':
+        return <span className="juejin-icon">掘</span>;
+      default:
+        return <span>{iconName}</span>;
+    }
+  };
 
   return (
     <div className="social-links">
@@ -30,7 +28,7 @@ export const SocialLinks = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <div className="social-icon">{link.icon}</div>
+          <div className="social-icon">{renderIcon(link.icon)}</div>
           <span className="social-label">{link.label}</span>
         </a>
       ))}
