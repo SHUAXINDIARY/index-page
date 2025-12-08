@@ -14,13 +14,6 @@ export default defineConfig({
     }),
   ],
   html: {
-    title: '刷新 - index page',
-    favicon: contentConfig.user.avatar,
-    meta: [
-      {
-        name: 'description',
-        content: '刷新 - index page',
-      },
-    ],
+    template: './public/index.html',
   },
 });
