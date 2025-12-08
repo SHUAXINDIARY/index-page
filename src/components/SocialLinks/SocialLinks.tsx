@@ -1,4 +1,4 @@
-import { Github } from 'lucide-react';
+import { Camera, Github, Rss } from 'lucide-react';
 import './SocialLinks.css';
 import type { SocialLink } from '../../config/content';
 
@@ -12,7 +12,10 @@ export const SocialLinks = ({ links }: SocialLinksProps) => {
       case 'Github':
         return <Github size={20} />;
       case 'Juejin':
-        return <span className="juejin-icon">掘</span>;
+        // return <span className="juejin-icon">Blog</span>;
+        return <Rss size={20} />
+      case 'Photography':
+        return <Camera size={20} />
       default:
         return <span>{iconName}</span>;
     }

@@ -18,6 +18,9 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export const UserCard = ({ config }: UserCardProps) => {
+  const handleMenuClick = (url: string) => {
+    window.open(url, '_blank');
+  };
   return (
     <Card className="user-card">
       <div className="user-header">
@@ -34,7 +37,7 @@ export const UserCard = ({ config }: UserCardProps) => {
         {config.menuItems.map((item, index) => {
           const IconComponent = iconMap[item.icon];
           return (
-            <div key={index} className="menu-item" onClick={item.onClick}>
+            <div key={index} className="menu-item" onClick={item.onClick || (() => handleMenuClick(item.url || ''))}>
               <span className="menu-icon">
                 {IconComponent && <IconComponent size={18} />}
               </span>

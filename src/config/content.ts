@@ -11,6 +11,7 @@ export interface UserInfo {
         icon: string;
         label: string;
         onClick?: () => void;
+        url?: string;
     }>;
 }
 
@@ -69,18 +70,18 @@ export const contentConfig: ContentConfig = {
         tag: 'Arknights Players | Nikon & Lumix Users | Toys Photograph | FE',
         avatar: 'https://avatars.githubusercontent.com/u/32100575?v=4',
         menuItems: [
-            { icon: 'FileText', label: '技术博客' },
-            { icon: 'FolderOpen', label: '开源项目' },
-            { icon: 'Info', label: '关于我' },
-            { icon: 'Star', label: '我的收藏' },
-            { icon: 'Globe', label: '友情链接' },
+            { icon: 'FileText', label: '技术博客', url: 'https://blog.shuaxindiary.cn/' },
+            { icon: 'FolderOpen', label: '开源项目', url: 'https://github.com/SHUAXINDIARY?tab=repositories&q=&type=source&language=&sort=stargazers' },
+            { icon: 'Info', label: '关于我', url: 'https://blog.shuaxindiary.cn/about/' },
+            // { icon: 'Star', label: '我的收藏', url: 'https://github.com/shuaxin?tab=stars' },
+            { icon: 'Globe', label: '友情链接', url: 'https://blog.shuaxindiary.cn/social/' },
         ],
     },
 
     // 欢迎信息
     welcome: {
-        name: 'Suni',
-        avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Suni',
+        name: '刷新',
+        avatar: 'https://avatars.githubusercontent.com/u/32100575?v=4',
         highlightColor: '#ff6b6b',
     },
 
@@ -115,10 +116,15 @@ export const contentConfig: ContentConfig = {
             url: 'https://github.com',
         },
         {
-            icon: 'Juejin',
-            label: '掘土聚合',
-            url: 'https://juejin.cn',
+            icon: 'Photography',
+            label: '摄影',
+            url: 'https://gallary.shuaxinjs.cn/',
         },
+        {
+            icon: 'Red Note',
+            label: '小红书',
+            url: 'https://www.xiaohongshu.com/user/profile/617ce3ac000000000201bc2c?xsec_token=YBsjmd6g-0EovM4jFgWlCmwGlFM8-HZez2-ON-QymO4VY=&xsec_source=app_share&xhsshare=CopyLink&shareRedId=ODc5Q0g4RUw2NzUyOTgwNjY1OThGSDhM&apptime=1763691500&share_id=9421e4f42cdf430799f860afb9826278'
+        }
     ],
 
     // 图片卡片

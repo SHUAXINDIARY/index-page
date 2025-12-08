@@ -10,6 +10,7 @@ import { RecommendCard } from './components/RecommendCard';
 import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
 import { contentConfig } from './config/content';
+import { LocateFixed } from 'lucide-react';
 
 const App = () => {
   return (
@@ -23,9 +24,9 @@ const App = () => {
 
         {/* Center Column */}
         <div className="center-column">
-          <ImageCard 
-            imageUrl={contentConfig.images[0].imageUrl} 
-            alt={contentConfig.images[0].alt} 
+          <ImageCard
+            imageUrl={contentConfig.images[0].imageUrl}
+            alt={contentConfig.images[0].alt}
           />
           <WelcomeCard config={contentConfig.welcome} />
           <div className="center-bottom">
@@ -37,7 +38,7 @@ const App = () => {
         {/* Right Column */}
         <div className="right-column">
           <div className="right-top">
-            <ActionButton label="写文章" />
+            <ActionButton icon={<LocateFixed size={16} />} label="中国 | 北京" />
             <Clock />
           </div>
           <Calendar />
