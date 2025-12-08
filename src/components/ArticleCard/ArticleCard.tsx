@@ -8,7 +8,9 @@ interface ArticleCardProps {
 
 export const ArticleCard = ({ config }: ArticleCardProps) => {
   return (
-    <Card className="article-card">
+    <Card className="article-card" onClick={() => {
+      window.open(config.link, '_blank');
+    }}>
       <div className="article-tag">{config.tag}</div>
       <div className="article-icon">{config.icon}</div>
       <h4 className="article-title">{config.title}</h4>

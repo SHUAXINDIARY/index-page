@@ -11,7 +11,7 @@ import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
 import { contentConfig } from './config/content';
 import { LocateFixed } from 'lucide-react';
-
+import blogData from './config/blog-data.json';
 const App = () => {
   return (
     <div className="app-container">
@@ -19,7 +19,10 @@ const App = () => {
         {/* Left Column */}
         <div className="left-column">
           <UserCard config={contentConfig.user} />
-          <ArticleCard config={contentConfig.article} />
+          <ArticleCard config={{
+            ...contentConfig.article,
+            ...(blogData.latestPost || {}),
+          }} />
         </div>
 
         {/* Center Column */}

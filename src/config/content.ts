@@ -23,9 +23,10 @@ export interface WelcomeInfo {
 
 export interface ArticleInfo {
     title: string;
-    category: string;
+    category?: string;
     date: string;
     icon: string;
+    link?: string;
     tag: string;
 }
 
@@ -88,7 +89,6 @@ export const contentConfig: ContentConfig = {
     // 文章信息
     article: {
         title: '图片懒加载 —— 关于Intersection...',
-        category: '技能提升的秘诀',
         date: '2025/11/29',
         icon: '📝',
         tag: '最新文章',
