@@ -29,7 +29,7 @@ export const UserCard = ({ config }: UserCardProps) => {
         </div>
         <div className="user-info">
           <h3>{config.name}</h3>
-          <span className="user-tag">{config.tag}</span>
+          {/* <span className="user-tag">{config.tag}</span> */}
         </div>
       </div>
       <div className="menu-divider">GENERAL</div>

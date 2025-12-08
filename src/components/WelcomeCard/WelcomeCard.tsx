@@ -20,7 +20,7 @@ export const WelcomeCard = ({ config }: WelcomeCardProps) => {
         <img src={config.avatar} alt="character" />
       </div>
       <h2 className="welcome-greeting">{getGreeting()}</h2>
-      <p className="welcome-text">About My Basic Info</p>
+      <p className="welcome-text">About Me</p>
       <p >
         {user?.tag || ''}
       </p>
