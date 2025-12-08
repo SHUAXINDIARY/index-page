@@ -11,7 +11,7 @@ import { SocialLinks } from './components/SocialLinks';
 import { contentConfig } from './config/content';
 import { LocateFixed } from 'lucide-react';
 import blogData from './config/blog-data.json';
-import { RecommendCard } from './components/RecommendCard';
+// import { RecommendCard } from './components/RecommendCard';
 const App = () => {
   return (
     <div className="app-container">
@@ -34,7 +34,7 @@ const App = () => {
           />
           <WelcomeCard config={contentConfig.welcome} />
           <div className="center-bottom">
-            <RecommendCard config={contentConfig.recommend} />
+            {/* <RecommendCard config={contentConfig.recommend} /> */}
           </div>
         </div>
 
