@@ -47,7 +47,7 @@ const App = () => {
           <Calendar />
           <MusicPlayer config={contentConfig.music} />
           <div className="decorative-items">
-            <div className="decorative-icon">🎵</div>
+            {/* <div className="decorative-icon">🎵</div> */}
             <div className="decorative-icon">🎨</div>
           </div>
         </div>

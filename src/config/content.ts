@@ -36,10 +36,16 @@ export interface RecommendInfo {
     avatar: string;
 }
 
+export interface MusicTrack {
+    name: string;
+    url: string;
+}
+
 export interface MusicInfo {
     label: string;
     title: string;
     progress: number; // 0-100
+    urlList?: MusicTrack[];
 }
 
 export interface SocialLink {
@@ -104,8 +110,22 @@ export const contentConfig: ContentConfig = {
     // 音乐播放器
     music: {
         label: '随机播放',
-        title: '橘凯音乐',
-        progress: 40,
+        title: '塞壬唱片',
+        progress: 0,
+        urlList: [
+            {
+                name: '未许之地OST',
+                url: 'https://res01.hycdn.cn/0b74af424edb7fc47e7449721baf3009/69367FF8/siren/audio/20251204/8cd90d0fb9b0456f3c904827fb091061.wav'
+            },
+            {
+                name: "Little Wish",
+                url: 'https://res01.hycdn.cn/0d6a787395a21993b744ac3dca46d2ee/6936811C/siren/audio/20250801/10c5003150590f14844e554df545e8b4.wav'
+            },
+            {
+                name: "危机合约净罪作战OST",
+                url: 'https://res01.hycdn.cn/bff108c455680b445b3593d3e51595a3/693681B4/siren/audio/20250205/27b03fdb3a12911e7c81ed6762815a32.wav'
+            }
+        ],
     },
 
     // 社交链接

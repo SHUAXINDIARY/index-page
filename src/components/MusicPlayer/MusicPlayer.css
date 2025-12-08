@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   padding: 16px 20px;
   width: 320px;
 }
@@ -64,5 +64,41 @@
 
 .music-play-button:active {
   transform: scale(0.95);
+}
+
+.music-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.music-next-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.music-next-button:hover:not(:disabled) {
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.music-next-button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.music-next-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 

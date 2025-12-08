@@ -61,11 +61,22 @@ recommend: {
 
 ```typescript
 music: {
-  label: string;  // 播放模式标签
-  title: string;  // 音乐标题
-  progress: number; // 播放进度 (0-100)
+  label: string;         // 播放模式标签
+  title: string;         // 默认音乐标题（未播放时显示）
+  progress: number;      // 初始进度 (0-100)
+  urlList?: Array<{      // 音乐列表（可选）
+    name: string;        // 音乐名称
+    url: string;         // 音乐文件 URL
+  }>;
 }
 ```
+
+**功能说明：**
+- ▶️ 点击播放按钮会随机从 `urlList` 中选择一首音乐播放
+- ⏸️ 播放时会显示当前音乐名称和实时进度
+- 🔄 支持播放/暂停切换，图标会相应变化
+- ⏭️ 点击"下一首"按钮随机切换到新的音乐
+- 🎵 播放结束后自动停止
 
 ### 6. 社交链接 (`socialLinks`)
 

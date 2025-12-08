@@ -48,6 +48,16 @@ export const contentConfigExample: ContentConfig = {
         label: '单曲循环',
         title: '代码之歌',
         progress: 65,
+        urlList: [
+            {
+                name: '音乐1',
+                url: 'https://example.com/music1.mp3',
+            },
+            {
+                name: '音乐2',
+                url: 'https://example.com/music2.mp3',
+            },
+        ],
     },
 
     // 社交链接示例
