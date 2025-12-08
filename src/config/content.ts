@@ -144,7 +144,12 @@ export const contentConfig: ContentConfig = {
             icon: 'Red Note',
             label: '小红书',
             url: 'https://www.xiaohongshu.com/user/profile/617ce3ac000000000201bc2c?xsec_token=YBsjmd6g-0EovM4jFgWlCmwGlFM8-HZez2-ON-QymO4VY=&xsec_source=app_share&xhsshare=CopyLink&shareRedId=ODc5Q0g4RUw2NzUyOTgwNjY1OThGSDhM&apptime=1763691500&share_id=9421e4f42cdf430799f860afb9826278'
-        }
+        },
+        {
+            icon: 'TikTok',
+            label: '抖音',
+            url: 'https://www.douyin.com/user/MS4wLjABAAAAtka9uHYCko-H1WT23fHjsVcTDwbAdjP-qfZqm6-Q4-c'
+        },
     ],
 
     // 图片卡片

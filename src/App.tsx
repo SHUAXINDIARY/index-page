@@ -6,7 +6,7 @@ import { Clock } from './components/Clock';
 import { Calendar } from './components/Calendar';
 import { ActionButton } from './components/ActionButton';
 import { ArticleCard } from './components/ArticleCard';
-import { RecommendCard } from './components/RecommendCard';
+// import { RecommendCard } from './components/RecommendCard';
 import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
 import { contentConfig } from './config/content';
@@ -34,7 +34,7 @@ const App = () => {
           <WelcomeCard config={contentConfig.welcome} />
           <div className="center-bottom">
             <SocialLinks links={contentConfig.socialLinks} />
-            <RecommendCard config={contentConfig.recommend} />
+            {/* <RecommendCard config={contentConfig.recommend} /> */}
           </div>
         </div>
 
