@@ -1,4 +1,4 @@
-import { Camera, Github, Rss } from 'lucide-react';
+import { Camera, Github, Music2, Rss, Twitter } from 'lucide-react';
 import './SocialLinks.css';
 import type { SocialLink } from '../../config/content';
 
@@ -12,10 +12,15 @@ export const SocialLinks = ({ links }: SocialLinksProps) => {
       case 'Github':
         return <Github size={20} />;
       case 'Juejin':
-        // return <span className="juejin-icon">Blog</span>;
         return <Rss size={20} />
       case 'Photography':
         return <Camera size={20} />
+      case 'music':
+        return <Music2 size={20} />
+      case 'X':
+        return <Twitter size={20} />
+      case 'Red Note':
+        return <span>红</span>;
       default:
         return <span>{iconName}</span>;
     }
@@ -32,7 +37,7 @@ export const SocialLinks = ({ links }: SocialLinksProps) => {
           rel="noopener noreferrer"
         >
           <div className="social-icon">{renderIcon(link.icon)}</div>
-          <span className="social-label">{link.label}</span>
+          {/* <span className="social-label">{link.label}</span> */}
         </a>
       ))}
     </div>

@@ -1,7 +1,9 @@
 .social-links {
+  max-width: 280px;
   display: flex;
   gap: 12px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .social-link {

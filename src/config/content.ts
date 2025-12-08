@@ -80,7 +80,6 @@ export const contentConfig: ContentConfig = {
             { icon: 'FileText', label: '技术博客', url: 'https://blog.shuaxindiary.cn/' },
             { icon: 'FolderOpen', label: '开源项目', url: 'https://github.com/SHUAXINDIARY?tab=repositories&q=&type=source&language=&sort=stargazers' },
             { icon: 'Info', label: '关于我', url: 'https://blog.shuaxindiary.cn/about/' },
-            // { icon: 'Star', label: '我的收藏', url: 'https://github.com/shuaxin?tab=stars' },
             { icon: 'Globe', label: '友情链接', url: 'https://blog.shuaxindiary.cn/social/' },
         ],
     },
@@ -146,10 +145,15 @@ export const contentConfig: ContentConfig = {
             url: 'https://www.xiaohongshu.com/user/profile/617ce3ac000000000201bc2c?xsec_token=YBsjmd6g-0EovM4jFgWlCmwGlFM8-HZez2-ON-QymO4VY=&xsec_source=app_share&xhsshare=CopyLink&shareRedId=ODc5Q0g4RUw2NzUyOTgwNjY1OThGSDhM&apptime=1763691500&share_id=9421e4f42cdf430799f860afb9826278'
         },
         {
-            icon: 'TikTok',
+            icon: 'music',
             label: '抖音',
             url: 'https://www.douyin.com/user/MS4wLjABAAAAtka9uHYCko-H1WT23fHjsVcTDwbAdjP-qfZqm6-Q4-c'
         },
+        {
+            icon: 'X',
+            label: 'X',
+            url: 'https://x.com/qq_tf'
+        }
     ],
 
     // 图片卡片

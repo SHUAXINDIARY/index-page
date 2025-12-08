@@ -1,6 +1,6 @@
 import { Card } from '../Card';
 import './WelcomeCard.css';
-import type { WelcomeInfo } from '../../config/content';
+import { user, type WelcomeInfo } from '../../config/content';
 
 interface WelcomeCardProps {
   config: WelcomeInfo;
@@ -20,8 +20,9 @@ export const WelcomeCard = ({ config }: WelcomeCardProps) => {
         <img src={config.avatar} alt="character" />
       </div>
       <h2 className="welcome-greeting">{getGreeting()}</h2>
-      <p className="welcome-text">
-        I'm <span className="highlight" style={{ color: config.highlightColor }}>{config.name}</span>, Nice to meet you!
+      <p className="welcome-text">About My Basic Info</p>
+      <p >
+        {user?.tag || ''}
       </p>
     </Card>
   );
