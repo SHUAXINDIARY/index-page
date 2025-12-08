@@ -1,5 +1,6 @@
 .calendar-card {
-  width: 300px;
+  /* 移除固定宽度，自适应网格 */
+  min-width: 240px;
   padding: 20px;
 }
 

@@ -1,13 +1,11 @@
 .image-card {
   padding: 16px;
-  width: 240px;
-  height: 180px;
-  min-width: 240px;
-  min-height: 180px;
+  /* 移除固定尺寸，自适应网格 */
+  min-width: 180px;
+  min-height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
 .image-card img {

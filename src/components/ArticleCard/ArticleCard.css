@@ -1,5 +1,6 @@
 .article-card {
-  width: 280px;
+  /* 移除固定宽度，自适应网格 */
+  min-width: 200px;
   position: relative;
 }
 

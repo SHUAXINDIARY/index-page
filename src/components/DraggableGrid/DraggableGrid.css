@@ -1,0 +1,119 @@
+.draggable-grid-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.draggable-grid {
+  position: relative;
+  display: inline-block;
+}
+
+/* placeholder 样式 - 和卡片尺寸一致 */
+.react-grid-item.react-grid-placeholder {
+  background: rgba(255, 107, 107, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  border: 2px dashed rgba(255, 107, 107, 0.5);
+  opacity: 1;
+  transition: all 150ms ease;
+  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.2);
+}
+
+.react-grid-item {
+  transition: all 200ms ease;
+  transition-property: transform;
+  /* 不设置 width 和 height，让内容自适应 */
+}
+
+.react-grid-item.cssTransforms {
+  transition-property: transform;
+}
+
+.react-grid-item > .react-resizable-handle {
+  display: none;
+}
+
+/* 包装器：让卡片填满网格单元 */
+.grid-item-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  position: relative;
+}
+
+/* 卡片填满网格单元 */
+.grid-item-wrapper > *:not(.drag-handle) {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* 拖拽手柄样式 */
+.drag-handle {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 6px;
+  cursor: grab;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 10;
+  color: #666;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.drag-handle:hover {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  transform: scale(1.05);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+  transform: scale(0.95);
+}
+
+/* hover 时显示拖拽手柄 */
+.grid-item-wrapper:hover .drag-handle {
+  opacity: 1;
+}
+
+/* 确保网格项正确定位 */
+.react-grid-item {
+  position: absolute !important;
+  /* 让 react-grid-layout 控制尺寸，确保碰撞检测正常 */
+}
+
+/* 拖拽手柄样式 */
+.react-grid-item.react-draggable-dragging {
+  transition: none;
+  z-index: 100;
+  opacity: 0.9;
+}
+
+
+/* 拖拽中时手柄保持可见 */
+.react-grid-item.react-draggable-dragging .drag-handle {
+  opacity: 1;
+  cursor: grabbing;
+}
+
+/* 移动端适配 */
+@media (max-width: 1200px) {
+  .draggable-grid-container {
+    width: 100%;
+    padding: 0 10px;
+  }
+}
+
