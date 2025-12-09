@@ -2,6 +2,7 @@ import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { contentConfig } from './src/config/content';
 import { fetchBlogPlugin } from './plugins/fetch-blog-plugin';
+import { bgmListPlugin } from './plugins/bgm-list-plugin';
 
 // Docs: https://rsbuild.rs/config/
 export default defineConfig({
@@ -11,6 +12,11 @@ export default defineConfig({
     fetchBlogPlugin({
       blogUrl: contentConfig.user.menuItems[0].url,
       outputPath: './src/config/blog-data.json',
+    }),
+    // 自定义插件：扫描 public/bgm 目录生成音乐列表
+    bgmListPlugin({
+      bgmDir: 'public/bgm',
+      outputPath: './src/config/bgm-data.json',
     }),
   ],
   html: {
