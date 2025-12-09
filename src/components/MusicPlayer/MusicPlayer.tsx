@@ -12,6 +12,7 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentTrack, setCurrentTrack] = useState<MusicTrack | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // 随机选择一首音乐
@@ -53,6 +54,7 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
     audio.addEventListener('error', (e) => {
       console.error('音频加载失败:', e);
       setIsPlaying(false);
+      setIsLoading(false);
     });
 
     return audio;
@@ -60,6 +62,9 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
 
   // 播放/暂停切换
   const togglePlay = () => {
+    // 防止重复点击
+    if (isLoading) return;
+
     if (!audioRef.current) {
       // 第一次点击，创建音频元素并随机选择一首歌
       const track = getRandomTrack();
@@ -68,11 +73,14 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
         return;
       }
 
+      setIsLoading(true);
       const audio = initAudio(track);
       audio.play().then(() => {
         setIsPlaying(true);
+        setIsLoading(false);
       }).catch(error => {
         console.error('播放失败:', error);
+        setIsLoading(false);
       });
     } else {
       // 已有音频元素，切换播放/暂停
@@ -91,18 +99,24 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
 
   // 切换到下一首
   const playNext = () => {
+    // 防止重复点击
+    if (isLoading) return;
+
     const track = getRandomTrack();
     if (!track) {
       console.warn('没有可播放的音乐');
       return;
     }
 
+    setIsLoading(true);
     const audio = initAudio(track);
     audio.play().then(() => {
       setIsPlaying(true);
+      setIsLoading(false);
     }).catch(error => {
       console.error('播放失败:', error);
       setIsPlaying(false);
+      setIsLoading(false);
     });
   };
 
@@ -131,7 +145,7 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
         </div>
       </div>
       <div className="music-controls">
-        <button className="music-play-button" onClick={togglePlay}>
+        <button className="music-play-button" onClick={togglePlay} disabled={isLoading}>
           {isPlaying ? (
             <Pause size={24} fill="white" />
           ) : (
@@ -141,7 +155,7 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
         <button 
           className="music-next-button" 
           onClick={playNext}
-          disabled={!config.urlList || config.urlList.length === 0}
+          disabled={isLoading || !config.urlList || config.urlList.length === 0}
         >
           <SkipForward size={20} />
         </button>
