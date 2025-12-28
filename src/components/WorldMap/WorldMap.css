@@ -56,6 +56,38 @@
   z-index: 1000;
 }
 
+/* 全屏按钮样式 */
+.world-map-fullscreen-button {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.world-map-fullscreen-button:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.world-map-fullscreen-button:active {
+  transform: scale(0.95);
+}
+
 /* 图例样式 */
 .world-map-legend {
   position: absolute;
@@ -96,6 +128,84 @@
   font-weight: 500;
 }
 
+/* 全屏地图样式 */
+.world-map-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.95);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.world-map-fullscreen-close {
+  position: absolute;
+  top: 16px;
+  right: 50px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10000;
+}
+
+.world-map-fullscreen-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.world-map-fullscreen-close:active {
+  transform: scale(0.95);
+}
+
+.world-map-fullscreen-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.world-map-fullscreen-container :global(.maplibregl-ctrl-top-right) {
+  top: 16px;
+  right: 64px;
+}
+
+.world-map-fullscreen-legend {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+  min-width: 100px;
+}
+
 @media (max-width: 768px) {
   .world-map-card {
     height: 400px;
@@ -110,5 +220,24 @@
 
   .world-map-legend-label {
     font-size: 11px;
+  }
+
+  .world-map-fullscreen-close {
+    width: 36px;
+    height: 36px;
+    top: 12px;
+    right: 12px;
+  }
+
+  .world-map-fullscreen-container :global(.maplibregl-ctrl-top-right) {
+    top: 12px;
+    right: 56px;
+  }
+
+  .world-map-fullscreen-legend {
+    bottom: 16px;
+    right: 16px;
+    padding: 10px 12px;
+    min-width: 80px;
   }
 }
