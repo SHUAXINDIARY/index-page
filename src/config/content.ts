@@ -61,6 +61,25 @@ export interface ImageCardInfo {
     alt: string;
 }
 
+export interface WorldMapMarker {
+    name: string;
+    lat: number;
+    lng: number;
+    type: 'travel' | 'residence' | 'wish' | 'airport';
+    description?: string;
+}
+
+export interface WorldMapLegendItem {
+    type: 'travel' | 'residence' | 'wish' | 'airport';
+    label: string;
+}
+
+export interface WorldMapConfig {
+    style?: string; // MapLibre 样式 URL，默认为 demotiles.maplibre.org
+    markers?: WorldMapMarker[];
+    legend?: WorldMapLegendItem[];
+}
+
 export interface ContentConfig {
     user: UserInfo;
     welcome: WelcomeInfo;
@@ -69,6 +88,7 @@ export interface ContentConfig {
     music: MusicInfo;
     socialLinks: SocialLink[];
     images: ImageCardInfo[];
+    worldMap?: WorldMapConfig;
 }
 
 // 主配置对象
@@ -152,8 +172,44 @@ export const contentConfig: ContentConfig = {
             alt: 'cute cat',
         },
     ],
+
+    // 世界地图配置
+    worldMap: {
+        // 使用 MapLibre 默认样式，也可以使用其他 MapLibre 兼容的样式 URL
+        // style: 'https://demotiles.maplibre.org/style.json',
+        markers: [
+            // 旅行地点（橙色）
+            { name: '北京', lat: 39.9042, lng: 116.4074, type: 'travel', description: '首都北京' },
+            { name: '上海', lat: 31.2304, lng: 121.4737, type: 'travel', description: '魔都上海' },
+            { name: '东京', lat: 35.6762, lng: 139.6503, type: 'travel', description: '日本东京' },
+            { name: '首尔', lat: 37.5665, lng: 126.9780, type: 'travel', description: '韩国首尔' },
+            { name: '曼谷', lat: 13.7563, lng: 100.5018, type: 'travel', description: '泰国曼谷' },
+            { name: '新加坡', lat: 1.3521, lng: 103.8198, type: 'travel', description: '新加坡' },
+            { name: '巴黎', lat: 48.8566, lng: 2.3522, type: 'travel', description: '法国巴黎' },
+            { name: '伦敦', lat: 51.5074, lng: -0.1278, type: 'travel', description: '英国伦敦' },
+            { name: '纽约', lat: 40.7128, lng: -74.0060, type: 'travel', description: '美国纽约' },
+            { name: '洛杉矶', lat: 34.0522, lng: -118.2437, type: 'travel', description: '美国洛杉矶' },
+            { name: '悉尼', lat: -33.8688, lng: 151.2093, type: 'travel', description: '澳大利亚悉尼' },
+            
+            // 居住地点（蓝色）
+            { name: '北京', lat: 39.9042, lng: 116.4074, type: 'residence', description: '现居地' },
+            { name: '上海', lat: 31.2304, lng: 121.4737, type: 'residence', description: '曾居住' },
+            
+            // 愿望清单（粉色）
+            { name: '冰岛', lat: 64.9631, lng: -19.0208, type: 'wish', description: '极光之旅' },
+            { name: '马尔代夫', lat: 3.2028, lng: 73.2207, type: 'wish', description: '度假天堂' },
+            { name: '圣托里尼', lat: 36.3932, lng: 25.4615, type: 'wish', description: '希腊圣岛' },
+            { name: '京都', lat: 35.0116, lng: 135.7681, type: 'wish', description: '古都京都' },
+        ],
+        legend: [
+            { type: 'travel', label: '旅行' },
+            { type: 'residence', label: '居住' },
+            { type: 'wish', label: '愿望' },
+            { type: 'airport', label: '机场' },
+        ],
+    },
 };
 
 // 导出单独的配置项（可选）
-export const { user, welcome, article, recommend, music, socialLinks, images } = contentConfig;
+export const { user, welcome, article, recommend, music, socialLinks, images, worldMap } = contentConfig;
 

@@ -8,6 +8,7 @@ import { ActionButton } from './components/ActionButton';
 import { ArticleCard } from './components/ArticleCard';
 import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
+import { WorldMap } from './components/WorldMap';
 import { contentConfig } from './config/content';
 import { LocateFixed } from 'lucide-react';
 import blogData from './config/blog-data.json';
@@ -33,6 +34,9 @@ const App = () => {
             alt={contentConfig.images[0].alt}
           />
           <WelcomeCard config={contentConfig.welcome} />
+          {contentConfig.worldMap && (
+            <WorldMap config={contentConfig.worldMap} />
+          )}
           <div className="center-bottom">
             {/* <RecommendCard config={contentConfig.recommend} /> */}
           </div>
