@@ -383,6 +383,34 @@ export const contentConfig: ContentConfig = {
         type: 'travel',
         description: '梵蒂冈城国',
       },
+      {
+        name: '杭州',
+        lat: 30.248963,
+        lng: 120.205234,
+        type: 'travel',
+        description: '中国杭州',
+      },
+      {
+        name: '灵台县',
+        lat: 35.066149,
+        lng: 107.616691,
+        type: 'travel',
+        description: '中国甘肃省平凉市灵台县',
+      },
+      {
+        name: '庆城县',
+        lat: 36.016541,
+        lng: 107.877158,
+        type: 'travel',
+        description: '中国甘肃省庆阳市庆城县',
+      },
+      {
+        name: '银川市',
+        lat: 38.487193,
+        lng: 106.230909,
+        type: 'travel',
+        description: '中国宁夏回族自治区银川市',
+      },
       // 居住地点（蓝色）
       {
         name: '北京',
