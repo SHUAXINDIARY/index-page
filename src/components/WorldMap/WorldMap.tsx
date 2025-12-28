@@ -60,7 +60,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
   }, [getMarkerColor]);
 
   // 计算标记点偏移，避免相同位置的标记点重叠
-  const getMarkerOffset = useCallback((marker: { lat: number; lng: number; type: string }, allMarkers: typeof config.markers) => {
+  const getMarkerOffset = useCallback((marker: { lat: number; lng: number; type: string; name: string }, allMarkers: typeof config.markers) => {
     if (!allMarkers) return { lat: marker.lat, lng: marker.lng };
     
     // 找出所有与当前标记点位置相同的标记点
