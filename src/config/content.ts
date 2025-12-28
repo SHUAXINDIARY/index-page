@@ -376,7 +376,13 @@ export const contentConfig: ContentConfig = {
         type: 'travel',
         description: '法国巴黎',
       },
-
+      {
+        name: '梵蒂冈',
+        lat: 41.902542,
+        lng: 12.452881,
+        type: 'travel',
+        description: '梵蒂冈城国',
+      },
       // 居住地点（蓝色）
       {
         name: '北京',
