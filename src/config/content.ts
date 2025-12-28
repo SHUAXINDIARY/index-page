@@ -209,6 +209,13 @@ export const contentConfig: ContentConfig = {
         description: '中国北京',
       },
       {
+        name: '三亚',
+        lat: 20.0175,
+        lng: 110.3491,
+        type: 'travel',
+        description: '中国三亚',
+      },
+      {
         name: '上海',
         lat: 31.2304,
         lng: 121.4737,
