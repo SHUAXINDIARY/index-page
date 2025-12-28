@@ -80,6 +80,10 @@ export interface WorldMapConfig {
   legend?: WorldMapLegendItem[];
 }
 
+export interface CalendarConfig {
+  icsUrl?: string; // ICS 文件的 URL 或本地路径
+}
+
 export interface ContentConfig {
   user: UserInfo;
   welcome: WelcomeInfo;
@@ -89,6 +93,7 @@ export interface ContentConfig {
   socialLinks: SocialLink[];
   images: ImageCardInfo[];
   worldMap?: WorldMapConfig;
+  calendar?: CalendarConfig;
 }
 
 // 主配置对象
@@ -380,6 +385,11 @@ export const contentConfig: ContentConfig = {
       //   { type: 'airport', label: '机场' },
     ],
   },
+
+  // 日历配置
+  calendar: {
+    icsUrl: '/中国大陆节假日.ics', // 使用 public 目录下的 ICS 文件
+  },
 };
 
 // 导出单独的配置项（可选）
@@ -392,4 +402,5 @@ export const {
   socialLinks,
   images,
   worldMap,
+  calendar,
 } = contentConfig;

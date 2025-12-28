@@ -53,6 +53,7 @@
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .calendar-day:hover {
@@ -69,5 +70,71 @@
 
 .calendar-day.other-month {
   color: #ccc;
+}
+
+.calendar-day.has-event {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.calendar-day.has-event.today {
+  background: linear-gradient(135deg, #ff9800 0%, #ffb84d 100%);
+  border: 2px solid #4caf50;
+}
+
+.event-dot {
+  position: absolute;
+  bottom: 4px;
+  width: 4px;
+  height: 4px;
+  background: #4caf50;
+  border-radius: 50%;
+}
+
+.calendar-day.today .event-dot {
+  background: white;
+}
+
+/* Tooltip 样式 */
+.calendar-tooltip {
+  position: fixed;
+  transform: translate(-50%, -100%);
+  z-index: 1000;
+  pointer-events: none;
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-100% + 5px));
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%);
+  }
+}
+
+.calendar-tooltip-content {
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.calendar-tooltip-arrow {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.85);
+  transform: translateX(-50%) rotate(45deg);
 }
 
