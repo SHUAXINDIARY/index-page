@@ -193,7 +193,7 @@ export const contentConfig: ContentConfig = {
   worldMap: {
     // 使用 MapLibre 默认样式，也可以使用其他 MapLibre 兼容的样式 URL
     // style: 'https://demotiles.maplibre.org/style.json',
-    style: 'https://tiles.openfreemap.org/styles/positron',
+    style: '/positron.json',
     markers: [
       // 旅行地点（橙色）
       {
