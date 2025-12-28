@@ -102,3 +102,21 @@
   cursor: not-allowed;
 }
 
+.music-loading-icon {
+  animation: spin 1s linear infinite;
+  color: white;
+}
+
+.music-next-button .music-loading-icon {
+  color: #333;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+

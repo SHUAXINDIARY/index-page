@@ -1,25 +1,21 @@
 {
   "urlList": [
     {
-      "name": "Truth",
-      "url": "/bgm/Truth.wav"
-    },
-    {
       "name": "危机合约净罪作战OST",
-      "url": "/bgm/危机合约净罪作战OST.wav"
+      "url": "/bgm/危机合约净罪作战OST.m4a"
     },
     {
       "name": "巴别塔OST",
-      "url": "/bgm/巴别塔OST.wav"
+      "url": "/bgm/巴别塔OST.m4a"
     },
     {
       "name": "未许之地OST",
-      "url": "/bgm/未许之地OST.wav"
+      "url": "/bgm/未许之地OST.m4a"
     },
     {
       "name": "梦人",
-      "url": "/bgm/梦人.wav"
+      "url": "/bgm/梦人.m4a"
     }
   ],
-  "generatedAt": "2025-12-09T02:26:25.922Z"
+  "generatedAt": "2025-12-28T01:56:08.403Z"
 }
