@@ -46,14 +46,48 @@
   font-size: 12px;
 }
 
-/* 标记点样式 */
-.world-map-marker {
-  transition: transform 0.2s ease;
+/* 标记点容器样式 */
+.world-map-marker-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.world-map-marker:hover {
-  transform: scale(1.3);
-  z-index: 1000;
+/* 标记点小圆点样式 */
+.world-map-marker-dot {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.world-map-marker-container:hover .world-map-marker-dot {
+  transform: scale(1.4);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 不同类型标记点的颜色 - 作为后备 */
+.world-map-marker-travel .world-map-marker-dot {
+  background-color: #ff8c42 !important;
+}
+
+.world-map-marker-residence .world-map-marker-dot {
+  background-color: #4a90e2 !important;
+}
+
+.world-map-marker-wish .world-map-marker-dot {
+  background-color: #ff6b9d !important;
+}
+
+.world-map-marker-airport .world-map-marker-dot {
+  background-color: #999999 !important;
+}
+
+/* 隐藏 MapLibre 默认标记样式 */
+.maplibregl-marker {
+  background: none !important;
+  border: none !important;
+}
+
+.maplibregl-marker svg {
+  display: none !important;
 }
 
 /* 全屏按钮样式 */
@@ -166,6 +200,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 10000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .world-map-fullscreen-close:hover {
@@ -186,6 +221,7 @@
 .world-map-fullscreen-container :global(.maplibregl-ctrl-top-right) {
   top: 16px;
   right: 64px;
+  z-index: 9999;
 }
 
 .world-map-fullscreen-legend {

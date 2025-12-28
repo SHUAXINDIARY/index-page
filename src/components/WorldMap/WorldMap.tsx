@@ -31,28 +31,76 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     return colorMap[type] || '#666666';
   }, []);
 
+  // 创建标记元素的辅助函数
+  const createMarkerElement = useCallback((type: string) => {
+    const color = getMarkerColor(type);
+    
+    // 创建外层容器
+    const container = document.createElement('div');
+    container.className = `world-map-marker-container world-map-marker-${type}`;
+    
+    // 创建小圆点
+    const dot = document.createElement('div');
+    dot.className = 'world-map-marker-dot';
+    dot.style.width = '10px';
+    dot.style.height = '10px';
+    dot.style.borderRadius = '50%';
+    dot.style.backgroundColor = color;
+    dot.style.border = '2px solid white';
+    dot.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.4)';
+    dot.style.cursor = 'pointer';
+    dot.style.transition = 'transform 0.2s ease';
+    
+    // 设置数据属性用于调试
+    container.dataset.type = type;
+    container.dataset.color = color;
+    
+    container.appendChild(dot);
+    return container;
+  }, [getMarkerColor]);
+
+  // 计算标记点偏移，避免相同位置的标记点重叠
+  const getMarkerOffset = useCallback((marker: { lat: number; lng: number; type: string }, allMarkers: typeof config.markers) => {
+    if (!allMarkers) return { lat: marker.lat, lng: marker.lng };
+    
+    // 找出所有与当前标记点位置相同的标记点
+    const sameLocationMarkers = allMarkers.filter(
+      m => m.lat === marker.lat && m.lng === marker.lng
+    );
+    
+    if (sameLocationMarkers.length <= 1) {
+      return { lat: marker.lat, lng: marker.lng };
+    }
+    
+    // 计算当前标记点在相同位置标记点中的索引
+    const index = sameLocationMarkers.findIndex(
+      m => m.type === marker.type && m.name === marker.name
+    );
+    
+    // 为每个标记点计算偏移量（呈圆形分布）
+    const offsetDistance = 0.15; // 偏移距离（经纬度）
+    const angle = (2 * Math.PI * index) / sameLocationMarkers.length;
+    
+    return {
+      lat: marker.lat + offsetDistance * Math.sin(angle),
+      lng: marker.lng + offsetDistance * Math.cos(angle),
+    };
+  }, []);
+
   // 添加标记点
   const addMarkers = useCallback(() => {
     if (!map.current || !config.markers) return;
 
     config.markers.forEach((marker) => {
-      // 根据类型设置颜色
-      const color = getMarkerColor(marker.type);
-      
       // 创建标记元素
-      const el = document.createElement('div');
-      el.className = 'world-map-marker';
-      el.style.backgroundColor = color;
-      el.style.width = '12px';
-      el.style.height = '12px';
-      el.style.borderRadius = '50%';
-      el.style.border = '2px solid white';
-      el.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
-      el.style.cursor = 'pointer';
+      const el = createMarkerElement(marker.type);
+      
+      // 获取偏移后的位置
+      const position = getMarkerOffset(marker, config.markers);
       
       // 创建标记
-      const mapMarker = new maplibregl.Marker(el)
-        .setLngLat([marker.lng, marker.lat])
+      const mapMarker = new maplibregl.Marker({ element: el })
+        .setLngLat([position.lng, position.lat])
         .setPopup(
           new maplibregl.Popup({ offset: 25 }).setHTML(
             `<div class="world-map-popup">
@@ -65,7 +113,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
 
       markersRef.current.push(mapMarker);
     });
-  }, [config.markers, getMarkerColor]);
+  }, [config.markers, createMarkerElement, getMarkerOffset]);
 
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
@@ -90,35 +138,8 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     // 地图加载完成后添加标记点
     map.current.on('load', () => {
       setMapLoaded(true);
-      // 使用 addMarkers 的当前引用
-      if (map.current && config.markers) {
-        config.markers.forEach((marker) => {
-          const color = getMarkerColor(marker.type);
-          const el = document.createElement('div');
-          el.className = 'world-map-marker';
-          el.style.backgroundColor = color;
-          el.style.width = '12px';
-          el.style.height = '12px';
-          el.style.borderRadius = '50%';
-          el.style.border = '2px solid white';
-          el.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
-          el.style.cursor = 'pointer';
-          
-          const mapMarker = new maplibregl.Marker(el)
-            .setLngLat([marker.lng, marker.lat])
-            .setPopup(
-              new maplibregl.Popup({ offset: 25 }).setHTML(
-                `<div class="world-map-popup">
-                  <strong>${marker.name}</strong>
-                  ${marker.description ? `<p>${marker.description}</p>` : ''}
-                </div>`
-              )
-            )
-            .addTo(map.current!);
-
-          markersRef.current.push(mapMarker);
-        });
-      }
+      // 使用 addMarkers 函数
+      addMarkers();
     });
 
     // 设置大气效果 - 通过样式规范中的 sky 属性
@@ -206,19 +227,14 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     fullscreenMap.current.on('load', () => {
       if (fullscreenMap.current && config.markers) {
         config.markers.forEach((marker) => {
-          const color = getMarkerColor(marker.type);
-          const el = document.createElement('div');
-          el.className = 'world-map-marker';
-          el.style.backgroundColor = color;
-          el.style.width = '12px';
-          el.style.height = '12px';
-          el.style.borderRadius = '50%';
-          el.style.border = '2px solid white';
-          el.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
-          el.style.cursor = 'pointer';
+          // 使用相同的创建标记元素函数
+          const el = createMarkerElement(marker.type);
           
-          const mapMarker = new maplibregl.Marker(el)
-            .setLngLat([marker.lng, marker.lat])
+          // 获取偏移后的位置
+          const position = getMarkerOffset(marker, config.markers);
+          
+          const mapMarker = new maplibregl.Marker({ element: el })
+            .setLngLat([position.lng, position.lat])
             .setPopup(
               new maplibregl.Popup({ offset: 25 }).setHTML(
                 `<div class="world-map-popup">
@@ -312,7 +328,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
         fullscreenMap.current = null;
       }
     };
-  }, [isFullscreen, config.style, config.markers, getMarkerColor]);
+  }, [isFullscreen, config.style, config.markers, createMarkerElement, getMarkerOffset]);
 
   // 处理 ESC 键关闭全屏
   useEffect(() => {
