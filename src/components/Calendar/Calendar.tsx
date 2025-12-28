@@ -2,10 +2,10 @@ import { Card } from '../Card';
 import './Calendar.css';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
-import { useEffect, useState, useRef } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useEffect, useState } from 'react';
 import { calendar } from '../../config/content';
 import ICAL from 'ical.js';
+import { Tooltip } from '../Tooltip';
 
 dayjs.locale('zh-cn');
 
@@ -64,18 +64,6 @@ export const Calendar = () => {
   const endDate = endOfMonth.endOf('week');
 
   const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [tooltip, setTooltip] = useState<{
-    visible: boolean;
-    content: string;
-    x: number;
-    y: number;
-  }>({
-    visible: false,
-    content: '',
-    x: 0,
-    y: 0,
-  });
-  const tooltipTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // 加载并解析 ICS 文件
   useEffect(() => {
@@ -108,49 +96,6 @@ export const Calendar = () => {
     });
   };
 
-  // 处理鼠标悬停
-  const handleMouseEnter = (event: CalendarEvent, e: React.MouseEvent<HTMLDivElement>) => {
-    // 清除之前的定时器
-    if (tooltipTimerRef.current) {
-      clearTimeout(tooltipTimerRef.current);
-    }
-
-    const target = e.currentTarget;
-
-    // 延迟显示 tooltip
-    tooltipTimerRef.current = setTimeout(() => {
-      // 检查元素是否仍然存在
-      if (!target) return;
-      
-      const rect = target.getBoundingClientRect();
-      setTooltip({
-        visible: true,
-        content: event.summary,
-        x: rect.left + rect.width / 2,
-        y: rect.top - 10,
-      });
-    }, 300); // 300ms 延迟
-  };
-
-  // 处理鼠标离开
-  const handleMouseLeave = () => {
-    // 清除定时器
-    if (tooltipTimerRef.current) {
-      clearTimeout(tooltipTimerRef.current);
-      tooltipTimerRef.current = null;
-    }
-
-    setTooltip(prev => ({ ...prev, visible: false }));
-  };
-
-  // 清理定时器
-  useEffect(() => {
-    return () => {
-      if (tooltipTimerRef.current) {
-        clearTimeout(tooltipTimerRef.current);
-      }
-    };
-  }, []);
 
   const weekDays = ['一', '二', '三', '四', '五', '六', '日'];
   const days = [];
@@ -181,36 +126,26 @@ export const Calendar = () => {
             const isCurrentMonth = day.isSame(today, 'month');
             const event = hasEvent(day);
             
-            return (
+            const dayElement = (
               <div
-                key={index}
                 className={`calendar-day ${isToday ? 'today' : ''} ${!isCurrentMonth ? 'other-month' : ''} ${event ? 'has-event' : ''}`}
-                onMouseEnter={event ? (e) => handleMouseEnter(event, e) : undefined}
-                onMouseLeave={event ? handleMouseLeave : undefined}
               >
                 {day.date()}
                 {event && <div className="event-dot" />}
               </div>
             );
+
+            // 如果有事件，使用 Tooltip 包裹
+            return event ? (
+              <Tooltip key={index} content={event.summary}>
+                {dayElement}
+              </Tooltip>
+            ) : (
+              <React.Fragment key={index}>{dayElement}</React.Fragment>
+            );
           })}
         </div>
-
       </Card>
-
-      {/* 使用 Portal 将 Tooltip 渲染到 body */}
-      {tooltip.visible && createPortal(
-        <div
-          className="calendar-tooltip"
-          style={{
-            left: `${tooltip.x}px`,
-            top: `${tooltip.y}px`,
-          }}
-        >
-          <div className="calendar-tooltip-arrow" />
-          <div className="calendar-tooltip-content">{tooltip.content}</div>
-        </div>,
-        document.body
-      )}
     </>
   );
 };

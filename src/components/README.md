@@ -13,6 +13,7 @@
 
 ### 基础组件
 - **Card** - 通用卡片容器组件，所有其他卡片的基础
+- **Tooltip** - 通用提示组件，支持鼠标悬停显示提示信息
 
 ### 功能组件
 - **UserCard** - 用户信息卡片，包含头像、用户名和菜单导航
@@ -36,15 +37,62 @@ import { UserCard } from './components/UserCard';
 import { Clock } from './components/Clock';
 import { Calendar } from './components/Calendar';
 import { WorldMap } from './components/WorldMap';
+import { Tooltip } from './components/Tooltip';
 
 // 在组件中使用
 <UserCard config={contentConfig.user} />
 <Clock />
 <Calendar />
 <WorldMap config={contentConfig.worldMap} />
+
+// Tooltip 使用示例
+<Tooltip content="提示信息">
+  <button>悬停我</button>
+</Tooltip>
 ```
 
 ## 🔍 组件详细说明
+
+### Tooltip（提示组件）
+
+**功能特性：**
+- 💬 通用的提示组件，可在任何地方使用
+- 🖱️ 鼠标悬停显示提示信息
+- ⏱️ 可配置延迟显示时间（默认 300ms）
+- 🎨 美观的浮窗样式（半透明背景 + 毛玻璃效果）
+- 📍 自动定位在元素上方居中
+- 🚀 使用 React Portal 渲染，避免被父容器限制
+
+**使用方式：**
+```tsx
+import { Tooltip } from './components/Tooltip';
+
+<Tooltip content="这是提示信息">
+  <button>悬停我</button>
+</Tooltip>
+
+// 自定义延迟时间
+<Tooltip content="提示信息" delay={500}>
+  <span>悬停我</span>
+</Tooltip>
+
+// 禁用 tooltip
+<Tooltip content="提示信息" disabled>
+  <div>不会显示提示</div>
+</Tooltip>
+```
+
+**Props：**
+- `content: string` - 提示内容（必需）
+- `delay?: number` - 延迟显示时间（毫秒），默认 300
+- `disabled?: boolean` - 是否禁用 tooltip，默认 false
+- `children: React.ReactElement` - 触发元素（必需）
+
+**技术实现：**
+- 使用 `useCallback` 优化事件处理函数
+- 使用 React Portal 渲染到 `document.body`
+- 自动计算位置并居中显示
+- 平滑的淡入动画效果
 
 ### Calendar（日历组件）
 
@@ -52,7 +100,7 @@ import { WorldMap } from './components/WorldMap';
 - 📅 月历视图，显示当前月份的日期
 - 🎯 高亮显示当天日期
 - 📍 支持 ICS 文件解析，自动标记节假日和事件
-- 🖱️ 鼠标悬停显示节日名称浮窗
+- 🖱️ 鼠标悬停显示节日名称浮窗（使用 Tooltip 组件）
 - 🎨 有事件的日期显示绿色背景和标记点
 
 **配置：**
@@ -62,6 +110,7 @@ import { WorldMap } from './components/WorldMap';
 **依赖：**
 - `dayjs` - 日期处理
 - `ical.js` - ICS 文件解析
+- `Tooltip` - 提示组件（用于显示节日信息）
 
 ### WorldMap（世界地图组件）
 
