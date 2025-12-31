@@ -189,7 +189,7 @@ export const contentConfig: ContentConfig = {
   // 图片卡片
   images: [
     {
-      imageUrl: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=cat',
+      imageUrl: 'https://img.shuaxinjs.cn/G82qa1paIAAht99.jpeg',
       alt: 'cute cat',
     },
   ],
