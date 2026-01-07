@@ -11,6 +11,10 @@ interface WorldMapProps {
 }
 
 export const WorldMap = ({ config }: WorldMapProps) => {
+  const fullscreenQueryKey = 'map';
+  const fullscreenQueryValue = 'fullscreen';
+  type WorldMapMarkers = WorldMapConfig['markers'];
+  type WorldMapMarker = NonNullable<WorldMapMarkers>[number];
   const mapContainer = useRef<HTMLDivElement>(null);
   const fullscreenMapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
@@ -18,7 +22,11 @@ export const WorldMap = ({ config }: WorldMapProps) => {
   const markersRef = useRef<maplibregl.Marker[]>([]);
   const fullscreenMarkersRef = useRef<maplibregl.Marker[]>([]);
   const [mapLoaded, setMapLoaded] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const url = new URL(window.location.href);
+    return url.searchParams.get(fullscreenQueryKey) === fullscreenQueryValue;
+  });
 
   // 根据类型获取标记颜色
   const getMarkerColor = useCallback((type: string): string => {
@@ -30,6 +38,26 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     };
     return colorMap[type] || '#666666';
   }, []);
+
+  const updateFullscreenQuery = useCallback(
+    (enabled: boolean) => {
+      if (typeof window === 'undefined') return;
+
+      const url = new URL(window.location.href);
+      if (enabled) {
+        url.searchParams.set(fullscreenQueryKey, fullscreenQueryValue);
+      } else {
+        url.searchParams.delete(fullscreenQueryKey);
+      }
+      window.history.replaceState(null, '', url.toString());
+    },
+    [fullscreenQueryKey, fullscreenQueryValue]
+  );
+
+  // 根据全屏状态更新 URL 标记
+  useEffect(() => {
+    updateFullscreenQuery(isFullscreen);
+  }, [isFullscreen, updateFullscreenQuery]);
 
   // 创建标记元素的辅助函数
   const createMarkerElement = useCallback((type: string) => {
@@ -60,7 +88,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
   }, [getMarkerColor]);
 
   // 计算标记点偏移，避免相同位置的标记点重叠
-  const getMarkerOffset = useCallback((marker: { lat: number; lng: number; type: string; name: string }, allMarkers: typeof config.markers) => {
+  const getMarkerOffset = useCallback((marker: WorldMapMarker, allMarkers: WorldMapMarkers) => {
     if (!allMarkers) return { lat: marker.lat, lng: marker.lng };
     
     // 找出所有与当前标记点位置相同的标记点
@@ -189,7 +217,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
         map.current = null;
       }
     };
-  }, [config.style, config.markers, getMarkerColor]);
+  }, [config.style, config.markers, addMarkers]);
 
   // 当配置数据变化时更新标记点
   useEffect(() => {
