@@ -189,8 +189,16 @@ export const contentConfig: ContentConfig = {
   // 图片卡片
   images: [
     {
-      imageUrl: 'https://img.shuaxinjs.cn/G82qa1paIAAht99.jpeg',
+      imageUrl: '/cardimg/G82qa1paIAAht99_副本.jpeg',
       alt: 'cute cat',
+    },
+    {
+      imageUrl: '/cardimg/G6_0XmEaUAABt6e_副本.jpeg',
+      alt: 'image',
+    },
+    {
+      imageUrl: '/cardimg/G825oGEaQAAUIf5.jpeg',
+      alt: 'image',
     },
   ],
 

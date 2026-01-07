@@ -29,10 +29,7 @@ const App = () => {
 
         {/* Center Column */}
         <div className="center-column">
-          <ImageCard
-            imageUrl={contentConfig.images[0].imageUrl}
-            alt={contentConfig.images[0].alt}
-          />
+          <ImageCard images={contentConfig.images} />
           <WelcomeCard config={contentConfig.welcome} />
           {contentConfig.worldMap && (
             <WorldMap config={contentConfig.worldMap} />
