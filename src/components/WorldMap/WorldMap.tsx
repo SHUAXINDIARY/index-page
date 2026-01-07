@@ -126,18 +126,32 @@ export const WorldMap = ({ config }: WorldMapProps) => {
       // 获取偏移后的位置
       const position = getMarkerOffset(marker, config.markers);
       
+      // 创建弹窗
+      const popup = new maplibregl.Popup({ 
+        offset: 25,
+        closeButton: false,
+        closeOnClick: false
+      }).setHTML(
+        `<div class="world-map-popup">
+          <strong>${marker.name}</strong>
+          ${marker.description ? `<p>${marker.description}</p>` : ''}
+        </div>`
+      );
+      
       // 创建标记
       const mapMarker = new maplibregl.Marker({ element: el })
         .setLngLat([position.lng, position.lat])
-        .setPopup(
-          new maplibregl.Popup({ offset: 25 }).setHTML(
-            `<div class="world-map-popup">
-              <strong>${marker.name}</strong>
-              ${marker.description ? `<p>${marker.description}</p>` : ''}
-            </div>`
-          )
-        )
+        .setPopup(popup)
         .addTo(map.current!);
+
+      // 添加 hover 事件监听
+      el.addEventListener('mouseenter', () => {
+        mapMarker.togglePopup();
+      });
+      
+      el.addEventListener('mouseleave', () => {
+        mapMarker.togglePopup();
+      });
 
       markersRef.current.push(mapMarker);
     });
@@ -261,17 +275,31 @@ export const WorldMap = ({ config }: WorldMapProps) => {
           // 获取偏移后的位置
           const position = getMarkerOffset(marker, config.markers);
           
+          // 创建弹窗
+          const popup = new maplibregl.Popup({ 
+            offset: 25,
+            closeButton: false,
+            closeOnClick: false
+          }).setHTML(
+            `<div class="world-map-popup">
+              <strong>${marker.name}</strong>
+              ${marker.description ? `<p>${marker.description}</p>` : ''}
+            </div>`
+          );
+          
           const mapMarker = new maplibregl.Marker({ element: el })
             .setLngLat([position.lng, position.lat])
-            .setPopup(
-              new maplibregl.Popup({ offset: 25 }).setHTML(
-                `<div class="world-map-popup">
-                  <strong>${marker.name}</strong>
-                  ${marker.description ? `<p>${marker.description}</p>` : ''}
-                </div>`
-              )
-            )
+            .setPopup(popup)
             .addTo(fullscreenMap.current!);
+
+          // 添加 hover 事件监听
+          el.addEventListener('mouseenter', () => {
+            mapMarker.togglePopup();
+          });
+          
+          el.addEventListener('mouseleave', () => {
+            mapMarker.togglePopup();
+          });
 
           fullscreenMarkersRef.current.push(mapMarker);
         });
