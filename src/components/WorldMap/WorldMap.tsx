@@ -21,11 +21,21 @@ export const WorldMap = ({ config }: WorldMapProps) => {
   const fullscreenMap = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
   const fullscreenMarkersRef = useRef<maplibregl.Marker[]>([]);
+  // 按类型存储标记点的 Map
+  const markersMapRef = useRef<Map<string, maplibregl.Marker[]>>(new Map());
+  const fullscreenMarkersMapRef = useRef<Map<string, maplibregl.Marker[]>>(new Map());
   const [mapLoaded, setMapLoaded] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(() => {
     if (typeof window === 'undefined') return false;
     const url = new URL(window.location.href);
     return url.searchParams.get(fullscreenQueryKey) === fullscreenQueryValue;
+  });
+  // 追踪哪些类型的标记点是可见的
+  const [visibleTypes, setVisibleTypes] = useState<Set<string>>(() => {
+    // 初始化时所有类型都可见
+    const types = new Set<string>();
+    config.legend?.forEach(item => types.add(item.type));
+    return types;
   });
 
   // 根据类型获取标记颜色
@@ -38,6 +48,37 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     };
     return colorMap[type] || '#666666';
   }, []);
+
+  // 更新标记点可见性的函数
+  const updateMarkerVisibility = useCallback((type: string, visible: boolean) => {
+    const markers = markersMapRef.current.get(type) || [];
+    markers.forEach(marker => {
+      const element = marker.getElement();
+      element.style.display = visible ? 'block' : 'none';
+    });
+    
+    // 同步更新全屏地图的标记点
+    const fullscreenMarkers = fullscreenMarkersMapRef.current.get(type) || [];
+    fullscreenMarkers.forEach(marker => {
+      const element = marker.getElement();
+      element.style.display = visible ? 'block' : 'none';
+    });
+  }, []);
+
+  // 图例点击处理函数
+  const handleLegendClick = useCallback((type: string) => {
+    setVisibleTypes(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(type)) {
+        newSet.delete(type);
+        updateMarkerVisibility(type, false);
+      } else {
+        newSet.add(type);
+        updateMarkerVisibility(type, true);
+      }
+      return newSet;
+    });
+  }, [updateMarkerVisibility]);
 
   const updateFullscreenQuery = useCallback(
     (enabled: boolean) => {
@@ -119,6 +160,9 @@ export const WorldMap = ({ config }: WorldMapProps) => {
   const addMarkers = useCallback(() => {
     if (!map.current || !config.markers) return;
 
+    // 清空之前的映射
+    markersMapRef.current.clear();
+
     config.markers.forEach((marker) => {
       // 创建标记元素
       const el = createMarkerElement(marker.type);
@@ -152,6 +196,12 @@ export const WorldMap = ({ config }: WorldMapProps) => {
       el.addEventListener('mouseleave', () => {
         mapMarker.togglePopup();
       });
+
+      // 按类型存储标记点
+      if (!markersMapRef.current.has(marker.type)) {
+        markersMapRef.current.set(marker.type, []);
+      }
+      markersMapRef.current.get(marker.type)!.push(mapMarker);
 
       markersRef.current.push(mapMarker);
     });
@@ -267,6 +317,9 @@ export const WorldMap = ({ config }: WorldMapProps) => {
 
     // 地图加载完成后添加标记点
     fullscreenMap.current.on('load', () => {
+      // 清空之前的映射
+      fullscreenMarkersMapRef.current.clear();
+      
       if (fullscreenMap.current && config.markers) {
         config.markers.forEach((marker) => {
           // 使用相同的创建标记元素函数
@@ -300,6 +353,12 @@ export const WorldMap = ({ config }: WorldMapProps) => {
           el.addEventListener('mouseleave', () => {
             mapMarker.togglePopup();
           });
+
+          // 按类型存储标记点
+          if (!fullscreenMarkersMapRef.current.has(marker.type)) {
+            fullscreenMarkersMapRef.current.set(marker.type, []);
+          }
+          fullscreenMarkersMapRef.current.get(marker.type)!.push(mapMarker);
 
           fullscreenMarkersRef.current.push(mapMarker);
         });
@@ -446,12 +505,24 @@ export const WorldMap = ({ config }: WorldMapProps) => {
         </button>
         <div className="world-map-legend">
           {config.legend?.map((item) => (
-            <div key={item.type} className="world-map-legend-item">
+            <div 
+              key={item.type} 
+              className={`world-map-legend-item ${visibleTypes.has(item.type) ? 'active' : 'inactive'}`}
+              onClick={() => handleLegendClick(item.type)}
+            >
               <div
                 className="world-map-legend-dot"
-                style={{ backgroundColor: getMarkerColor(item.type) }}
+                style={{ 
+                  backgroundColor: getMarkerColor(item.type),
+                  opacity: visibleTypes.has(item.type) ? 1 : 0.3
+                }}
               />
-              <span className="world-map-legend-label">{item.label}</span>
+              <span 
+                className="world-map-legend-label"
+                style={{ opacity: visibleTypes.has(item.type) ? 1 : 0.5 }}
+              >
+                {item.label}
+              </span>
             </div>
           ))}
         </div>
@@ -470,12 +541,24 @@ export const WorldMap = ({ config }: WorldMapProps) => {
           <div className="world-map-fullscreen-container" ref={fullscreenMapContainer} />
           <div className="world-map-fullscreen-legend">
             {config.legend?.map((item) => (
-              <div key={item.type} className="world-map-legend-item">
+              <div 
+                key={item.type} 
+                className={`world-map-legend-item ${visibleTypes.has(item.type) ? 'active' : 'inactive'}`}
+                onClick={() => handleLegendClick(item.type)}
+              >
                 <div
                   className="world-map-legend-dot"
-                  style={{ backgroundColor: getMarkerColor(item.type) }}
+                  style={{ 
+                    backgroundColor: getMarkerColor(item.type),
+                    opacity: visibleTypes.has(item.type) ? 1 : 0.3
+                  }}
                 />
-                <span className="world-map-legend-label">{item.label}</span>
+                <span 
+                  className="world-map-legend-label"
+                  style={{ opacity: visibleTypes.has(item.type) ? 1 : 0.5 }}
+                >
+                  {item.label}
+                </span>
               </div>
             ))}
           </div>

@@ -145,6 +145,24 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 4px 6px;
+  margin: -4px -6px;
+  border-radius: 6px;
+  user-select: none;
+}
+
+.world-map-legend-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.world-map-legend-item:active {
+  transform: scale(0.98);
+}
+
+.world-map-legend-item.inactive .world-map-legend-label {
+  text-decoration: line-through;
 }
 
 .world-map-legend-dot {
