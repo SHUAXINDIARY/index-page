@@ -34,7 +34,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
       travel: '#ff8c42', // 橙色 - 旅行
       residence: '#4a90e2', // 蓝色 - 居住
       wish: '#ff6b9d', // 粉色 - 愿望
-      airport: '#999999', // 灰色 - 机场
+      airport: '#DDFF00', // 灰色 - 机场
     };
     return colorMap[type] || '#666666';
   }, []);

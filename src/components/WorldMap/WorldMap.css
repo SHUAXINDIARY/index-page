@@ -77,7 +77,7 @@
 }
 
 .world-map-marker-airport .world-map-marker-dot {
-  background-color: #999999 !important;
+  background-color: #DDFF00 !important;
 }
 
 /* 隐藏 MapLibre 默认标记样式 */
@@ -226,8 +226,8 @@
 
 .world-map-fullscreen-legend {
   position: absolute;
-  bottom: 24px;
-  right: 24px;
+  bottom: 45px;
+  right: 10px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
