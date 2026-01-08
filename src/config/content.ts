@@ -588,7 +588,14 @@ export const contentConfig: ContentConfig = {
         lng: 102.929167,
         type: 'airport',
         description: '中国云南省昆明市昆明长水国际机场',
-      }
+      },
+      {
+        name: '武汉天河国际机场',
+        lat: 30.7838,
+        lng: 114.2081,
+        type: 'airport',
+        description: '中国湖北省武汉市武汉天河国际机场',
+      },
     ],
     legend: [
       { type: 'travel', label: '旅行' },
