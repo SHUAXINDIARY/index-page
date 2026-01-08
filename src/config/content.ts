@@ -596,6 +596,13 @@ export const contentConfig: ContentConfig = {
         type: 'airport',
         description: '中国湖北省武汉市武汉天河国际机场',
       },
+      {
+        name: '重庆江北国际机场',
+        lat: 29.7192,
+        lng: 106.641,
+        type: 'airport',
+        description: '中国重庆市重庆江北国际机场',
+      },
     ],
     legend: [
       { type: 'travel', label: '旅行' },
