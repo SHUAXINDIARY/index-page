@@ -217,6 +217,7 @@ export const contentConfig: ContentConfig = {
         lng: 116.395645,
         type: 'travel',
         description: '中国北京',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=daily'
       },
       {
         name: '三亚',
@@ -362,6 +363,7 @@ export const contentConfig: ContentConfig = {
         lng: 98.3981,
         type: 'travel',
         description: '泰国普吉岛',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=phuket',
       },
       {
         name: '首尔',
@@ -369,6 +371,7 @@ export const contentConfig: ContentConfig = {
         lng: 126.978,
         type: 'travel',
         description: '韩国首尔',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=seoul',
       },
       {
         name: '巴塞罗那',
@@ -376,6 +379,7 @@ export const contentConfig: ContentConfig = {
         lng: 2.173403,
         type: 'travel',
         description: '西班牙巴塞罗那',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=barcelona',
       },
       {
         name: '罗马',
@@ -383,6 +387,7 @@ export const contentConfig: ContentConfig = {
         lng: 12.496366,
         type: 'travel',
         description: '意大利罗马',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=roma',
       },
       {
         name: '巴黎',
@@ -390,6 +395,7 @@ export const contentConfig: ContentConfig = {
         lng: 2.352222,
         type: 'travel',
         description: '法国巴黎',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=paris',
       },
       {
         name: '梵蒂冈',
