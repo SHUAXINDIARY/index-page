@@ -67,6 +67,8 @@ export interface WorldMapMarker {
   lng: number;
   type: 'travel' | 'residence' | 'wish' | 'airport';
   description?: string;
+  // 对应标记点的URl
+  imgUrl?: string;
 }
 
 export interface WorldMapLegendItem {
@@ -299,6 +301,7 @@ export const contentConfig: ContentConfig = {
         lng: 139.839478,
         type: 'travel',
         description: '日本东京',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=tokyo'
       },
       {
         name: '大阪',
@@ -306,6 +309,7 @@ export const contentConfig: ContentConfig = {
         lng: 135.484802,
         type: 'travel',
         description: '日本大阪',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=osaka'
       },
       {
         name: '京都',
@@ -313,6 +317,7 @@ export const contentConfig: ContentConfig = {
         lng: 135.768326,
         type: 'travel',
         description: '日本京都',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=kyoto'
       },
       {
         name: '神户',
@@ -327,6 +332,7 @@ export const contentConfig: ContentConfig = {
         lng: 136.899994,
         type: 'travel',
         description: '日本名古屋',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=nagoya'
       },
       {
         name: '横滨',
@@ -348,6 +354,7 @@ export const contentConfig: ContentConfig = {
         lng: 100.501765,
         type: 'travel',
         description: '泰国曼谷',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=bangkok'
       },
       {
         name: '普吉岛',

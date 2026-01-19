@@ -179,9 +179,10 @@ export const WorldMap = ({ config }: WorldMapProps) => {
         `<div class="world-map-popup">
           <strong>${marker.name}</strong>
           ${marker.description ? `<p>${marker.description}</p>` : ''}
+          ${marker.imgUrl ? `<div><a href="${marker.imgUrl}" target="_blank">查看照片</a></div>` : ''}
         </div>`
       );
-      
+      console.log(popup);
       // 创建标记
       const mapMarker = new maplibregl.Marker({ element: el })
         .setLngLat([position.lng, position.lat])
@@ -189,13 +190,13 @@ export const WorldMap = ({ config }: WorldMapProps) => {
         .addTo(map.current!);
 
       // 添加 hover 事件监听
-      el.addEventListener('mouseenter', () => {
-        mapMarker.togglePopup();
-      });
+      // el.addEventListener('mouseenter', () => {
+      //   mapMarker.togglePopup();
+      // });
       
-      el.addEventListener('mouseleave', () => {
-        mapMarker.togglePopup();
-      });
+      // el.addEventListener('mouseleave', () => {
+      //   mapMarker.togglePopup();
+      // });
 
       // 按类型存储标记点
       if (!markersMapRef.current.has(marker.type)) {
@@ -337,6 +338,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
             `<div class="world-map-popup">
               <strong>${marker.name}</strong>
               ${marker.description ? `<p>${marker.description}</p>` : ''}
+              ${marker.imgUrl ? `<div><a href="${marker.imgUrl}" target="_blank">查看照片</a></div>` : ''}
             </div>`
           );
           
@@ -346,13 +348,13 @@ export const WorldMap = ({ config }: WorldMapProps) => {
             .addTo(fullscreenMap.current!);
 
           // 添加 hover 事件监听
-          el.addEventListener('mouseenter', () => {
-            mapMarker.togglePopup();
-          });
+          // el.addEventListener('mouseenter', () => {
+          //   mapMarker.togglePopup();
+          // });
           
-          el.addEventListener('mouseleave', () => {
-            mapMarker.togglePopup();
-          });
+          // el.addEventListener('mouseleave', () => {
+          //   mapMarker.togglePopup();
+          // });
 
           // 按类型存储标记点
           if (!fullscreenMarkersMapRef.current.has(marker.type)) {
