@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import type { MutableRefObject } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { Card } from '../Card';
@@ -156,6 +157,45 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     };
   }, []);
 
+  // 创建带弹窗的标记点，支持按类型分组存储
+  const createMarkerWithPopup = useCallback(
+    (
+      mapInstance: maplibregl.Map,
+      marker: WorldMapMarker,
+      targetMarkersMapRef: MutableRefObject<Map<string, maplibregl.Marker[]>>,
+      markerStoreRef: MutableRefObject<maplibregl.Marker[]>
+    ) => {
+      const el = createMarkerElement(marker.type);
+      const position = getMarkerOffset(marker, config.markers);
+
+      const popup = new maplibregl.Popup({
+        offset: 25,
+        closeButton: false,
+        closeOnClick: false,
+      }).setHTML(
+        `<div class="world-map-popup">
+          <strong>${marker.name}</strong>
+          ${marker.description ? `<p>${marker.description}</p>` : ''}
+          ${marker.imgUrl ? `<div><a href="${marker.imgUrl}" target="_blank">查看照片</a></div>` : ''}
+        </div>`
+      );
+
+      const mapMarker = new maplibregl.Marker({ element: el })
+        .setLngLat([position.lng, position.lat])
+        .setPopup(popup)
+        .addTo(mapInstance);
+
+      if (!targetMarkersMapRef.current.has(marker.type)) {
+        targetMarkersMapRef.current.set(marker.type, []);
+      }
+      targetMarkersMapRef.current.get(marker.type)!.push(mapMarker);
+      markerStoreRef.current.push(mapMarker);
+
+      return mapMarker;
+    },
+    [config.markers, createMarkerElement, getMarkerOffset]
+  );
+
   // 添加标记点
   const addMarkers = useCallback(() => {
     if (!map.current || !config.markers) return;
@@ -164,49 +204,9 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     markersMapRef.current.clear();
 
     config.markers.forEach((marker) => {
-      // 创建标记元素
-      const el = createMarkerElement(marker.type);
-      
-      // 获取偏移后的位置
-      const position = getMarkerOffset(marker, config.markers);
-      
-      // 创建弹窗
-      const popup = new maplibregl.Popup({ 
-        offset: 25,
-        closeButton: false,
-        closeOnClick: false
-      }).setHTML(
-        `<div class="world-map-popup">
-          <strong>${marker.name}</strong>
-          ${marker.description ? `<p>${marker.description}</p>` : ''}
-          ${marker.imgUrl ? `<div><a href="${marker.imgUrl}" target="_blank">查看照片</a></div>` : ''}
-        </div>`
-      );
-      console.log(popup);
-      // 创建标记
-      const mapMarker = new maplibregl.Marker({ element: el })
-        .setLngLat([position.lng, position.lat])
-        .setPopup(popup)
-        .addTo(map.current!);
-
-      // 添加 hover 事件监听
-      // el.addEventListener('mouseenter', () => {
-      //   mapMarker.togglePopup();
-      // });
-      
-      // el.addEventListener('mouseleave', () => {
-      //   mapMarker.togglePopup();
-      // });
-
-      // 按类型存储标记点
-      if (!markersMapRef.current.has(marker.type)) {
-        markersMapRef.current.set(marker.type, []);
-      }
-      markersMapRef.current.get(marker.type)!.push(mapMarker);
-
-      markersRef.current.push(mapMarker);
+      createMarkerWithPopup(map.current!, marker, markersMapRef, markersRef);
     });
-  }, [config.markers, createMarkerElement, getMarkerOffset]);
+  }, [config.markers, createMarkerWithPopup]);
 
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
@@ -323,46 +323,12 @@ export const WorldMap = ({ config }: WorldMapProps) => {
       
       if (fullscreenMap.current && config.markers) {
         config.markers.forEach((marker) => {
-          // 使用相同的创建标记元素函数
-          const el = createMarkerElement(marker.type);
-          
-          // 获取偏移后的位置
-          const position = getMarkerOffset(marker, config.markers);
-          
-          // 创建弹窗
-          const popup = new maplibregl.Popup({ 
-            offset: 25,
-            closeButton: false,
-            closeOnClick: false
-          }).setHTML(
-            `<div class="world-map-popup">
-              <strong>${marker.name}</strong>
-              ${marker.description ? `<p>${marker.description}</p>` : ''}
-              ${marker.imgUrl ? `<div><a href="${marker.imgUrl}" target="_blank">查看照片</a></div>` : ''}
-            </div>`
+          createMarkerWithPopup(
+            fullscreenMap.current!,
+            marker,
+            fullscreenMarkersMapRef,
+            fullscreenMarkersRef
           );
-          
-          const mapMarker = new maplibregl.Marker({ element: el })
-            .setLngLat([position.lng, position.lat])
-            .setPopup(popup)
-            .addTo(fullscreenMap.current!);
-
-          // 添加 hover 事件监听
-          // el.addEventListener('mouseenter', () => {
-          //   mapMarker.togglePopup();
-          // });
-          
-          // el.addEventListener('mouseleave', () => {
-          //   mapMarker.togglePopup();
-          // });
-
-          // 按类型存储标记点
-          if (!fullscreenMarkersMapRef.current.has(marker.type)) {
-            fullscreenMarkersMapRef.current.set(marker.type, []);
-          }
-          fullscreenMarkersMapRef.current.get(marker.type)!.push(mapMarker);
-
-          fullscreenMarkersRef.current.push(mapMarker);
         });
       }
 
@@ -445,7 +411,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
         fullscreenMap.current = null;
       }
     };
-  }, [isFullscreen, config.style, config.markers, createMarkerElement, getMarkerOffset]);
+  }, [isFullscreen, config.style, config.markers, createMarkerElement, getMarkerOffset, createMarkerWithPopup]);
 
   // 处理 ESC 键关闭全屏
   useEffect(() => {
