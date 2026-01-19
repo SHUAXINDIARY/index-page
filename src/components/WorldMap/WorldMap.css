@@ -46,6 +46,38 @@
   font-size: 12px;
 }
 
+.world-map-popup-link-row {
+  margin-top: 8px;
+}
+
+.world-map-popup-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration: none;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease;
+}
+
+.world-map-popup-link:hover {
+  background: #fff;
+  color: #ff8c42;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+}
+
+.world-map-popup-link:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
 /* 标记点容器样式 */
 .world-map-marker-container {
   display: flex;

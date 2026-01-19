@@ -176,7 +176,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
         `<div class="world-map-popup">
           <strong>${marker.name}</strong>
           ${marker.description ? `<p>${marker.description}</p>` : ''}
-          ${marker.imgUrl ? `<div><a href="${marker.imgUrl}" target="_blank">查看照片</a></div>` : ''}
+          ${marker.imgUrl ? `<div class="world-map-popup-link-row"><a class="world-map-popup-link" href="${marker.imgUrl}" target="_blank" rel="noopener noreferrer">查看照片</a></div>` : ''}
         </div>`
       );
 
