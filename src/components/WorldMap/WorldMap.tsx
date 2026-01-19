@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, memo } from 'react';
 import type { MutableRefObject } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -20,7 +20,50 @@ import {
   SKY_CONFIG,
 } from './constant';
 
-export const WorldMap = ({ config }: WorldMapProps) => {
+// [rendering-hoist-jsx] 提升静态 JSX 元素到组件外部，避免每次渲染重新创建
+const fullscreenButtonIcon = <Maximize2 size={18} />;
+const closeButtonIcon = <X size={24} />;
+
+// [js-early-exit] 纯函数提取到组件外部，避免每次渲染重新创建
+const getMarkerColor = (type: string): string => {
+  return MARKER_COLOR_MAP[type] || DEFAULT_MARKER_COLOR;
+};
+
+// [rerender-memo] 提取图例项为独立的 memoized 组件
+interface LegendItemProps {
+  type: string;
+  label: string;
+  isVisible: boolean;
+  onClick: (type: string) => void;
+}
+
+const LegendItem = memo(function LegendItem({ type, label, isVisible, onClick }: LegendItemProps) {
+  const handleClick = useCallback(() => onClick(type), [onClick, type]);
+  const color = getMarkerColor(type);
+  
+  return (
+    <div 
+      className={`world-map-legend-item ${isVisible ? 'active' : 'inactive'}`}
+      onClick={handleClick}
+    >
+      <div
+        className="world-map-legend-dot"
+        style={{ 
+          backgroundColor: color,
+          opacity: isVisible ? 1 : 0.3
+        }}
+      />
+      <span 
+        className="world-map-legend-label"
+        style={{ opacity: isVisible ? 1 : 0.5 }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+});
+
+export const WorldMap = memo(function WorldMap({ config }: WorldMapProps) {
   // DOM 容器引用
   const mapContainer = useRef<HTMLDivElement>(null); // 卡片内地图容器
   const fullscreenMapContainer = useRef<HTMLDivElement>(null); // 全屏地图容器
@@ -36,51 +79,56 @@ export const WorldMap = ({ config }: WorldMapProps) => {
   const markersMapRef = useRef<Map<string, maplibregl.Marker[]>>(new Map());
   const fullscreenMarkersMapRef = useRef<Map<string, maplibregl.Marker[]>>(new Map());
   const [mapLoaded, setMapLoaded] = useState(false);
+  
+  // [rerender-lazy-state-init] 使用函数初始化避免每次渲染重新计算
   const [isFullscreen, setIsFullscreen] = useState(() => {
     if (typeof window === 'undefined') return false;
     const url = new URL(window.location.href);
     return url.searchParams.get(FULLSCREEN_QUERY_KEY) === FULLSCREEN_QUERY_VALUE;
   });
-  // 追踪哪些类型的标记点是可见的
+  
+  // [rerender-lazy-state-init] 使用函数初始化 Set
   const [visibleTypes, setVisibleTypes] = useState<Set<string>>(() => {
-    // 初始化时所有类型都可见
     const types = new Set<string>();
     config.legend?.forEach(item => types.add(item.type));
     return types;
   });
 
-  // 根据类型获取标记颜色
-  const getMarkerColor = useCallback((type: string): string => {
-    return MARKER_COLOR_MAP[type] || DEFAULT_MARKER_COLOR;
-  }, []);
-
   // 更新标记点可见性的函数
   const updateMarkerVisibility = useCallback((type: string, visible: boolean) => {
-    const markers = markersMapRef.current.get(type) || [];
-    markers.forEach(marker => {
-      const element = marker.getElement();
-      element.style.display = visible ? 'block' : 'none';
-    });
+    const displayValue = visible ? 'block' : 'none';
+    
+    // [js-cache-property-access] 缓存 Map 查找结果
+    const markers = markersMapRef.current.get(type);
+    if (markers) {
+      for (const marker of markers) {
+        marker.getElement().style.display = displayValue;
+      }
+    }
     
     // 同步更新全屏地图的标记点
-    const fullscreenMarkers = fullscreenMarkersMapRef.current.get(type) || [];
-    fullscreenMarkers.forEach(marker => {
-      const element = marker.getElement();
-      element.style.display = visible ? 'block' : 'none';
-    });
+    const fullscreenMarkers = fullscreenMarkersMapRef.current.get(type);
+    if (fullscreenMarkers) {
+      for (const marker of fullscreenMarkers) {
+        marker.getElement().style.display = displayValue;
+      }
+    }
   }, []);
 
-  // 图例点击处理函数
+  // [rerender-functional-setstate] 使用函数式 setState 避免闭包问题
   const handleLegendClick = useCallback((type: string) => {
     setVisibleTypes(prev => {
       const newSet = new Set(prev);
-      if (newSet.has(type)) {
+      const isCurrentlyVisible = newSet.has(type);
+      
+      if (isCurrentlyVisible) {
         newSet.delete(type);
-        updateMarkerVisibility(type, false);
       } else {
         newSet.add(type);
-        updateMarkerVisibility(type, true);
       }
+      
+      // 在 setState 回调中更新可见性
+      updateMarkerVisibility(type, !isCurrentlyVisible);
       return newSet;
     });
   }, [updateMarkerVisibility]);
@@ -113,14 +161,18 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     // 创建小圆点
     const dot = document.createElement('div');
     dot.className = 'world-map-marker-dot';
-    dot.style.width = MARKER_DOT_STYLE.width;
-    dot.style.height = MARKER_DOT_STYLE.height;
-    dot.style.borderRadius = MARKER_DOT_STYLE.borderRadius;
-    dot.style.backgroundColor = color;
-    dot.style.border = MARKER_DOT_STYLE.border;
-    dot.style.boxShadow = MARKER_DOT_STYLE.boxShadow;
-    dot.style.cursor = MARKER_DOT_STYLE.cursor;
-    dot.style.transition = MARKER_DOT_STYLE.transition;
+    
+    // [js-batch-dom-css] 批量设置样式，使用 cssText 减少重排
+    dot.style.cssText = `
+      width: ${MARKER_DOT_STYLE.width};
+      height: ${MARKER_DOT_STYLE.height};
+      border-radius: ${MARKER_DOT_STYLE.borderRadius};
+      background-color: ${color};
+      border: ${MARKER_DOT_STYLE.border};
+      box-shadow: ${MARKER_DOT_STYLE.boxShadow};
+      cursor: ${MARKER_DOT_STYLE.cursor};
+      transition: ${MARKER_DOT_STYLE.transition};
+    `;
     
     // 设置数据属性用于调试
     container.dataset.type = type;
@@ -128,32 +180,40 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     
     container.appendChild(dot);
     return container;
-  }, [getMarkerColor]);
+  }, []);
 
   // 计算标记点偏移，避免相同位置的标记点重叠
   const getMarkerOffset = useCallback((marker: WorldMapMarker, allMarkers: WorldMapMarkers) => {
-    if (!allMarkers) return { lat: marker.lat, lng: marker.lng };
+    // [js-early-exit] 提前返回减少不必要的计算
+    if (!allMarkers) {
+      return { lat: marker.lat, lng: marker.lng };
+    }
+    
+    // [js-cache-property-access] 缓存属性访问
+    const { lat, lng, type, name } = marker;
     
     // 找出所有与当前标记点位置相同的标记点
     const sameLocationMarkers = allMarkers.filter(
-      m => m.lat === marker.lat && m.lng === marker.lng
+      m => m.lat === lat && m.lng === lng
     );
     
-    if (sameLocationMarkers.length <= 1) {
-      return { lat: marker.lat, lng: marker.lng };
+    // [js-length-check-first] 先检查长度再进行复杂操作
+    const markerCount = sameLocationMarkers.length;
+    if (markerCount <= 1) {
+      return { lat, lng };
     }
     
     // 计算当前标记点在相同位置标记点中的索引
     const index = sameLocationMarkers.findIndex(
-      m => m.type === marker.type && m.name === marker.name
+      m => m.type === type && m.name === name
     );
     
     // 为每个标记点计算偏移量（呈圆形分布）
-    const angle = (2 * Math.PI * index) / sameLocationMarkers.length;
+    const angle = (2 * Math.PI * index) / markerCount;
     
     return {
-      lat: marker.lat + MARKER_OFFSET_DISTANCE * Math.sin(angle),
-      lng: marker.lng + MARKER_OFFSET_DISTANCE * Math.cos(angle),
+      lat: lat + MARKER_OFFSET_DISTANCE * Math.sin(angle),
+      lng: lng + MARKER_OFFSET_DISTANCE * Math.cos(angle),
     };
   }, []);
 
@@ -432,69 +492,48 @@ export const WorldMap = ({ config }: WorldMapProps) => {
           title="全屏查看地图"
           aria-label="全屏查看地图"
         >
-          <Maximize2 size={18} />
+          {/* [rendering-hoist-jsx] 使用提升的静态图标 */}
+          {fullscreenButtonIcon}
         </button>
         <div className="world-map-legend">
+          {/* [rerender-memo] 使用 memoized 的 LegendItem 组件 */}
           {config.legend?.map((item) => (
-            <div 
-              key={item.type} 
-              className={`world-map-legend-item ${visibleTypes.has(item.type) ? 'active' : 'inactive'}`}
-              onClick={() => handleLegendClick(item.type)}
-            >
-              <div
-                className="world-map-legend-dot"
-                style={{ 
-                  backgroundColor: getMarkerColor(item.type),
-                  opacity: visibleTypes.has(item.type) ? 1 : 0.3
-                }}
-              />
-              <span 
-                className="world-map-legend-label"
-                style={{ opacity: visibleTypes.has(item.type) ? 1 : 0.5 }}
-              >
-                {item.label}
-              </span>
-            </div>
+            <LegendItem
+              key={item.type}
+              type={item.type}
+              label={item.label}
+              isVisible={visibleTypes.has(item.type)}
+              onClick={handleLegendClick}
+            />
           ))}
         </div>
       </Card>
 
-      {/* 全屏地图覆盖层 */}
-      {isFullscreen && (
+      {/* [rendering-conditional-render] 使用条件渲染 */}
+      {isFullscreen ? (
         <div className="world-map-fullscreen">
           <button 
             className="world-map-fullscreen-close"
             onClick={handleCloseFullscreen}
             aria-label="关闭全屏"
           >
-            <X size={24} />
+            {/* [rendering-hoist-jsx] 使用提升的静态图标 */}
+            {closeButtonIcon}
           </button>
           <div className="world-map-fullscreen-container" ref={fullscreenMapContainer} />
           <div className="world-map-fullscreen-legend">
             {config.legend?.map((item) => (
-              <div 
-                key={item.type} 
-                className={`world-map-legend-item ${visibleTypes.has(item.type) ? 'active' : 'inactive'}`}
-                onClick={() => handleLegendClick(item.type)}
-              >
-                <div
-                  className="world-map-legend-dot"
-                  style={{ 
-                    backgroundColor: getMarkerColor(item.type),
-                    opacity: visibleTypes.has(item.type) ? 1 : 0.3
-                  }}
-                />
-                <span 
-                  className="world-map-legend-label"
-                  style={{ opacity: visibleTypes.has(item.type) ? 1 : 0.5 }}
-                >
-                  {item.label}
-                </span>
-              </div>
+              <LegendItem
+                key={item.type}
+                type={item.type}
+                label={item.label}
+                isVisible={visibleTypes.has(item.type)}
+                onClick={handleLegendClick}
+              />
             ))}
           </div>
         </div>
-      )}
+      ) : null}
     </>
   );
-};
+});
