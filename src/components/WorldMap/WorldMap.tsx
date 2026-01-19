@@ -5,23 +5,33 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { Card } from '../Card';
 import { X, Maximize2 } from 'lucide-react';
 import './WorldMap.css';
-import type { WorldMapConfig } from '../../config/content';
-
-interface WorldMapProps {
-  config: WorldMapConfig;
-}
+import type { WorldMapProps, WorldMapMarkers, WorldMapMarker } from './types';
+import {
+  FULLSCREEN_QUERY_KEY,
+  FULLSCREEN_QUERY_VALUE,
+  DEFAULT_MAP_STYLE,
+  DEFAULT_MAP_CENTER,
+  DEFAULT_MAP_ZOOM,
+  MARKER_COLOR_MAP,
+  DEFAULT_MARKER_COLOR,
+  MARKER_OFFSET_DISTANCE,
+  POPUP_OFFSET,
+  MARKER_DOT_STYLE,
+  SKY_CONFIG,
+} from './constant';
 
 export const WorldMap = ({ config }: WorldMapProps) => {
-  const fullscreenQueryKey = 'map';
-  const fullscreenQueryValue = 'fullscreen';
-  type WorldMapMarkers = WorldMapConfig['markers'];
-  type WorldMapMarker = NonNullable<WorldMapMarkers>[number];
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const fullscreenMapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<maplibregl.Map | null>(null);
-  const fullscreenMap = useRef<maplibregl.Map | null>(null);
-  const markersRef = useRef<maplibregl.Marker[]>([]);
-  const fullscreenMarkersRef = useRef<maplibregl.Marker[]>([]);
+  // DOM 容器引用
+  const mapContainer = useRef<HTMLDivElement>(null); // 卡片内地图容器
+  const fullscreenMapContainer = useRef<HTMLDivElement>(null); // 全屏地图容器
+  
+  // MapLibre 地图实例引用
+  const map = useRef<maplibregl.Map | null>(null); // 卡片内地图实例
+  const fullscreenMap = useRef<maplibregl.Map | null>(null); // 全屏地图实例
+  
+  // 标记点引用（用于清理）
+  const markersRef = useRef<maplibregl.Marker[]>([]); // 卡片内地图标记点
+  const fullscreenMarkersRef = useRef<maplibregl.Marker[]>([]); // 全屏地图标记点
   // 按类型存储标记点的 Map
   const markersMapRef = useRef<Map<string, maplibregl.Marker[]>>(new Map());
   const fullscreenMarkersMapRef = useRef<Map<string, maplibregl.Marker[]>>(new Map());
@@ -29,7 +39,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
   const [isFullscreen, setIsFullscreen] = useState(() => {
     if (typeof window === 'undefined') return false;
     const url = new URL(window.location.href);
-    return url.searchParams.get(fullscreenQueryKey) === fullscreenQueryValue;
+    return url.searchParams.get(FULLSCREEN_QUERY_KEY) === FULLSCREEN_QUERY_VALUE;
   });
   // 追踪哪些类型的标记点是可见的
   const [visibleTypes, setVisibleTypes] = useState<Set<string>>(() => {
@@ -41,13 +51,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
 
   // 根据类型获取标记颜色
   const getMarkerColor = useCallback((type: string): string => {
-    const colorMap: Record<string, string> = {
-      travel: '#ff8c42', // 橙色 - 旅行
-      residence: '#4a90e2', // 蓝色 - 居住
-      wish: '#ff6b9d', // 粉色 - 愿望
-      airport: '#DDFF00', // 灰色 - 机场
-    };
-    return colorMap[type] || '#666666';
+    return MARKER_COLOR_MAP[type] || DEFAULT_MARKER_COLOR;
   }, []);
 
   // 更新标记点可见性的函数
@@ -81,20 +85,17 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     });
   }, [updateMarkerVisibility]);
 
-  const updateFullscreenQuery = useCallback(
-    (enabled: boolean) => {
-      if (typeof window === 'undefined') return;
+  const updateFullscreenQuery = useCallback((enabled: boolean) => {
+    if (typeof window === 'undefined') return;
 
-      const url = new URL(window.location.href);
-      if (enabled) {
-        url.searchParams.set(fullscreenQueryKey, fullscreenQueryValue);
-      } else {
-        url.searchParams.delete(fullscreenQueryKey);
-      }
-      window.history.replaceState(null, '', url.toString());
-    },
-    [fullscreenQueryKey, fullscreenQueryValue]
-  );
+    const url = new URL(window.location.href);
+    if (enabled) {
+      url.searchParams.set(FULLSCREEN_QUERY_KEY, FULLSCREEN_QUERY_VALUE);
+    } else {
+      url.searchParams.delete(FULLSCREEN_QUERY_KEY);
+    }
+    window.history.replaceState(null, '', url.toString());
+  }, []);
 
   // 根据全屏状态更新 URL 标记
   useEffect(() => {
@@ -112,14 +113,14 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     // 创建小圆点
     const dot = document.createElement('div');
     dot.className = 'world-map-marker-dot';
-    dot.style.width = '10px';
-    dot.style.height = '10px';
-    dot.style.borderRadius = '50%';
+    dot.style.width = MARKER_DOT_STYLE.width;
+    dot.style.height = MARKER_DOT_STYLE.height;
+    dot.style.borderRadius = MARKER_DOT_STYLE.borderRadius;
     dot.style.backgroundColor = color;
-    dot.style.border = '2px solid white';
-    dot.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.4)';
-    dot.style.cursor = 'pointer';
-    dot.style.transition = 'transform 0.2s ease';
+    dot.style.border = MARKER_DOT_STYLE.border;
+    dot.style.boxShadow = MARKER_DOT_STYLE.boxShadow;
+    dot.style.cursor = MARKER_DOT_STYLE.cursor;
+    dot.style.transition = MARKER_DOT_STYLE.transition;
     
     // 设置数据属性用于调试
     container.dataset.type = type;
@@ -148,12 +149,11 @@ export const WorldMap = ({ config }: WorldMapProps) => {
     );
     
     // 为每个标记点计算偏移量（呈圆形分布）
-    const offsetDistance = 0.15; // 偏移距离（经纬度）
     const angle = (2 * Math.PI * index) / sameLocationMarkers.length;
     
     return {
-      lat: marker.lat + offsetDistance * Math.sin(angle),
-      lng: marker.lng + offsetDistance * Math.cos(angle),
+      lat: marker.lat + MARKER_OFFSET_DISTANCE * Math.sin(angle),
+      lng: marker.lng + MARKER_OFFSET_DISTANCE * Math.cos(angle),
     };
   }, []);
 
@@ -169,7 +169,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
       const position = getMarkerOffset(marker, config.markers);
 
       const popup = new maplibregl.Popup({
-        offset: 25,
+        offset: POPUP_OFFSET,
         closeButton: false,
         closeOnClick: false,
       }).setHTML(
@@ -211,15 +211,15 @@ export const WorldMap = ({ config }: WorldMapProps) => {
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
 
-    const styleUrl = config.style || 'https://demotiles.maplibre.org/style.json';
+    const styleUrl = config.style || DEFAULT_MAP_STYLE;
 
     // 初始化地图 - MapLibre 不需要 access token
     // projection 和 setFog 在运行时支持，但类型定义可能不完整
     map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: styleUrl, // 使用 MapLibre 默认样式
-      center: [120, 30], // 初始中心点（中国附近）
-      zoom: 1.5, // 初始缩放级别
+      style: styleUrl,
+      center: DEFAULT_MAP_CENTER,
+      zoom: DEFAULT_MAP_ZOOM,
       pitch: 0,
       bearing: 0,
       projection: { type: 'globe' }, // 使用 globe 投影
@@ -241,26 +241,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
         try {
           const style = map.current.getStyle();
           if (style) {
-            // 设置 sky 属性来配置大气效果
-            style.sky = {
-              'sky-color': '#199EF3', // 天空颜色
-              'horizon-color': '#ffffff', // 地平线颜色
-              'fog-color': '#BAD2EB', // 雾颜色（对应低层大气）
-              'fog-ground-blend': 0.5, // 雾与地面的混合
-              'horizon-fog-blend': 0.5, // 地平线与雾的混合
-              'sky-horizon-blend': 0.5, // 天空与地平线的混合
-              'atmosphere-blend': [
-                'interpolate',
-                ['linear'],
-                ['zoom'],
-                0,
-                1,
-                10,
-                1,
-                12,
-                0.8
-              ] // 大气可见度，根据缩放级别调整
-            };
+            style.sky = SKY_CONFIG;
             map.current.setStyle(style);
           }
         } catch (error) {
@@ -300,14 +281,14 @@ export const WorldMap = ({ config }: WorldMapProps) => {
   useEffect(() => {
     if (!isFullscreen || !fullscreenMapContainer.current || fullscreenMap.current) return;
 
-    const styleUrl = config.style || 'https://demotiles.maplibre.org/style.json';
+    const styleUrl = config.style || DEFAULT_MAP_STYLE;
 
     // 创建全屏地图
     fullscreenMap.current = new maplibregl.Map({
       container: fullscreenMapContainer.current,
       style: styleUrl,
-      center: map.current?.getCenter().toArray() || [120, 30],
-      zoom: map.current?.getZoom() || 1.5,
+      center: map.current?.getCenter().toArray() || DEFAULT_MAP_CENTER,
+      zoom: map.current?.getZoom() || DEFAULT_MAP_ZOOM,
       pitch: map.current?.getPitch() || 0,
       bearing: map.current?.getBearing() || 0,
       projection: { type: 'globe' },
@@ -337,25 +318,7 @@ export const WorldMap = ({ config }: WorldMapProps) => {
         try {
           const style = fullscreenMap.current.getStyle();
           if (style) {
-            style.sky = {
-              'sky-color': '#199EF3',
-              'horizon-color': '#ffffff',
-              'fog-color': '#BAD2EB',
-              'fog-ground-blend': 0.5,
-              'horizon-fog-blend': 0.5,
-              'sky-horizon-blend': 0.5,
-              'atmosphere-blend': [
-                'interpolate',
-                ['linear'],
-                ['zoom'],
-                0,
-                1,
-                10,
-                1,
-                12,
-                0.8
-              ]
-            };
+            style.sky = SKY_CONFIG;
             fullscreenMap.current.setStyle(style);
           }
         } catch (error) {
