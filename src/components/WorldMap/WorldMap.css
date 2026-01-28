@@ -150,27 +150,34 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.world-map-fullscreen-button:active {
-  transform: scale(0.95);
-}
-
-/* 图例样式 */
-.world-map-legend {
+/* 图例基础样式（普通模式和全屏模式共用） */
+.world-map-legend,
+.world-map-fullscreen-legend {
   position: absolute;
-  bottom: 16px;
-  right: 16px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
   padding: 12px 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.4);
   display: flex;
   flex-direction: column;
   gap: 8px;
   z-index: 10;
   min-width: 100px;
+}
+
+/* 图例位置和阴影差异 */
+.world-map-legend {
+  bottom: 16px;
+  right: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.world-map-fullscreen-legend {
+  bottom: 45px;
+  left: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .world-map-legend-item {
@@ -187,10 +194,6 @@
 
 .world-map-legend-item:hover {
   background: rgba(0, 0, 0, 0.05);
-}
-
-.world-map-legend-item:active {
-  transform: scale(0.98);
 }
 
 .world-map-legend-item.inactive .world-map-legend-label {
@@ -221,10 +224,10 @@
   bottom: 0;
   z-index: 9999;
   background: rgba(0, 0, 0, 0.95);
-  animation: fadeIn 0.3s ease;
+  animation: world-map-fadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
+@keyframes world-map-fadeIn {
   from {
     opacity: 0;
   }
@@ -236,7 +239,7 @@
 .world-map-fullscreen-close {
   position: absolute;
   top: 16px;
-  right: 50px;
+  left: 12px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -258,7 +261,10 @@
   transform: scale(1.1);
 }
 
-.world-map-fullscreen-close:active {
+/* 按钮 active 状态共用样式 */
+.world-map-fullscreen-button:active,
+.world-map-fullscreen-close:active,
+.world-map-legend-item:active {
   transform: scale(0.95);
 }
 
@@ -274,34 +280,26 @@
   z-index: 9999;
 }
 
-.world-map-fullscreen-legend {
-  position: absolute;
-  bottom: 45px;
-  right: 10px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 12px 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  z-index: 10;
-  min-width: 100px;
-}
-
+/* 响应式设计 */
 @media (max-width: 768px) {
   .world-map-card {
     height: 400px;
   }
 
+  .world-map-legend,
+  .world-map-fullscreen-legend {
+    padding: 10px 12px;
+    min-width: 80px;
+  }
+
   .world-map-legend {
     bottom: 12px;
     right: 12px;
-    padding: 10px 12px;
-    min-width: 80px;
+  }
+
+  .world-map-fullscreen-legend {
+    bottom: 16px;
+    left: 16px;
   }
 
   .world-map-legend-label {
@@ -312,18 +310,11 @@
     width: 36px;
     height: 36px;
     top: 12px;
-    right: 12px;
+    left: 12px;
   }
 
   .world-map-fullscreen-container :global(.maplibregl-ctrl-top-right) {
     top: 12px;
     right: 56px;
-  }
-
-  .world-map-fullscreen-legend {
-    bottom: 16px;
-    right: 16px;
-    padding: 10px 12px;
-    min-width: 80px;
   }
 }
