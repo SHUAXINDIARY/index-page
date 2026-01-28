@@ -24,6 +24,10 @@ alwaysApply: true
 
 - icon使用lucide-react，文档：https://lucide.dev/
 
+## 文档
+
+大功能迭代和更新，自动同步记录到根目录的 README.md 中
+
 ## 代码规范
 
 ### 异步代码
