@@ -172,6 +172,11 @@ export const contentConfig: ContentConfig = {
       url: 'https://gallary.shuaxinjs.cn/',
     },
     {
+      icon: 'Ark',
+      label: '明日方舟插画收集',
+      url: 'https://arknights.afilmory.art/',
+    },
+    {
       icon: 'Red Note',
       label: '小红书',
       url: 'https://www.xiaohongshu.com/user/profile/617ce3ac000000000201bc2c?xsec_token=YBsjmd6g-0EovM4jFgWlCmwGlFM8-HZez2-ON-QymO4VY=&xsec_source=app_share&xhsshare=CopyLink&shareRedId=ODc5Q0g4RUw2NzUyOTgwNjY1OThGSDhM&apptime=1763691500&share_id=9421e4f42cdf430799f860afb9826278',

@@ -1,5 +1,6 @@
 import { Camera, Github, Music2, Rss, Twitter } from 'lucide-react';
 import './SocialLinks.css';
+import { Tooltip } from '../Tooltip';
 import type { SocialLink } from '../../config/content';
 
 interface SocialLinksProps {
@@ -29,15 +30,16 @@ export const SocialLinks = ({ links }: SocialLinksProps) => {
   return (
     <div className="social-links">
       {links.map((link, index) => (
-        <a
-          key={index}
-          href={link.url || '#'}
-          className="social-link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <div className="social-icon">{renderIcon(link.icon)}</div>
-        </a>
+        <Tooltip key={index} content={link.label}>
+          <a
+            href={link.url || '#'}
+            className="social-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="social-icon">{renderIcon(link.icon)}</div>
+          </a>
+        </Tooltip>
       ))}
     </div>
   );
