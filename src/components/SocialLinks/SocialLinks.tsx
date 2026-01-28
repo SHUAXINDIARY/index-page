@@ -37,7 +37,6 @@ export const SocialLinks = ({ links }: SocialLinksProps) => {
           rel="noopener noreferrer"
         >
           <div className="social-icon">{renderIcon(link.icon)}</div>
-          {/* <span className="social-label">{link.label}</span> */}
         </a>
       ))}
     </div>

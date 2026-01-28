@@ -1,0 +1,90 @@
+---
+description: 项目构建和组件规范
+alwaysApply: true
+---
+
+# 项目规范
+
+## 构建工具
+
+本项目使用 **Rsbuild** 构建，相关文档参考：
+- Rsbuild: https://rsbuild.rs/llms.txt
+- Rspack: https://rspack.rs/llms.txt
+
+## 组件结构
+
+公共组件维护在 `src/components/` 目录，遵循以下规范：
+- src/components/
+- ComponentName/
+- ComponentName.tsx # 组件实现
+- ComponentName.css # 组件样式
+- index.ts # 导出入口
+
+
+## 代码规范
+
+### 异步代码
+
+所有异步操作必须使用 `async/await` 语法：
+
+```typescript
+// ❌ BAD
+function fetchData() {
+  return fetch('/api/data')
+    .then(res => res.json())
+    .then(data => processData(data));
+}
+
+// ✅ GOOD
+async function fetchData() {
+  const res = await fetch('/api/data');
+  const data = await res.json();
+  return processData(data);
+}
+```
+
+### 常量管理
+
+常量逻辑抽离为独立变量，维护在当前文件最顶部（import 语句之后）：
+
+```typescript
+import { useState } from 'react';
+
+// 常量定义区域
+const DEFAULT_PAGE_SIZE = 10;
+const API_TIMEOUT_MS = 5000;
+const SUPPORTED_FORMATS = ['jpg', 'png', 'webp'];
+
+// 组件/函数实现
+export function MyComponent() {
+  // ...
+}
+```
+
+### 注释规范
+
+所有逻辑变量和 TypeScript 类型都需要有注释：
+
+```typescript
+/** 用户信息类型 */
+interface UserInfo {
+  /** 用户唯一标识 */
+  id: string;
+  /** 用户显示名称 */
+  name: string;
+  /** 用户头像 URL */
+  avatar?: string;
+}
+
+/** 当前页码，从 1 开始 */
+const [page, setPage] = useState(1);
+
+/** 是否正在加载数据 */
+const [loading, setLoading] = useState(false);
+```
+
+## 已安装的 Skills
+
+请在处理相关任务时，启用并遵循以下已安装的 skills：
+
+- **React Best Practices** (`.cursor/skills/vercel-react-best-practices/`): React/Next.js 性能优化指南
