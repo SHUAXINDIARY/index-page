@@ -21,6 +21,9 @@ alwaysApply: true
 - index.ts # 导出入口
 
 
+## 依赖库
+
+- icon使用lucide-react，文档：https://lucide.dev/
 ## 代码规范
 
 ### 异步代码

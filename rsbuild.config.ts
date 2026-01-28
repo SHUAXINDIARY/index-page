@@ -3,9 +3,20 @@ import { pluginReact } from '@rsbuild/plugin-react';
 import { contentConfig } from './src/config/content';
 import { fetchBlogPlugin } from './plugins/fetch-blog-plugin';
 import { bgmListPlugin } from './plugins/bgm-list-plugin';
+import { codeInspectorPlugin } from 'code-inspector-plugin';
+
 
 // Docs: https://rsbuild.rs/config/
 export default defineConfig({
+  tools: {
+    rspack: {
+      plugins: [
+        codeInspectorPlugin({
+          bundler: 'rspack',
+        }),
+      ],
+    },
+  },
   plugins: [
     pluginReact(),
     // 自定义插件：抓取博客最新文章

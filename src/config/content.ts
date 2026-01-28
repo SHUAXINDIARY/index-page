@@ -161,11 +161,11 @@ export const contentConfig: ContentConfig = {
 
   // 社交链接
   socialLinks: [
-    // {
-    //     icon: 'Github',
-    //     label: 'Github',
-    //     url: 'https://github.com',
-    // },
+    {
+      icon: 'Github',
+      label: 'Github',
+      url: 'https://github.com/SHUAXINDIARY',
+    },
     {
       icon: 'Photography',
       label: '摄影',
