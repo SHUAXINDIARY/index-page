@@ -5,24 +5,50 @@ alwaysApply: true
 
 # 项目规范
 
+## 技术栈
+
+- **框架**: React 18
+- **语言**: TypeScript 5
+- **构建工具**: Rsbuild
+- **包管理器**: pnpm
+
 ## 构建工具
 
 本项目使用 **Rsbuild** 构建，相关文档参考：
 - Rsbuild: https://rsbuild.rs/llms.txt
 - Rspack: https://rspack.rs/llms.txt
 
+## 常用命令
+
+```bash
+pnpm dev        # 启动开发服务器（自动打开浏览器）
+pnpm dev:noopen # 启动开发服务器（不打开浏览器）
+pnpm build      # 构建生产版本
+pnpm preview    # 预览生产构建
+pnpm lint       # 运行 ESLint 检查
+pnpm format     # 使用 Prettier 格式化代码
+```
+
 ## 组件结构
 
 公共组件维护在 `src/components/` 目录，遵循以下规范：
-- src/components/
-- ComponentName/
-- ComponentName.tsx # 组件实现
-- ComponentName.css # 组件样式
-- index.ts # 导出入口
+
+```
+src/components/
+└── ComponentName/
+    ├── ComponentName.tsx  # 组件实现
+    ├── ComponentName.css  # 组件样式
+    └── index.ts           # 导出入口
+```
 
 ## 依赖库
 
-- icon使用lucide-react，文档：https://lucide.dev/
+| 库名 | 用途 | 文档 |
+|------|------|------|
+| lucide-react | 图标库 | https://lucide.dev/ |
+| maplibre-gl | 地图渲染 | https://maplibre.org/maplibre-gl-js/docs/ |
+| dayjs | 日期处理 | https://day.js.org/ |
+| ical.js | iCal 日历解析 | https://github.com/kewisch/ical.js |
 
 ## 文档
 
@@ -89,6 +115,18 @@ const [page, setPage] = useState(1);
 /** 是否正在加载数据 */
 const [loading, setLoading] = useState(false);
 ```
+
+## 代码质量工具
+
+### ESLint
+
+项目使用 ESLint 9 + TypeScript ESLint 进行代码检查，包含以下插件：
+- `eslint-plugin-react-hooks`: React Hooks 规则检查
+- `eslint-plugin-react-refresh`: React Fast Refresh 兼容性检查
+
+### Prettier
+
+使用 Prettier 进行代码格式化，提交前请运行 `pnpm format`
 
 ## 已安装的 Skills
 
