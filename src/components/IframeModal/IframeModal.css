@@ -1,0 +1,121 @@
+.iframe-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: iframe-modal-fadeIn 0.3s ease;
+}
+
+@keyframes iframe-modal-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.iframe-modal {
+  width: 80vw;
+  height: 80vh;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+  animation: iframe-modal-scaleIn 0.3s ease;
+}
+
+@keyframes iframe-modal-scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.iframe-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(245, 245, 245, 0.95);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.iframe-modal-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.iframe-modal-new-tab {
+  padding: 8px 14px;
+  background: rgba(0, 0, 0, 0.06);
+  color: #333;
+}
+
+.iframe-modal-new-tab:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.iframe-modal-close {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.06);
+  color: #666;
+}
+
+.iframe-modal-close:hover {
+  background: rgba(255, 77, 77, 0.15);
+  color: #ff4d4d;
+}
+
+.iframe-modal-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: #fff;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .iframe-modal {
+    width: 95vw;
+    height: 90vh;
+    border-radius: 12px;
+  }
+
+  .iframe-modal-header {
+    padding: 10px 12px;
+  }
+
+  .iframe-modal-new-tab span {
+    display: none;
+  }
+
+  .iframe-modal-new-tab {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+  }
+}
