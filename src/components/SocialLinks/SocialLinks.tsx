@@ -50,8 +50,6 @@ export const SocialLinks = ({ links }: SocialLinksProps) => {
               delay: BASE_DELAY + index * STAGGER_DELAY,
               ease: [0.25, 0.1, 0.25, 1],
             }}
-            whileHover={{ scale: 1.15, y: -2 }}
-            whileTap={{ scale: 0.95 }}
           >
             <div className="social-icon">{renderIcon(link.icon)}</div>
           </motion.a>

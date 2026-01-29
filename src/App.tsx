@@ -10,9 +10,11 @@ import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
 import { WorldMap } from './components/WorldMap';
 import { contentConfig } from './config/content';
-import { LocateFixed } from 'lucide-react';
+import { LocateFixed, Github } from 'lucide-react';
 import blogData from './config/blog-data.json';
-// import { RecommendCard } from './components/RecommendCard';
+
+/** GitHub 仓库地址 */
+const GITHUB_REPO_URL = 'https://github.com/SHUAXINDIARY/index-page';
 const App = () => {
   return (
     <div className="app-container">
@@ -53,6 +55,17 @@ const App = () => {
           </div>
         </div>
       </div>
+
+      {/* 右下角 GitHub 提示 */}
+      <a
+        href={GITHUB_REPO_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="github-badge"
+      >
+        <Github size={14} />
+        <span>使用同款</span>
+      </a>
     </div>
   );
 };

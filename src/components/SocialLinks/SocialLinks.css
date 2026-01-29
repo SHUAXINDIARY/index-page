@@ -19,15 +19,24 @@
   text-decoration: none;
   color: #333;
   border: 1px solid rgba(255, 255, 255, 0.4);
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1),
-              0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  /* hover 效果使用快速响应的 transition，不影响 motion 入场动画 */
+  transition:
+    transform 0.1s ease-out,
+    box-shadow 0.15s ease-out;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.5) inset;
 }
 
 .social-link:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15),
-              0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  transform: translateY(-3px) scale(1.08);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.15),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset;
+}
+
+.social-link:active {
+  transform: translateY(-1px) scale(0.98);
 }
 
 .social-icon {
@@ -50,4 +59,3 @@
   font-size: 14px;
   font-weight: 500;
 }
-
