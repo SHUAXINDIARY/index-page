@@ -53,7 +53,7 @@ src/components/
 
 ## 文档
 
-大功能迭代和更新，自动同步记录到根目录的 README.md 中
+大功能迭代和更新，自动同步记录到根目录的 README.md 和 CHANGELOG.md 中
 
 ## 代码规范
 
