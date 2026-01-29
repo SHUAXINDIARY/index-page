@@ -1,6 +1,7 @@
 import type { MouseEvent, PointerEvent, ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'motion/react';
 import { X } from 'lucide-react';
 import './Carousel.css';
 
@@ -393,39 +394,75 @@ export const Carousel = ({
       </div>
 
       {/* 全屏查看器 - 使用 Portal 渲染到 body，避免被父元素 transform 影响 */}
-      {enableFullscreen && isFullscreen && createPortal(
-        <div className="carousel-fullscreen">
-          <button
-            className="carousel-fullscreen-close"
-            onClick={handleCloseFullscreen}
-            aria-label="关闭全屏"
-          >
-            <X size={24} />
-          </button>
-          <div
-            className="carousel-slider carousel-slider--fullscreen"
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerEnd}
-            onPointerCancel={handlePointerCancel}
-          >
-            <div
-              className="carousel-track"
-              onTransitionEnd={handleTransitionEnd}
-              style={{ transform: trackTransform, transition: trackTransition }}
+      {enableFullscreen && createPortal(
+        <AnimatePresence>
+          {isFullscreen && (
+            <motion.div
+              className="carousel-fullscreen"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
             >
-              {slides.map((slide, index) => (
+              <motion.button
+                className="carousel-fullscreen-close"
+                onClick={handleCloseFullscreen}
+                aria-label="关闭全屏"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.2, delay: 0.1 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <X size={24} />
+              </motion.button>
+              <motion.div
+                className="carousel-slider carousel-slider--fullscreen"
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerEnd}
+                onPointerCancel={handlePointerCancel}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+              >
                 <div
-                  className={`carousel-slide carousel-slide--fullscreen ${fullscreenSlideClassName}`}
-                  key={`fullscreen-${slide.key}-${index}`}
+                  className="carousel-track"
+                  onTransitionEnd={handleTransitionEnd}
+                  style={{ transform: trackTransform, transition: trackTransition }}
                 >
-                  {slide.fullscreenContent ?? slide.content}
+                  {slides.map((slide, index) => (
+                    <div
+                      className={`carousel-slide carousel-slide--fullscreen ${fullscreenSlideClassName}`}
+                      key={`fullscreen-${slide.key}-${index}`}
+                    >
+                      {slide.fullscreenContent ?? slide.content}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-          {createIndicators(`carousel-fullscreen-indicators ${fullscreenIndicatorClassName}`)}
-        </div>,
+              </motion.div>
+              {hasLoop && showIndicators && (
+                <motion.div
+                  className={`carousel-indicators carousel-fullscreen-indicators ${fullscreenIndicatorClassName}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.15 }}
+                >
+                  {items.map((_, index) => (
+                    <button
+                      key={`fullscreen-indicator-${index}`}
+                      data-index={index}
+                      className={`carousel-indicator ${index === activeIndex ? 'active' : ''}`}
+                      onClick={handleIndicatorClick}
+                      aria-label={`显示第 ${index + 1} 项`}
+                      aria-pressed={index === activeIndex}
+                    />
+                  ))}
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>,
         document.body
       )}
     </>

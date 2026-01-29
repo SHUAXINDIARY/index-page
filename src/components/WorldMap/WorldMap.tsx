@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback, memo } from 'react';
 import type { MutableRefObject } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { AnimatePresence, motion } from 'motion/react';
 import { Card } from '../Card';
 import { X, Maximize2 } from 'lucide-react';
 import './WorldMap.css';
@@ -509,31 +510,55 @@ export const WorldMap = memo(function WorldMap({ config }: WorldMapProps) {
         </div>
       </Card>
 
-      {/* [rendering-conditional-render] 使用条件渲染 */}
-      {isFullscreen ? (
-        <div className="world-map-fullscreen">
-          <button 
-            className="world-map-fullscreen-close"
-            onClick={handleCloseFullscreen}
-            aria-label="关闭全屏"
+      {/* [rendering-conditional-render] 使用条件渲染 + AnimatePresence 支持退出动画 */}
+      <AnimatePresence>
+        {isFullscreen && (
+          <motion.div
+            className="world-map-fullscreen"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
           >
-            {/* [rendering-hoist-jsx] 使用提升的静态图标 */}
-            {closeButtonIcon}
-          </button>
-          <div className="world-map-fullscreen-container" ref={fullscreenMapContainer} />
-          <div className="world-map-fullscreen-legend">
-            {config.legend?.map((item) => (
-              <LegendItem
-                key={item.type}
-                type={item.type}
-                label={item.label}
-                isVisible={visibleTypes.has(item.type)}
-                onClick={handleLegendClick}
-              />
-            ))}
-          </div>
-        </div>
-      ) : null}
+            <motion.button
+              className="world-map-fullscreen-close"
+              onClick={handleCloseFullscreen}
+              aria-label="关闭全屏"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.2, delay: 0.1 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {/* [rendering-hoist-jsx] 使用提升的静态图标 */}
+              {closeButtonIcon}
+            </motion.button>
+            <motion.div
+              className="world-map-fullscreen-container"
+              ref={fullscreenMapContainer}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            />
+            <motion.div
+              className="world-map-fullscreen-legend"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.15 }}
+            >
+              {config.legend?.map((item) => (
+                <LegendItem
+                  key={item.type}
+                  type={item.type}
+                  label={item.label}
+                  isVisible={visibleTypes.has(item.type)}
+                  onClick={handleLegendClick}
+                />
+              ))}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 });
