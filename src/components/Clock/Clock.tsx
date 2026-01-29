@@ -4,6 +4,7 @@ import './Clock.css';
 import dayjs from 'dayjs';
 
 export const Clock = () => {
+  /** 当前时间 */
   const [time, setTime] = useState(dayjs());
 
   useEffect(() => {
@@ -16,7 +17,10 @@ export const Clock = () => {
 
   return (
     <Card className="clock-card">
-      <div className="clock-time">{time.format('HH:mm')}</div>
+      <div className="clock-time">
+        <span className="clock-hm">{time.format('HH:mm')}</span>
+        <span className="clock-seconds">{time.format(':ss')}</span>
+      </div>
     </Card>
   );
 };
