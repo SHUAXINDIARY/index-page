@@ -49,6 +49,7 @@ src/components/
 | maplibre-gl | 地图渲染 | https://maplibre.org/maplibre-gl-js/docs/ |
 | dayjs | 日期处理 | https://day.js.org/ |
 | ical.js | iCal 日历解析 | https://github.com/kewisch/ical.js |
+| motion | React 动画库 | https://motion.dev/docs/react |
 
 ## 文档
 

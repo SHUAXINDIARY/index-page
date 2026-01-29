@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { motion } from 'motion/react';
 import { X, ExternalLink } from 'lucide-react';
 import './IframeModal.css';
 
@@ -37,8 +38,22 @@ export const IframeModal = ({ url, onClose, title = 'External Content' }: Iframe
   }, [onClose]);
 
   return createPortal(
-    <div className="iframe-modal-overlay" onClick={onClose}>
-      <div className="iframe-modal" onClick={(e) => e.stopPropagation()}>
+    <motion.div
+      className="iframe-modal-overlay"
+      onClick={onClose}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <motion.div
+        className="iframe-modal"
+        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+      >
         <div className="iframe-modal-header">
           <button
             className="iframe-modal-btn iframe-modal-new-tab"
@@ -61,8 +76,8 @@ export const IframeModal = ({ url, onClose, title = 'External Content' }: Iframe
           src={url}
           title={title}
         />
-      </div>
-    </div>,
+      </motion.div>
+    </motion.div>,
     document.body
   );
 };

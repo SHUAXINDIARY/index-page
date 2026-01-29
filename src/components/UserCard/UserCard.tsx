@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { AnimatePresence } from 'motion/react';
 import { FileText, FolderOpen, Info, Star, Globe } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Card } from '../Card';
@@ -66,12 +67,15 @@ export const UserCard = ({ config }: UserCardProps) => {
       </Card>
 
       {/* iframe Modal */}
-      {modalUrl && (
-        <IframeModal
-          url={modalUrl}
-          onClose={handleCloseModal}
-        />
-      )}
+      <AnimatePresence>
+        {modalUrl && (
+          <IframeModal
+            key="iframe-modal"
+            url={modalUrl}
+            onClose={handleCloseModal}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 };
