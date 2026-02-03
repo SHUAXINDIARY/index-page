@@ -174,7 +174,7 @@ export const contentConfig: ContentConfig = {
     {
       icon: 'Ark',
       label: '明日方舟插画收集',
-      url: 'https://arknights.afilmory.art/',
+      url: 'https://arknightsartwork.shuaxinjs.cn/',
     },
     {
       icon: 'Red Note',
