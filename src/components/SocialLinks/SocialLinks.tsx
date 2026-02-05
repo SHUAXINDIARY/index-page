@@ -38,11 +38,8 @@ export const SocialLinks = ({ links }: SocialLinksProps) => {
     <div className="social-links">
       {links.map((link, index) => (
         <Tooltip key={index} content={link.label}>
-          <motion.a
-            href={link.url || '#'}
-            className="social-link"
-            target="_blank"
-            rel="noopener noreferrer"
+          <motion.div
+            className="social-link-animation-wrapper"
             initial={{ opacity: 0, y: 15, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{
@@ -51,8 +48,15 @@ export const SocialLinks = ({ links }: SocialLinksProps) => {
               ease: [0.25, 0.1, 0.25, 1],
             }}
           >
-            <div className="social-icon">{renderIcon(link.icon)}</div>
-          </motion.a>
+            <a
+              href={link.url || '#'}
+              className="social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="social-icon">{renderIcon(link.icon)}</div>
+            </a>
+          </motion.div>
         </Tooltip>
       ))}
     </div>

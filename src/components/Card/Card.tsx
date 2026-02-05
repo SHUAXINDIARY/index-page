@@ -45,9 +45,7 @@ export const Card = ({ children, className = '', style, onClick, delay = 0 }: Ca
 
   return (
     <motion.div
-      className={`card ${className}`}
-      style={style}
-      onClick={onClick}
+      className="card-animation-wrapper"
       initial={{ opacity: 0, y: animationParams.y, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{
@@ -56,7 +54,9 @@ export const Card = ({ children, className = '', style, onClick, delay = 0 }: Ca
         ease: [0.25, 0.1, 0.25, 1],
       }}
     >
-      {children}
+      <div className={`card ${className}`} style={style} onClick={onClick}>
+        {children}
+      </div>
     </motion.div>
   );
 };
