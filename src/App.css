@@ -1,8 +1,71 @@
+/* ========================================
+   设计系统 Token
+   ======================================== */
+:root {
+  /* 品牌色 */
+  --color-primary: #4E3F42;        /* 主文字色 - 深棕褐色 */
+  --color-secondary: #7B888E;      /* 次要文字 - 灰蓝色 */
+  --color-accent: #DE4331;         /* 强调色 - 暖红色 */
+  
+  /* 背景色 */
+  --color-bg: #EEEEEE;             /* 页面背景 - 淡灰色 */
+  --color-card: rgba(255, 255, 255, 0.4);  /* 卡片背景 - 半透明白 */
+  --color-card-solid: #FFFFFF;     /* 实色白 */
+  
+  /* 边框色 */
+  --color-border: #FFFFFF;         /* 边框 - 纯白 */
+  
+  /* 阴影色 */
+  --color-shadow-outer: rgba(0, 0, 0, 0.05);
+  --color-shadow-warm: rgb(226, 217, 206);
+  --color-shadow-inset: rgba(255, 255, 255, 0.25);
+  
+  /* 间距 */
+  --spacing-xs: 6px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  
+  /* 圆角 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 32px;
+  --radius-2xl: 64px;
+  --radius-full: 9999px;
+  
+  /* 动效 */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* 阴影预设 */
+  --shadow-glass: 
+    rgba(0, 0, 0, 0.05) 0px 40px 50px -32px,
+    rgba(255, 255, 255, 0.25) 0px 0px 20px 0px inset;
+  --shadow-warm-lg: rgb(226, 217, 206) 0px 16px 32px -5px;
+  --shadow-warm-md: rgb(226, 217, 206) 0px 12px 20px -5px;
+  --shadow-inset-light: rgba(255, 255, 255, 0.4) 0px 0px 12px 0px inset;
+  
+  /* 字体 */
+  --font-sans: "PingFang SC", -apple-system, system-ui, "Segoe UI", 
+               Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif,
+               "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", Arial;
+  --font-display: "Averia Gruesa Libre", cursive;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 
+               "Liberation Mono", "Courier New", monospace;
+}
+
+/* 引入 Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Averia+Gruesa+Libre&display=swap');
+
 body {
   margin: 0;
-  color: #333;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  background: linear-gradient(135deg, #e8d5c4 0%, #f5e6dc 50%, #ffd4c4 100%);
+  color: var(--color-primary);
+  font-family: var(--font-sans);
+  background: var(--color-bg);
   min-height: 100vh;
 }
 
@@ -62,25 +125,24 @@ body {
 .decorative-icon {
   width: 56px;
   height: 56px;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: var(--color-card);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 28px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1),
-              0 1px 0 rgba(255, 255, 255, 0.5) inset;
-  transition: all 0.3s ease;
+  box-shadow: var(--shadow-glass);
+  transition: transform var(--duration-fast) var(--easing-default),
+              box-shadow var(--duration-fast) var(--easing-default);
   cursor: pointer;
 }
 
 .decorative-icon:hover {
-  transform: translateY(-4px) scale(1.08);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15),
-              0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 
+    rgba(0, 0, 0, 0.08) 0px 45px 55px -32px,
+    rgba(255, 255, 255, 0.3) 0px 0px 24px 0px inset;
 }
 
 /* 右下角 GitHub 徽章 */
@@ -90,26 +152,28 @@ body {
   right: 20px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  color: #333;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--color-card);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-glass);
+  color: var(--color-primary);
   font-size: 12px;
   font-weight: 500;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: transform var(--duration-fast) var(--easing-default),
+              box-shadow var(--duration-fast) var(--easing-default),
+              background var(--duration-fast) var(--easing-default);
   z-index: 100;
 }
 
 .github-badge:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.6);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 
+    rgba(0, 0, 0, 0.08) 0px 45px 55px -32px,
+    rgba(255, 255, 255, 0.3) 0px 0px 24px 0px inset;
 }
 
 .github-badge:active {

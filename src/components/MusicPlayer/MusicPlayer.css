@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 16px 20px;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-xl);
   width: 320px;
 }
 
@@ -13,53 +13,53 @@
 
 .music-label {
   font-size: 11px;
-  color: #999;
+  color: var(--color-secondary);
   display: block;
   margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .music-title {
   font-size: 14px;
-  font-weight: 600;
-  color: #333;
-  margin: 0 0 8px 0;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin: 0 0 var(--spacing-sm) 0;
 }
 
 .music-progress {
   height: 4px;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  background: rgba(78, 63, 66, 0.1);
+  border-radius: var(--radius-full);
   overflow: hidden;
 }
 
 .music-progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #ff6b6b, #ffa500);
-  border-radius: 4px;
-  transition: width 0.3s;
-  box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
+  transition: width var(--duration-normal);
 }
 
 .music-play-button {
   width: 48px;
   height: 48px;
-  border-radius: 50%;
-  border: none;
-  background: linear-gradient(135deg, #ff6b6b, #ffa500);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-accent);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.4),
-              0 1px 0 rgba(255, 255, 255, 0.3) inset;
+  transition: transform var(--duration-fast) var(--easing-default),
+              box-shadow var(--duration-fast) var(--easing-default);
+  box-shadow: var(--shadow-inset-light);
 }
 
 .music-play-button:hover {
   transform: scale(1.08);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5),
-              0 1px 0 rgba(255, 255, 255, 0.4) inset;
+  box-shadow: rgba(255, 255, 255, 0.5) 0px 0px 16px 0px inset;
 }
 
 .music-play-button:active {
@@ -68,29 +68,28 @@
 
 .music-controls {
   display: flex;
-  gap: 8px;
+  gap: var(--spacing-sm);
   align-items: center;
 }
 
 .music-next-button {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.9);
-  color: #333;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all var(--duration-fast) var(--easing-default);
+  box-shadow: var(--shadow-glass);
 }
 
 .music-next-button:hover:not(:disabled) {
   transform: scale(1.08);
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .music-next-button:active:not(:disabled) {
@@ -108,7 +107,7 @@
 }
 
 .music-next-button .music-loading-icon {
-  color: #333;
+  color: var(--color-primary);
 }
 
 @keyframes spin {

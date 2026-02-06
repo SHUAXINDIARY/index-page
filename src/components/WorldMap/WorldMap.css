@@ -9,23 +9,23 @@
 .world-map-container {
   width: 100%;
   height: 100%;
-  border-radius: 24px;
+  border-radius: var(--radius-xl);
 }
 
 /* MapLibre 样式覆盖 */
 .world-map-container :global(.maplibregl-ctrl-top-right) {
-  top: 12px;
-  right: 12px;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
 }
 
 .world-map-container :global(.maplibregl-ctrl) {
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .world-map-container :global(.maplibregl-popup-content) {
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
   font-size: 14px;
 }
 
@@ -36,46 +36,44 @@
 .world-map-popup strong {
   display: block;
   margin-bottom: 4px;
-  color: #333;
+  color: var(--color-primary);
   font-size: 14px;
 }
 
 .world-map-popup p {
   margin: 0;
-  color: #666;
+  color: var(--color-secondary);
   font-size: 12px;
 }
 
 .world-map-popup-link-row {
-  margin-top: 8px;
+  margin-top: var(--spacing-sm);
 }
 
 .world-map-popup-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
-  color: #333;
-  font-weight: 600;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) 10px;
+  border-radius: var(--radius-sm);
+  background: var(--color-card);
+  color: var(--color-primary);
+  font-weight: 500;
   font-size: 12px;
   text-decoration: none;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  transition: all 0.2s ease;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-glass);
+  transition: all var(--duration-fast) var(--easing-default);
 }
 
 .world-map-popup-link:hover {
-  background: #fff;
-  color: #ff8c42;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-accent);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
 }
 
 .world-map-popup-link:active {
   transform: scale(0.98);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 /* 标记点容器样式 */
@@ -87,7 +85,8 @@
 
 /* 标记点小圆点样式 */
 .world-map-marker-dot {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--duration-fast) var(--easing-default),
+              box-shadow var(--duration-fast) var(--easing-default);
 }
 
 .world-map-marker-container:hover .world-map-marker-dot {
@@ -125,75 +124,69 @@
 /* 全屏按钮样式 */
 .world-map-fullscreen-button {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: var(--spacing-md);
+  left: var(--spacing-md);
   width: 36px;
   height: 36px;
-  border-radius: 8px;
-  border: none;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #333;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all var(--duration-fast) var(--easing-default);
+  box-shadow: var(--shadow-glass);
   z-index: 10;
 }
 
 .world-map-fullscreen-button:hover {
-  background: rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 0.6);
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* 图例基础样式（普通模式和全屏模式共用） */
 .world-map-legend,
 .world-map-fullscreen-legend {
   position: absolute;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 12px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--spacing-sm);
   z-index: 10;
   min-width: 100px;
+  box-shadow: var(--shadow-glass);
 }
 
-/* 图例位置和阴影差异 */
+/* 图例位置差异 */
 .world-map-legend {
-  bottom: 16px;
-  right: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
 }
 
 .world-map-fullscreen-legend {
   bottom: 45px;
-  left: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  left: var(--spacing-md);
 }
 
 .world-map-legend-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-sm);
   cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 4px 6px;
-  margin: -4px -6px;
-  border-radius: 6px;
+  transition: all var(--duration-fast) var(--easing-default);
+  padding: 4px var(--spacing-xs);
+  margin: -4px calc(-1 * var(--spacing-xs));
+  border-radius: var(--radius-sm);
   user-select: none;
 }
 
 .world-map-legend-item:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(78, 63, 66, 0.05);
 }
 
 .world-map-legend-item.inactive .world-map-legend-label {
@@ -203,7 +196,7 @@
 .world-map-legend-dot {
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   border: 2px solid white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
@@ -211,7 +204,7 @@
 
 .world-map-legend-label {
   font-size: 12px;
-  color: #333;
+  color: var(--color-primary);
   font-weight: 500;
 }
 
@@ -238,18 +231,18 @@
 
 .world-map-fullscreen-close {
   position: absolute;
-  top: 16px;
-  left: 12px;
+  top: var(--spacing-lg);
+  left: var(--spacing-md);
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   border: none;
   background: rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--duration-fast) var(--easing-default);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 10000;

@@ -1,15 +1,12 @@
 .clock-card {
-  padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  padding: var(--spacing-lg) var(--spacing-xl);
 }
 
 .clock-time {
   display: flex;
   align-items: baseline;
-  font-family: 'Courier New', monospace;
-  color: #333;
+  font-family: var(--font-mono);
+  color: var(--color-primary);
 }
 
 .clock-hm {
@@ -21,7 +18,7 @@
 .clock-seconds {
   font-size: 20px;
   font-weight: 300;
-  color: #666;
+  color: var(--color-secondary);
   letter-spacing: 1px;
 }
 

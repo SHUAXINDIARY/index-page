@@ -1,5 +1,5 @@
 .image-card {
-  padding: 16px;
+  padding: var(--spacing-lg);
   width: 240px;
   height: 180px;
   min-width: 240px;
@@ -10,6 +10,7 @@
   justify-content: center;
   flex-shrink: 0;
   position: relative;
+  box-shadow: var(--shadow-warm-lg);
 }
 
 /* 全屏模式下的 slide 高度 */
@@ -50,17 +51,17 @@
 .image-card-indicators .carousel-indicator {
   width: 8px;
   height: 8px;
-  background: rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  background: rgba(78, 63, 66, 0.2);
+  transition: all var(--duration-fast) var(--easing-default);
 }
 
 .image-card-indicators .carousel-indicator:hover {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(78, 63, 66, 0.4);
   transform: scale(1.2);
 }
 
 .image-card-indicators .carousel-indicator.active {
-  background: rgba(255, 107, 107, 0.8);
+  background: var(--color-accent);
   width: 24px;
   border-radius: 4px;
 }
@@ -95,7 +96,7 @@
   right: 20px;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   border: none;
   background: rgba(255, 255, 255, 0.2);
   color: white;
@@ -103,7 +104,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--duration-fast) var(--easing-default);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 10000;
@@ -151,7 +152,7 @@
   width: 10px;
   height: 10px;
   background: rgba(255, 255, 255, 0.4);
-  transition: all 0.3s ease;
+  transition: all var(--duration-fast) var(--easing-default);
 }
 
 .image-card-fullscreen-indicators .carousel-indicator:hover {
@@ -160,7 +161,7 @@
 }
 
 .image-card-fullscreen-indicators .carousel-indicator.active {
-  background: rgba(255, 107, 107, 0.9);
+  background: var(--color-accent);
   width: 32px;
   border-radius: 5px;
 }
