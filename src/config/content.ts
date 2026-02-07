@@ -215,6 +215,14 @@ export const contentConfig: ContentConfig = {
     // style: 'https://demotiles.maplibre.org/style.json',
     style: '/positron.json',
     markers: [
+      // 居住地点（蓝色）
+      {
+        name: '北京',
+        lat: 39.929986,
+        lng: 116.395645,
+        type: 'residence',
+        description: '中国北京',
+      },
       // 旅行地点（橙色）
       {
         name: '北京',
@@ -222,7 +230,14 @@ export const contentConfig: ContentConfig = {
         lng: 116.395645,
         type: 'travel',
         description: '中国北京',
-        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=daily'
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=daily',
+      },
+      {
+        name: '广州市',
+        lat: 23.129163,
+        lng: 113.264435,
+        type: 'travel',
+        description: '中国广东省广州市',
       },
       {
         name: '三亚',
@@ -307,7 +322,7 @@ export const contentConfig: ContentConfig = {
         lng: 139.839478,
         type: 'travel',
         description: '日本东京',
-        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=tokyo'
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=tokyo',
       },
       {
         name: '大阪',
@@ -315,7 +330,7 @@ export const contentConfig: ContentConfig = {
         lng: 135.484802,
         type: 'travel',
         description: '日本大阪',
-        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=osaka'
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=osaka',
       },
       {
         name: '京都',
@@ -323,7 +338,7 @@ export const contentConfig: ContentConfig = {
         lng: 135.768326,
         type: 'travel',
         description: '日本京都',
-        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=kyoto'
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=kyoto',
       },
       {
         name: '神户',
@@ -338,7 +353,7 @@ export const contentConfig: ContentConfig = {
         lng: 136.899994,
         type: 'travel',
         description: '日本名古屋',
-        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=nagoya'
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=nagoya',
       },
       {
         name: '横滨',
@@ -360,7 +375,7 @@ export const contentConfig: ContentConfig = {
         lng: 100.501765,
         type: 'travel',
         description: '泰国曼谷',
-        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=bangkok'
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=bangkok',
       },
       {
         name: '普吉岛',
@@ -436,14 +451,6 @@ export const contentConfig: ContentConfig = {
         lng: 106.230909,
         type: 'travel',
         description: '中国宁夏回族自治区银川市',
-      },
-      // 居住地点（蓝色）
-      {
-        name: '北京',
-        lat: 39.929986,
-        lng: 116.395645,
-        type: 'residence',
-        description: '中国北京',
       },
       // 机场
       {
@@ -620,6 +627,13 @@ export const contentConfig: ContentConfig = {
         lng: 106.641,
         type: 'airport',
         description: '中国重庆市重庆江北国际机场',
+      },
+      {
+        name: '广州白云国际机场',
+        lat: 23.392436,
+        lng: 113.298786,
+        type: 'airport',
+        description: '中国广东省广州市广州白云国际机场',
       },
     ],
     legend: [
