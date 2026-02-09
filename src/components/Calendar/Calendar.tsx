@@ -37,9 +37,12 @@ const parseICS = (icsContent: string): CalendarEvent[] => {
       const startTime = event.startDate;
       const startDate = dayjs(startTime.toJSDate());
       
-      // 获取结束时间（如果没有结束时间，使用开始时间）
+      // 获取结束时间
+      // ICS 全天事件的 DTEND 是排他的（exclusive），需要减去一天转为包含性结束日期
       const endTime = event.endDate;
-      const endDate = endTime ? dayjs(endTime.toJSDate()) : startDate;
+      const endDate = endTime 
+        ? dayjs(endTime.toJSDate()).subtract(1, 'day') 
+        : startDate;
       
       if (summary && startDate) {
         events.push({
