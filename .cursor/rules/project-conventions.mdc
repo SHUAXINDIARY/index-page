@@ -117,6 +117,10 @@ const [page, setPage] = useState(1);
 const [loading, setLoading] = useState(false);
 ```
 
+### 生态管理
+
+rsbuild自定义的插件全部放在 ./plugins 目录下，且每次更新相关内容要在 ./plugins/README.md内进行记录
+
 ## 代码质量工具
 
 ### ESLint

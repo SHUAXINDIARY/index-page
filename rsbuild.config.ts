@@ -21,7 +21,7 @@ export default defineConfig({
     pluginReact(),
     // 自定义插件：抓取博客最新文章
     fetchBlogPlugin({
-      blogUrl: contentConfig.user.menuItems[0].url,
+      blogUrl: contentConfig?.user?.menuItems?.[0]?.url || '',
       outputPath: './src/config/blog-data.json',
     }),
     // 自定义插件：扫描 public/bgm 目录生成音乐列表
