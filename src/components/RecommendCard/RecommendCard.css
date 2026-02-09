@@ -4,7 +4,7 @@
 
 .recommend-header {
   font-size: 13px;
-  color: #666;
+  color: var(--color-recommend-header);
   margin-bottom: 12px;
   font-weight: 500;
 }
@@ -22,7 +22,7 @@
   min-height: 48px;
   border-radius: 50%;
   overflow: hidden;
-  background: #f0f0f0;
+  background: var(--color-recommend-avatar-bg);
   flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -41,13 +41,13 @@
 .recommend-name {
   font-size: 15px;
   font-weight: 600;
-  color: #333;
+  color: var(--color-recommend-name);
   margin: 0 0 6px 0;
 }
 
 .recommend-description {
   font-size: 13px;
-  color: #666;
+  color: var(--color-recommend-desc);
   margin: 0;
   line-height: 1.5;
 }

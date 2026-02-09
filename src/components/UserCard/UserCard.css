@@ -47,7 +47,7 @@
 .user-tag {
   font-size: 12px;
   color: var(--color-accent);
-  background: rgba(222, 67, 49, 0.08);
+  background: var(--color-accent-alpha-008);
   padding: 2px var(--spacing-sm);
   border-radius: var(--radius-sm);
   display: inline-block;
@@ -86,12 +86,12 @@
 }
 
 .menu-item:hover {
-  background: rgba(78, 63, 66, 0.05);
+  background: var(--color-primary-alpha-005);
   transform: translateX(4px);
 }
 
 .menu-item.active {
-  background: rgba(222, 67, 49, 0.08);
+  background: var(--color-accent-alpha-008);
 }
 
 .menu-item.active .menu-icon {

@@ -9,6 +9,7 @@ import { ArticleCard } from './components/ArticleCard';
 import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
 import { WorldMap } from './components/WorldMap';
+import { ThemeToggle } from './components/ThemeToggle';
 import { contentConfig } from './config/content';
 import { LocateFixed, Github } from 'lucide-react';
 import blogData from './config/blog-data.json';
@@ -50,8 +51,7 @@ const App = () => {
           <Calendar />
           <MusicPlayer config={contentConfig.music} />
           <div className="decorative-items">
-            {/* <div className="decorative-icon">🎵</div> */}
-            <div className="decorative-icon">🎨</div>
+            <ThemeToggle />
           </div>
         </div>
       </div>

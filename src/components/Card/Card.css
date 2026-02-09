@@ -9,17 +9,19 @@
   padding: var(--spacing-xl);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-glass);
-  /* hover 效果使用快速响应的 transition */
+  /* hover 效果和主题切换过渡 */
   transition:
     transform var(--duration-fast) var(--easing-default),
-    box-shadow var(--duration-fast) var(--easing-default),
-    background var(--duration-fast) var(--easing-default);
+    box-shadow var(--duration-normal) var(--easing-default),
+    background var(--duration-normal) var(--easing-default),
+    border-color var(--duration-normal) var(--easing-default),
+    color var(--duration-normal) var(--easing-default);
 }
 
 .card:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--color-card-hover);
   transform: translateY(-4px) scale(1.02);
   box-shadow:
-    rgba(0, 0, 0, 0.08) 0px 45px 55px -32px,
-    rgba(255, 255, 255, 0.3) 0px 0px 24px 0px inset;
+    var(--color-shadow-outer) 0px 45px 55px -32px,
+    var(--color-shadow-inset) 0px 0px 24px 0px inset;
 }

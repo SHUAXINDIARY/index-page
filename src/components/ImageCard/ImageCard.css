@@ -51,12 +51,12 @@
 .image-card-indicators .carousel-indicator {
   width: 8px;
   height: 8px;
-  background: rgba(78, 63, 66, 0.2);
+  background: var(--color-primary-alpha-020);
   transition: all var(--duration-fast) var(--easing-default);
 }
 
 .image-card-indicators .carousel-indicator:hover {
-  background: rgba(78, 63, 66, 0.4);
+  background: var(--color-primary-alpha-040);
   transform: scale(1.2);
 }
 
@@ -74,7 +74,7 @@
   right: 0;
   bottom: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.95);
+  background: var(--color-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,7 +99,7 @@
   border-radius: var(--radius-full);
   border: none;
   background: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: var(--color-text-on-dark);
   display: flex;
   align-items: center;
   justify-content: center;

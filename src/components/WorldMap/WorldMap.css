@@ -67,7 +67,7 @@
 }
 
 .world-map-popup-link:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--color-card-hover);
   color: var(--color-accent);
   transform: translateY(-1px);
 }
@@ -142,7 +142,7 @@
 }
 
 .world-map-fullscreen-button:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--color-card-hover);
   transform: scale(1.1);
 }
 
@@ -186,7 +186,7 @@
 }
 
 .world-map-legend-item:hover {
-  background: rgba(78, 63, 66, 0.05);
+  background: var(--color-primary-alpha-005);
 }
 
 .world-map-legend-item.inactive .world-map-legend-label {
@@ -216,7 +216,7 @@
   right: 0;
   bottom: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.95);
+  background: var(--color-overlay);
   animation: world-map-fadeIn 0.3s ease;
 }
 

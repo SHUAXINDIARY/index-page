@@ -1,0 +1,159 @@
+/* 主题切换容器 - 相对定位用于面板弹出 */
+.theme-toggle-container {
+  position: relative;
+}
+
+/* 切换按钮 - 复用 decorative-icon 基础样式 */
+.theme-toggle-btn {
+  border: none;
+  font-family: inherit;
+  line-height: 1;
+}
+
+/* 主题选择面板 */
+.theme-panel {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  right: 0;
+  min-width: 200px;
+  background: var(--color-card-solid);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-warm-lg);
+  padding: var(--spacing-lg);
+  z-index: 1000;
+}
+
+/* 面板分区 */
+.theme-panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* 分割线 */
+.theme-panel-divider {
+  height: 1px;
+  background: var(--color-primary-alpha-010);
+  margin: var(--spacing-md) 0;
+}
+
+/* 模式切换按钮组 */
+.theme-mode-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+/* 模式按钮 */
+.theme-mode-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-primary-alpha-010);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--easing-default);
+  font-family: inherit;
+}
+
+.theme-mode-btn:hover {
+  background: var(--color-primary-alpha-005);
+  color: var(--color-primary);
+}
+
+.theme-mode-btn.active {
+  background: var(--color-accent-alpha-008);
+  border-color: var(--color-accent-alpha-020);
+  color: var(--color-accent);
+}
+
+/* 跟随系统按钮 */
+.theme-system-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 1px solid var(--color-primary-alpha-010);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--easing-default);
+  font-family: inherit;
+}
+
+.theme-system-btn:hover {
+  background: var(--color-primary-alpha-005);
+  color: var(--color-primary);
+}
+
+.theme-system-btn.active {
+  background: var(--color-accent-alpha-008);
+  border-color: var(--color-accent-alpha-020);
+  color: var(--color-accent);
+}
+
+/* 面板标签 */
+.theme-panel-label {
+  font-size: 11px;
+  color: var(--color-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 配色选项容器 */
+.theme-color-options {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-start;
+}
+
+/* 配色圆点 */
+.theme-color-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border);
+  background: var(--dot-color);
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--duration-fast) var(--easing-default);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.theme-color-dot:hover {
+  transform: scale(1.15);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.theme-color-dot.active {
+  border-color: var(--color-accent);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px var(--color-accent-alpha-020),
+              0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.theme-color-dot.active::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-text-on-dark);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}

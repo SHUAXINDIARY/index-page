@@ -20,6 +20,47 @@
   --color-shadow-warm: rgb(226, 217, 206);
   --color-shadow-inset: rgba(255, 255, 255, 0.25);
   
+  /* 派生透明度变量 - 基于 primary/accent 的不同透明度 */
+  --color-primary-alpha-005: rgba(78, 63, 66, 0.05);
+  --color-primary-alpha-008: rgba(78, 63, 66, 0.08);
+  --color-primary-alpha-010: rgba(78, 63, 66, 0.1);
+  --color-primary-alpha-020: rgba(78, 63, 66, 0.2);
+  --color-primary-alpha-030: rgba(78, 63, 66, 0.3);
+  --color-primary-alpha-040: rgba(78, 63, 66, 0.4);
+  --color-accent-alpha-008: rgba(222, 67, 49, 0.08);
+  --color-accent-alpha-020: rgba(222, 67, 49, 0.2);
+  
+  /* 遮罩/覆盖色 */
+  --color-overlay: rgba(0, 0, 0, 0.95);
+  --color-overlay-light: rgba(0, 0, 0, 0.6);
+  
+  /* 在深色背景上的文字颜色 */
+  --color-text-on-dark: #ffffff;
+  
+  /* 卡片 hover 背景 */
+  --color-card-hover: rgba(255, 255, 255, 0.6);
+  
+  /* 模态框/面板相关 */
+  --color-modal-bg: #ffffff;
+  --color-modal-header-bg: rgba(245, 245, 245, 0.95);
+  --color-modal-header-border: rgba(0, 0, 0, 0.08);
+  --color-modal-btn-bg: rgba(0, 0, 0, 0.06);
+  --color-modal-btn-text: #333333;
+  --color-modal-btn-hover: rgba(0, 0, 0, 0.1);
+  --color-modal-close-text: #666666;
+  --color-modal-close-hover-bg: rgba(255, 77, 77, 0.15);
+  --color-modal-close-hover-text: #ff4d4d;
+  
+  /* 社交图标背景 */
+  --color-social-icon-bg: #070707;
+  --color-social-icon-text: #ffffff;
+  
+  /* 推荐卡片 */
+  --color-recommend-header: #666666;
+  --color-recommend-avatar-bg: #f0f0f0;
+  --color-recommend-name: #333333;
+  --color-recommend-desc: #666666;
+  
   /* 间距 */
   --spacing-xs: 6px;
   --spacing-sm: 8px;
@@ -58,6 +99,223 @@
                "Liberation Mono", "Courier New", monospace;
 }
 
+/* ========================================
+   暗色模式
+   ======================================== */
+[data-theme-mode="dark"] {
+  /* 品牌色 */
+  --color-primary: #E8E0E0;
+  --color-secondary: #9CA3AF;
+  --color-accent: #EF5A4A;
+  
+  /* 背景色 */
+  --color-bg: #1A1A2E;
+  --color-card: rgba(255, 255, 255, 0.06);
+  --color-card-solid: #242438;
+  
+  /* 边框色 */
+  --color-border: rgba(255, 255, 255, 0.1);
+  
+  /* 阴影色 */
+  --color-shadow-outer: rgba(0, 0, 0, 0.2);
+  --color-shadow-warm: rgba(0, 0, 0, 0.3);
+  --color-shadow-inset: rgba(255, 255, 255, 0.05);
+  
+  /* 派生透明度变量 */
+  --color-primary-alpha-005: rgba(232, 224, 224, 0.05);
+  --color-primary-alpha-008: rgba(232, 224, 224, 0.08);
+  --color-primary-alpha-010: rgba(232, 224, 224, 0.1);
+  --color-primary-alpha-020: rgba(232, 224, 224, 0.15);
+  --color-primary-alpha-030: rgba(232, 224, 224, 0.2);
+  --color-primary-alpha-040: rgba(232, 224, 224, 0.25);
+  --color-accent-alpha-008: rgba(239, 90, 74, 0.12);
+  --color-accent-alpha-020: rgba(239, 90, 74, 0.25);
+  
+  /* 遮罩/覆盖色 */
+  --color-overlay: rgba(0, 0, 0, 0.98);
+  --color-overlay-light: rgba(0, 0, 0, 0.75);
+  
+  /* 卡片 hover 背景 */
+  --color-card-hover: rgba(255, 255, 255, 0.1);
+  
+  /* 阴影预设 */
+  --shadow-glass:
+    rgba(0, 0, 0, 0.3) 0px 40px 50px -32px,
+    rgba(255, 255, 255, 0.03) 0px 0px 20px 0px inset;
+  --shadow-warm-lg: rgba(0, 0, 0, 0.4) 0px 16px 32px -5px;
+  --shadow-warm-md: rgba(0, 0, 0, 0.3) 0px 12px 20px -5px;
+  --shadow-inset-light: rgba(255, 255, 255, 0.08) 0px 0px 12px 0px inset;
+  
+  /* 模态框/面板相关 */
+  --color-modal-bg: #242438;
+  --color-modal-header-bg: rgba(30, 30, 48, 0.95);
+  --color-modal-header-border: rgba(255, 255, 255, 0.08);
+  --color-modal-btn-bg: rgba(255, 255, 255, 0.08);
+  --color-modal-btn-text: #E8E0E0;
+  --color-modal-btn-hover: rgba(255, 255, 255, 0.12);
+  --color-modal-close-text: #9CA3AF;
+  --color-modal-close-hover-bg: rgba(239, 90, 74, 0.2);
+  --color-modal-close-hover-text: #EF5A4A;
+  
+  /* 社交图标背景 */
+  --color-social-icon-bg: #E8E0E0;
+  --color-social-icon-text: #1A1A2E;
+  
+  /* 推荐卡片 */
+  --color-recommend-header: #9CA3AF;
+  --color-recommend-avatar-bg: #2A2A40;
+  --color-recommend-name: #E8E0E0;
+  --color-recommend-desc: #9CA3AF;
+}
+
+/* ========================================
+   配色主题 - 海洋蓝
+   ======================================== */
+[data-theme-color="ocean"] {
+  --color-primary: #2C3E50;
+  --color-accent: #2980B9;
+  --color-primary-alpha-005: rgba(44, 62, 80, 0.05);
+  --color-primary-alpha-008: rgba(44, 62, 80, 0.08);
+  --color-primary-alpha-010: rgba(44, 62, 80, 0.1);
+  --color-primary-alpha-020: rgba(44, 62, 80, 0.2);
+  --color-primary-alpha-030: rgba(44, 62, 80, 0.3);
+  --color-primary-alpha-040: rgba(44, 62, 80, 0.4);
+  --color-accent-alpha-008: rgba(41, 128, 185, 0.08);
+  --color-accent-alpha-020: rgba(41, 128, 185, 0.2);
+  --color-shadow-warm: rgb(190, 210, 226);
+  --shadow-warm-lg: rgb(190, 210, 226) 0px 16px 32px -5px;
+  --shadow-warm-md: rgb(190, 210, 226) 0px 12px 20px -5px;
+}
+
+[data-theme-mode="dark"][data-theme-color="ocean"] {
+  --color-primary: #D4E6F1;
+  --color-accent: #5DADE2;
+  --color-bg: #0D1B2A;
+  --color-card: rgba(93, 173, 226, 0.06);
+  --color-card-solid: #1B2838;
+  --color-primary-alpha-005: rgba(212, 230, 241, 0.05);
+  --color-primary-alpha-008: rgba(212, 230, 241, 0.08);
+  --color-primary-alpha-010: rgba(212, 230, 241, 0.1);
+  --color-primary-alpha-020: rgba(212, 230, 241, 0.15);
+  --color-primary-alpha-030: rgba(212, 230, 241, 0.2);
+  --color-primary-alpha-040: rgba(212, 230, 241, 0.25);
+  --color-accent-alpha-008: rgba(93, 173, 226, 0.12);
+  --color-accent-alpha-020: rgba(93, 173, 226, 0.25);
+  --color-social-icon-bg: #D4E6F1;
+  --color-social-icon-text: #0D1B2A;
+}
+
+/* ========================================
+   配色主题 - 森林绿
+   ======================================== */
+[data-theme-color="forest"] {
+  --color-primary: #2D4A3E;
+  --color-accent: #27AE60;
+  --color-primary-alpha-005: rgba(45, 74, 62, 0.05);
+  --color-primary-alpha-008: rgba(45, 74, 62, 0.08);
+  --color-primary-alpha-010: rgba(45, 74, 62, 0.1);
+  --color-primary-alpha-020: rgba(45, 74, 62, 0.2);
+  --color-primary-alpha-030: rgba(45, 74, 62, 0.3);
+  --color-primary-alpha-040: rgba(45, 74, 62, 0.4);
+  --color-accent-alpha-008: rgba(39, 174, 96, 0.08);
+  --color-accent-alpha-020: rgba(39, 174, 96, 0.2);
+  --color-shadow-warm: rgb(196, 217, 206);
+  --shadow-warm-lg: rgb(196, 217, 206) 0px 16px 32px -5px;
+  --shadow-warm-md: rgb(196, 217, 206) 0px 12px 20px -5px;
+}
+
+[data-theme-mode="dark"][data-theme-color="forest"] {
+  --color-primary: #D5E8D4;
+  --color-accent: #2ECC71;
+  --color-bg: #0D1F15;
+  --color-card: rgba(46, 204, 113, 0.06);
+  --color-card-solid: #1A2E22;
+  --color-primary-alpha-005: rgba(213, 232, 212, 0.05);
+  --color-primary-alpha-008: rgba(213, 232, 212, 0.08);
+  --color-primary-alpha-010: rgba(213, 232, 212, 0.1);
+  --color-primary-alpha-020: rgba(213, 232, 212, 0.15);
+  --color-primary-alpha-030: rgba(213, 232, 212, 0.2);
+  --color-primary-alpha-040: rgba(213, 232, 212, 0.25);
+  --color-accent-alpha-008: rgba(46, 204, 113, 0.12);
+  --color-accent-alpha-020: rgba(46, 204, 113, 0.25);
+  --color-social-icon-bg: #D5E8D4;
+  --color-social-icon-text: #0D1F15;
+}
+
+/* ========================================
+   配色主题 - 薰衣草紫
+   ======================================== */
+[data-theme-color="lavender"] {
+  --color-primary: #4A3B5C;
+  --color-accent: #8E44AD;
+  --color-primary-alpha-005: rgba(74, 59, 92, 0.05);
+  --color-primary-alpha-008: rgba(74, 59, 92, 0.08);
+  --color-primary-alpha-010: rgba(74, 59, 92, 0.1);
+  --color-primary-alpha-020: rgba(74, 59, 92, 0.2);
+  --color-primary-alpha-030: rgba(74, 59, 92, 0.3);
+  --color-primary-alpha-040: rgba(74, 59, 92, 0.4);
+  --color-accent-alpha-008: rgba(142, 68, 173, 0.08);
+  --color-accent-alpha-020: rgba(142, 68, 173, 0.2);
+  --color-shadow-warm: rgb(216, 206, 226);
+  --shadow-warm-lg: rgb(216, 206, 226) 0px 16px 32px -5px;
+  --shadow-warm-md: rgb(216, 206, 226) 0px 12px 20px -5px;
+}
+
+[data-theme-mode="dark"][data-theme-color="lavender"] {
+  --color-primary: #E0D4F0;
+  --color-accent: #BB6BD9;
+  --color-bg: #1A0D2E;
+  --color-card: rgba(187, 107, 217, 0.06);
+  --color-card-solid: #28183C;
+  --color-primary-alpha-005: rgba(224, 212, 240, 0.05);
+  --color-primary-alpha-008: rgba(224, 212, 240, 0.08);
+  --color-primary-alpha-010: rgba(224, 212, 240, 0.1);
+  --color-primary-alpha-020: rgba(224, 212, 240, 0.15);
+  --color-primary-alpha-030: rgba(224, 212, 240, 0.2);
+  --color-primary-alpha-040: rgba(224, 212, 240, 0.25);
+  --color-accent-alpha-008: rgba(187, 107, 217, 0.12);
+  --color-accent-alpha-020: rgba(187, 107, 217, 0.25);
+  --color-social-icon-bg: #E0D4F0;
+  --color-social-icon-text: #1A0D2E;
+}
+
+/* ========================================
+   配色主题 - 日落橘
+   ======================================== */
+[data-theme-color="sunset"] {
+  --color-primary: #5C3A2E;
+  --color-accent: #E67E22;
+  --color-primary-alpha-005: rgba(92, 58, 46, 0.05);
+  --color-primary-alpha-008: rgba(92, 58, 46, 0.08);
+  --color-primary-alpha-010: rgba(92, 58, 46, 0.1);
+  --color-primary-alpha-020: rgba(92, 58, 46, 0.2);
+  --color-primary-alpha-030: rgba(92, 58, 46, 0.3);
+  --color-primary-alpha-040: rgba(92, 58, 46, 0.4);
+  --color-accent-alpha-008: rgba(230, 126, 34, 0.08);
+  --color-accent-alpha-020: rgba(230, 126, 34, 0.2);
+  --color-shadow-warm: rgb(226, 210, 196);
+  --shadow-warm-lg: rgb(226, 210, 196) 0px 16px 32px -5px;
+  --shadow-warm-md: rgb(226, 210, 196) 0px 12px 20px -5px;
+}
+
+[data-theme-mode="dark"][data-theme-color="sunset"] {
+  --color-primary: #F0DDD4;
+  --color-accent: #F39C12;
+  --color-bg: #2E1A0D;
+  --color-card: rgba(243, 156, 18, 0.06);
+  --color-card-solid: #3C2818;
+  --color-primary-alpha-005: rgba(240, 221, 212, 0.05);
+  --color-primary-alpha-008: rgba(240, 221, 212, 0.08);
+  --color-primary-alpha-010: rgba(240, 221, 212, 0.1);
+  --color-primary-alpha-020: rgba(240, 221, 212, 0.15);
+  --color-primary-alpha-030: rgba(240, 221, 212, 0.2);
+  --color-primary-alpha-040: rgba(240, 221, 212, 0.25);
+  --color-accent-alpha-008: rgba(243, 156, 18, 0.12);
+  --color-accent-alpha-020: rgba(243, 156, 18, 0.25);
+  --color-social-icon-bg: #F0DDD4;
+  --color-social-icon-text: #2E1A0D;
+}
+
 /* 引入 Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Averia+Gruesa+Libre&display=swap');
 
@@ -67,6 +325,8 @@ body {
   font-family: var(--font-sans);
   background: var(--color-bg);
   min-height: 100vh;
+  transition: background-color var(--duration-normal) var(--easing-default),
+              color var(--duration-normal) var(--easing-default);
 }
 
 * {
@@ -141,8 +401,8 @@ body {
 .decorative-icon:hover {
   transform: translateY(-4px) scale(1.05);
   box-shadow: 
-    rgba(0, 0, 0, 0.08) 0px 45px 55px -32px,
-    rgba(255, 255, 255, 0.3) 0px 0px 24px 0px inset;
+    var(--color-shadow-outer) 0px 45px 55px -32px,
+    var(--color-shadow-inset) 0px 0px 24px 0px inset;
 }
 
 /* 右下角 GitHub 徽章 */
@@ -169,11 +429,11 @@ body {
 }
 
 .github-badge:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--color-card-hover);
   transform: translateY(-2px);
   box-shadow: 
-    rgba(0, 0, 0, 0.08) 0px 45px 55px -32px,
-    rgba(255, 255, 255, 0.3) 0px 0px 24px 0px inset;
+    var(--color-shadow-outer) 0px 45px 55px -32px,
+    var(--color-shadow-inset) 0px 0px 24px 0px inset;
 }
 
 .github-badge:active {
