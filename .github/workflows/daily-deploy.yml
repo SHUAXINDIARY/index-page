@@ -1,0 +1,21 @@
+# 每日定时部署工作流
+# 每天早上6点（北京时间）通过 Deploy Hook 触发 Cloudflare Pages 部署
+
+name: Daily Deploy
+
+on:
+  # 定时触发：每天北京时间早上6点（UTC 22:00，前一天）
+  schedule:
+    - cron: '0 22 * * *'
+  # 支持手动触发
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Trigger Cloudflare Pages Deploy
+
+    steps:
+      - name: Trigger Deploy Hook
+        run: |
+          curl -X POST "${{ secrets.CLOUDFLARE_DEPLOY_HOOK_URL }}"
