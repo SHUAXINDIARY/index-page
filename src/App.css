@@ -335,12 +335,29 @@ body {
 
 .app-container {
   min-height: 100vh;
-  /* padding: 40px 20px; */
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 40px 20px;
+  overflow: hidden;
 }
 
+/* 随机布局容器 */
+.random-layout-container {
+  position: relative;
+}
+
+/* 确保卡片填满容器 */
+.random-layout-container > div {
+  display: flex;
+}
+
+.random-layout-container > div > * {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* 保留旧的网格布局样式（用于兼容或回退） */
 .content-grid {
   display: grid;
   grid-template-columns: auto auto auto;
