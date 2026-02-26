@@ -13,6 +13,7 @@
   transition: transform var(--duration-fast) var(--easing-default),
               box-shadow var(--duration-fast) var(--easing-default);
   box-shadow: var(--shadow-inset-light);
+  white-space: nowrap;
 }
 
 .action-button:hover {
