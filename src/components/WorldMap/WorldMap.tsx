@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback, memo } from 'react';
+import { createPortal } from 'react-dom';
 import type { MutableRefObject } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -510,55 +511,59 @@ export const WorldMap = memo(function WorldMap({ config }: WorldMapProps) {
         </div>
       </Card>
 
-      {/* [rendering-conditional-render] 使用条件渲染 + AnimatePresence 支持退出动画 */}
-      <AnimatePresence>
-        {isFullscreen && (
-          <motion.div
-            className="world-map-fullscreen"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <motion.button
-              className="world-map-fullscreen-close"
-              onClick={handleCloseFullscreen}
-              aria-label="关闭全屏"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.2, delay: 0.1 }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {/* [rendering-hoist-jsx] 使用提升的静态图标 */}
-              {closeButtonIcon}
-            </motion.button>
+      {/* [rendering-conditional-render] 使用 Portal + AnimatePresence 支持退出动画 */}
+      {/* Portal 确保全屏地图不受父元素 transform 影响，fixed 定位正常工作 */}
+      {createPortal(
+        <AnimatePresence>
+          {isFullscreen && (
             <motion.div
-              className="world-map-fullscreen-container"
-              ref={fullscreenMapContainer}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-            />
-            <motion.div
-              className="world-map-fullscreen-legend"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.15 }}
+              className="world-map-fullscreen"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
             >
-              {config.legend?.map((item) => (
-                <LegendItem
-                  key={item.type}
-                  type={item.type}
-                  label={item.label}
-                  isVisible={visibleTypes.has(item.type)}
-                  onClick={handleLegendClick}
-                />
-              ))}
+              <motion.button
+                className="world-map-fullscreen-close"
+                onClick={handleCloseFullscreen}
+                aria-label="关闭全屏"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.2, delay: 0.1 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {/* [rendering-hoist-jsx] 使用提升的静态图标 */}
+                {closeButtonIcon}
+              </motion.button>
+              <motion.div
+                className="world-map-fullscreen-container"
+                ref={fullscreenMapContainer}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+              />
+              <motion.div
+                className="world-map-fullscreen-legend"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.15 }}
+              >
+                {config.legend?.map((item) => (
+                  <LegendItem
+                    key={item.type}
+                    type={item.type}
+                    label={item.label}
+                    isVisible={visibleTypes.has(item.type)}
+                    onClick={handleLegendClick}
+                  />
+                ))}
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 });
