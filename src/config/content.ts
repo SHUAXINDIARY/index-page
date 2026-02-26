@@ -635,6 +635,13 @@ export const contentConfig: ContentConfig = {
         type: 'airport',
         description: '中国广东省广州市广州白云国际机场',
       },
+      {
+        name: '东京羽田机场',
+        lat: 35.549393,
+        lng: 139.779839,
+        type: 'airport',
+        description: '日本东京都东京国际机场（羽田机场）',
+      },
     ],
     legend: [
       { type: 'travel', label: '旅行' },
