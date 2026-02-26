@@ -457,6 +457,86 @@ body {
   transform: scale(0.98);
 }
 
+/* ========================================
+   移动端布局
+   ======================================== */
+.app-container--mobile {
+  min-height: 100vh;
+  display: block;
+  padding: 16px;
+  padding-bottom: 80px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.mobile-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  align-items: center;
+}
+
+.mobile-card {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 移动端卡片自适应宽度 */
+.mobile-card > * {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* 特定卡片的移动端高度调整 */
+.mobile-card--welcome > * {
+  min-height: 280px;
+}
+
+.mobile-card--user > * {
+  min-height: 280px;
+}
+
+.mobile-card--calendar > * {
+  min-height: 280px;
+}
+
+.mobile-card--image > * {
+  min-height: 160px;
+}
+
+.mobile-card--worldMap > * {
+  min-height: 200px;
+}
+
+.mobile-card--music > * {
+  min-height: 80px;
+}
+
+.mobile-card--article > * {
+  min-height: 140px;
+}
+
+.mobile-card--social > * {
+  min-height: auto;
+}
+
+/* 小型卡片在移动端的行内布局 */
+.mobile-card--clock,
+.mobile-card--location,
+.mobile-card--theme {
+  max-width: fit-content;
+}
+
+.mobile-card--clock > *,
+.mobile-card--location > *,
+.mobile-card--theme > * {
+  width: auto !important;
+}
+
 @media (max-width: 1200px) {
   .content-grid {
     grid-template-columns: 1fr;
@@ -482,5 +562,28 @@ body {
     right: 16px;
     padding: 6px 12px;
     font-size: 11px;
+  }
+}
+
+/* 移动端专用媒体查询 */
+@media (max-width: 768px) {
+  .app-container--mobile {
+    padding: 12px;
+    padding-bottom: 70px;
+  }
+
+  .mobile-layout {
+    gap: 12px;
+  }
+
+  .mobile-card {
+    max-width: 100%;
+  }
+
+  .github-badge {
+    bottom: 12px;
+    right: 12px;
+    padding: 6px 10px;
+    font-size: 10px;
   }
 }

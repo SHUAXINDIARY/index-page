@@ -14,12 +14,13 @@ import { contentConfig } from './config/content';
 import { LocateFixed, Github } from 'lucide-react';
 import blogData from './config/blog-data.json';
 import { useRandomLayout, type CardConfig } from './hooks/useRandomLayout';
+import { useIsMobile } from './hooks/useIsMobile';
 import { useMemo, type CSSProperties } from 'react';
 
 /** GitHub 仓库地址 */
 const GITHUB_REPO_URL = 'https://github.com/SHUAXINDIARY/index-page';
 
-/** 卡片尺寸配置 */
+/** 卡片尺寸配置 - PC 端 */
 const CARD_SIZES: Record<string, { width: number; height: number }> = {
   user: { width: 280, height: 314 },
   article: { width: 280, height: 165 },
@@ -34,7 +35,24 @@ const CARD_SIZES: Record<string, { width: number; height: number }> = {
   theme: { width: 56, height: 56 },
 };
 
+/** 移动端布局 - 渲染顺序 */
+const MOBILE_CARD_ORDER = [
+  'welcome',
+  'user',
+  'clock',
+  'location',
+  'image',
+  'calendar',
+  'article',
+  'music',
+  'worldMap',
+  'social',
+  'theme',
+] as const;
+
 const App = () => {
+  const isMobile = useIsMobile();
+
   /** 卡片配置列表 */
   const cardConfigs: CardConfig[] = useMemo(
     () => [
@@ -55,7 +73,7 @@ const App = () => {
 
   const { layout } = useRandomLayout(cardConfigs);
 
-  /** 生成卡片样式 */
+  /** 生成卡片样式 - PC 端随机布局 */
   const getCardStyle = (cardId: string): CSSProperties => {
     const pos = layout.positions[cardId];
     if (!pos) return {};
@@ -68,6 +86,75 @@ const App = () => {
     };
   };
 
+  /** 渲染卡片内容 */
+  const renderCard = (cardId: string) => {
+    switch (cardId) {
+      case 'user':
+        return <UserCard config={contentConfig.user} />;
+      case 'article':
+        return (
+          <ArticleCard
+            config={{
+              ...contentConfig.article,
+              ...(blogData.latestPost || {}),
+            }}
+          />
+        );
+      case 'social':
+        return <SocialLinks links={contentConfig.socialLinks} />;
+      case 'image':
+        return <ImageCard images={contentConfig.images} />;
+      case 'welcome':
+        return <WelcomeCard config={contentConfig.welcome} />;
+      case 'worldMap':
+        return contentConfig.worldMap ? <WorldMap config={contentConfig.worldMap} /> : null;
+      case 'location':
+        return <ActionButton icon={<LocateFixed size={16} />} label="中国 | 北京" />;
+      case 'clock':
+        return <Clock />;
+      case 'calendar':
+        return <Calendar />;
+      case 'music':
+        return <MusicPlayer config={contentConfig.music} />;
+      case 'theme':
+        return <ThemeToggle />;
+      default:
+        return null;
+    }
+  };
+
+  /** 移动端布局 */
+  if (isMobile) {
+    return (
+      <div className="app-container app-container--mobile">
+        <div className="mobile-layout">
+          {MOBILE_CARD_ORDER.map((cardId) => {
+            if (cardId === 'worldMap' && !contentConfig.worldMap) return null;
+            const content = renderCard(cardId);
+            if (!content) return null;
+            return (
+              <div key={cardId} className={`mobile-card mobile-card--${cardId}`}>
+                {content}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* 右下角 GitHub 提示 */}
+        <a
+          href={GITHUB_REPO_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="github-badge"
+        >
+          <Github size={14} />
+          <span>使用同款</span>
+        </a>
+      </div>
+    );
+  }
+
+  /** PC 端随机布局 */
   return (
     <div className="app-container">
       <div
