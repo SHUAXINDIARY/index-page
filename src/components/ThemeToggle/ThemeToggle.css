@@ -10,6 +10,11 @@
   line-height: 1;
 }
 
+/* 徽章样式的切换按钮 - 继承 toolbar-badge 样式 */
+.theme-toggle-badge {
+  /* 样式已在 App.css 的 toolbar-badge 中定义 */
+}
+
 /* 主题选择面板 */
 .theme-panel {
   position: absolute;

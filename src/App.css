@@ -423,11 +423,24 @@ body {
     var(--color-shadow-inset) 0px 0px 24px 0px inset;
 }
 
-/* 右下角 GitHub 徽章 */
-.github-badge {
+.decorative-icon:active {
+  transform: scale(0.95);
+}
+
+
+/* 底部固定工具栏 */
+.fixed-toolbar {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  z-index: 100;
+}
+
+/* 工具栏徽章按钮 - 统一样式 */
+.toolbar-badge {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
@@ -440,13 +453,14 @@ body {
   font-size: 12px;
   font-weight: 500;
   text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
   transition: transform var(--duration-fast) var(--easing-default),
               box-shadow var(--duration-fast) var(--easing-default),
               background var(--duration-fast) var(--easing-default);
-  z-index: 100;
 }
 
-.github-badge:hover {
+.toolbar-badge:hover {
   background: var(--color-card-hover);
   transform: translateY(-2px);
   box-shadow: 
@@ -454,7 +468,7 @@ body {
     var(--color-shadow-inset) 0px 0px 24px 0px inset;
 }
 
-.github-badge:active {
+.toolbar-badge:active {
   transform: scale(0.98);
 }
 
@@ -527,14 +541,12 @@ body {
 
 /* 小型卡片在移动端的行内布局 */
 .mobile-card--clock,
-.mobile-card--location,
-.mobile-card--theme {
+.mobile-card--location {
   max-width: fit-content;
 }
 
 .mobile-card--clock > *,
-.mobile-card--location > *,
-.mobile-card--theme > * {
+.mobile-card--location > * {
   width: auto !important;
 }
 
@@ -558,9 +570,12 @@ body {
     justify-content: center;
   }
 
-  .github-badge {
+  .fixed-toolbar {
     bottom: 16px;
     right: 16px;
+  }
+
+  .toolbar-badge {
     padding: 6px 12px;
     font-size: 11px;
   }
@@ -581,9 +596,16 @@ body {
     max-width: 100%;
   }
 
-  .github-badge {
+  .fixed-toolbar {
     bottom: 12px;
     right: 12px;
+    left: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .toolbar-badge {
     padding: 6px 10px;
     font-size: 10px;
   }

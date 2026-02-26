@@ -11,7 +11,7 @@ import { SocialLinks } from './components/SocialLinks';
 import { WorldMap } from './components/WorldMap';
 import { ThemeToggle } from './components/ThemeToggle';
 import { contentConfig } from './config/content';
-import { LocateFixed, Github } from 'lucide-react';
+import { LocateFixed, Github, Shuffle } from 'lucide-react';
 import blogData from './config/blog-data.json';
 import { useRandomLayout, type CardConfig } from './hooks/useRandomLayout';
 import { useIsMobile } from './hooks/useIsMobile';
@@ -32,7 +32,6 @@ const CARD_SIZES: Record<string, { width: number; height: number }> = {
   clock: { width: 195, height: 72 },
   calendar: { width: 300, height: 301 },
   music: { width: 320, height: 86 },
-  theme: { width: 56, height: 56 },
 };
 
 /** 移动端布局 - 渲染顺序 */
@@ -47,7 +46,6 @@ const MOBILE_CARD_ORDER = [
   'music',
   'worldMap',
   'social',
-  'theme',
 ] as const;
 
 const App = () => {
@@ -66,12 +64,11 @@ const App = () => {
       { id: 'clock', size: CARD_SIZES.clock },
       { id: 'calendar', size: CARD_SIZES.calendar },
       { id: 'music', size: CARD_SIZES.music },
-      { id: 'theme', size: CARD_SIZES.theme },
     ],
     []
   );
 
-  const { layout } = useRandomLayout(cardConfigs);
+  const { layout, refreshLayout } = useRandomLayout(cardConfigs);
 
   /** 生成卡片样式 - PC 端随机布局 */
   const getCardStyle = (cardId: string): CSSProperties => {
@@ -116,8 +113,6 @@ const App = () => {
         return <Calendar />;
       case 'music':
         return <MusicPlayer config={contentConfig.music} />;
-      case 'theme':
-        return <ThemeToggle />;
       default:
         return null;
     }
@@ -140,16 +135,27 @@ const App = () => {
           })}
         </div>
 
-        {/* 右下角 GitHub 提示 */}
-        <a
-          href={GITHUB_REPO_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="github-badge"
-        >
-          <Github size={14} />
-          <span>使用同款</span>
-        </a>
+        {/* 底部固定工具栏 */}
+        <div className="fixed-toolbar">
+          <ThemeToggle variant="badge" />
+          <button
+            className="toolbar-badge"
+            onClick={refreshLayout}
+            title="重新布局 (Cmd/Ctrl + R)"
+          >
+            <Shuffle size={14} />
+            <span>重新布局</span>
+          </button>
+          <a
+            href={GITHUB_REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="toolbar-badge"
+          >
+            <Github size={14} />
+            <span>使用同款</span>
+          </a>
+        </div>
       </div>
     );
   }
@@ -223,23 +229,29 @@ const App = () => {
         <div style={getCardStyle('music')}>
           <MusicPlayer config={contentConfig.music} />
         </div>
-
-        {/* Theme Toggle */}
-        <div style={getCardStyle('theme')}>
-          <ThemeToggle />
-        </div>
       </div>
 
-      {/* 右下角 GitHub 提示 */}
-      <a
-        href={GITHUB_REPO_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="github-badge"
-      >
-        <Github size={14} />
-        <span>使用同款</span>
-      </a>
+      {/* 底部固定工具栏 */}
+      <div className="fixed-toolbar">
+        <ThemeToggle variant="badge" />
+        <button
+          className="toolbar-badge"
+          onClick={refreshLayout}
+          title="重新布局 (Cmd/Ctrl + R)"
+        >
+          <Shuffle size={14} />
+          <span>重新布局</span>
+        </button>
+        <a
+          href={GITHUB_REPO_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="toolbar-badge"
+        >
+          <Github size={14} />
+          <span>使用同款</span>
+        </a>
+      </div>
     </div>
   );
 };

@@ -452,6 +452,13 @@ export const contentConfig: ContentConfig = {
         type: 'travel',
         description: '中国宁夏回族自治区银川市',
       },
+      {
+        name: '清迈市',
+        lat: 18.788343,
+        lng: 98.985300,
+        type: 'travel',
+        description: '泰国清迈府清迈市',
+      },
       // 机场
       {
         name: '北京大兴国际机场',
@@ -641,6 +648,13 @@ export const contentConfig: ContentConfig = {
         lng: 139.779839,
         type: 'airport',
         description: '日本东京都东京国际机场（羽田机场）',
+      },
+      {
+        name: '清迈国际机场',
+        lat: 18.766847,
+        lng: 98.962638,
+        type: 'airport',
+        description: '泰国清迈府清迈国际机场',
       },
     ],
     legend: [

@@ -21,7 +21,13 @@ const PANEL_ANIMATION = {
   transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] as const },
 };
 
-export const ThemeToggle = () => {
+/** ThemeToggle 组件属性 */
+interface ThemeToggleProps {
+  /** 样式变体：默认为圆形图标，badge 为徽章样式 */
+  variant?: 'icon' | 'badge';
+}
+
+export const ThemeToggle = ({ variant = 'icon' }: ThemeToggleProps) => {
   const { mode, resolvedMode, color, setMode, setColor } = useTheme();
 
   /** 面板是否打开 */
@@ -113,13 +119,24 @@ export const ThemeToggle = () => {
       </AnimatePresence>
 
       {/* 切换按钮 */}
-      <button
-        className="decorative-icon theme-toggle-btn"
-        onClick={togglePanel}
-        title="切换主题"
-      >
-        {resolvedMode === 'dark' ? '🌙' : '🎨'}
-      </button>
+      {variant === 'badge' ? (
+        <button
+          className="toolbar-badge theme-toggle-badge"
+          onClick={togglePanel}
+          title="切换主题"
+        >
+          {resolvedMode === 'dark' ? <Moon size={14} /> : <Sun size={14} />}
+          <span>主题</span>
+        </button>
+      ) : (
+        <button
+          className="decorative-icon theme-toggle-btn"
+          onClick={togglePanel}
+          title="切换主题"
+        >
+          {resolvedMode === 'dark' ? '🌙' : '🎨'}
+        </button>
+      )}
     </div>
   );
 };
