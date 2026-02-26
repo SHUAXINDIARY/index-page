@@ -325,6 +325,7 @@ body {
   font-family: var(--font-sans);
   background: var(--color-bg);
   min-height: 100vh;
+  overflow: hidden;
   transition: background-color var(--duration-normal) var(--easing-default),
               color var(--duration-normal) var(--easing-default);
 }
@@ -334,11 +335,11 @@ body {
 }
 
 .app-container {
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px;
   overflow: hidden;
 }
 

@@ -163,6 +163,8 @@ const App = () => {
           position: 'relative',
           width: layout.totalWidth,
           height: layout.totalHeight,
+          transform: `scale(${layout.scale})`,
+          transformOrigin: 'center center',
         }}
       >
         {/* User Card */}

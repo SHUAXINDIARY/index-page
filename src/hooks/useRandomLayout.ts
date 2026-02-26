@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useMemo, useState, useEffect, useCallback, useSyncExternalStore } from 'react';
 
 /** 卡片尺寸配置 */
 interface CardSize {
@@ -28,14 +28,20 @@ interface CardConfig {
   size: CardSize;
 }
 
-/** 布局结果 */
-interface LayoutResult {
+/** 基础布局结果（不含缩放） */
+interface BaseLayoutResult {
   /** 各卡片的位置映射 */
   positions: Record<string, CardPosition>;
   /** 整体布局的宽度 */
   totalWidth: number;
   /** 整体布局的高度 */
   totalHeight: number;
+}
+
+/** 布局结果（含缩放） */
+interface LayoutResult extends BaseLayoutResult {
+  /** 缩放比例（用于适配视口） */
+  scale: number;
 }
 
 /** 卡片尺寸分类 */
@@ -51,6 +57,48 @@ interface CategorizedCard extends CardConfig {
 
 /** 卡片间距 */
 const CARD_GAP = 20;
+
+/** 视口内边距 */
+const VIEWPORT_PADDING = 80;
+
+/** 最小缩放比例 */
+const MIN_SCALE = 0.5;
+
+/** 最大缩放比例 */
+const MAX_SCALE = 1;
+
+/** 视口尺寸缓存 */
+let cachedViewportSize = {
+  width: typeof window !== 'undefined' ? window.innerWidth : 1920,
+  height: typeof window !== 'undefined' ? window.innerHeight : 1080,
+};
+
+/** 服务端渲染默认视口 */
+const serverSnapshot = { width: 1920, height: 1080 };
+
+/** 更新视口尺寸缓存 */
+const updateViewportCache = () => {
+  cachedViewportSize = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
+};
+
+/** 获取视口尺寸（返回缓存对象，确保引用稳定） */
+const getViewportSize = () => cachedViewportSize;
+
+/** 获取服务端视口快照 */
+const getServerSnapshot = () => serverSnapshot;
+
+/** 订阅视口变化 */
+const subscribeToViewport = (callback: () => void) => {
+  const handleResize = () => {
+    updateViewportCache();
+    callback();
+  };
+  window.addEventListener('resize', handleResize);
+  return () => window.removeEventListener('resize', handleResize);
+};
 
 /** 大卡片面积阈值 */
 const LARGE_AREA_THRESHOLD = 60000;
@@ -309,7 +357,7 @@ const calculatePositionScore = (
  * 4. 小卡片填补空隙
  * 5. 综合考虑黄金比例、视觉平衡、紧凑度和对齐
  */
-const calculateAestheticLayout = (cards: CardConfig[]): LayoutResult => {
+const calculateAestheticLayout = (cards: CardConfig[]): BaseLayoutResult => {
   const positions: Record<string, CardPosition> = {};
   const placedCards: CardPosition[] = [];
 
@@ -397,6 +445,31 @@ const calculateAestheticLayout = (cards: CardConfig[]): LayoutResult => {
 };
 
 /**
+ * 计算适配视口的缩放比例
+ * @param layoutWidth 布局宽度
+ * @param layoutHeight 布局高度
+ * @param viewportWidth 视口宽度
+ * @param viewportHeight 视口高度
+ * @returns 缩放比例
+ */
+const calculateScale = (
+  layoutWidth: number,
+  layoutHeight: number,
+  viewportWidth: number,
+  viewportHeight: number
+): number => {
+  const availableWidth = viewportWidth - VIEWPORT_PADDING * 2;
+  const availableHeight = viewportHeight - VIEWPORT_PADDING * 2;
+
+  const scaleX = availableWidth / layoutWidth;
+  const scaleY = availableHeight / layoutHeight;
+
+  const scale = Math.min(scaleX, scaleY, MAX_SCALE);
+
+  return Math.max(scale, MIN_SCALE);
+};
+
+/**
  * 随机布局 Hook
  * @param cards 卡片配置列表
  * @returns 布局结果和刷新方法
@@ -404,10 +477,28 @@ const calculateAestheticLayout = (cards: CardConfig[]): LayoutResult => {
 export const useRandomLayout = (cards: CardConfig[]) => {
   const [layoutKey, setLayoutKey] = useState(0);
 
+  /** 订阅视口尺寸变化 */
+  const viewport = useSyncExternalStore(
+    subscribeToViewport,
+    getViewportSize,
+    getServerSnapshot
+  );
+
   const layout = useMemo(() => {
-    return calculateAestheticLayout(cards);
+    const baseLayout = calculateAestheticLayout(cards);
+    const scale = calculateScale(
+      baseLayout.totalWidth,
+      baseLayout.totalHeight,
+      viewport.width,
+      viewport.height
+    );
+
+    return {
+      ...baseLayout,
+      scale,
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cards, layoutKey]);
+  }, [cards, layoutKey, viewport.width, viewport.height]);
 
   const refreshLayout = useCallback(() => {
     setLayoutKey((prev) => prev + 1);
