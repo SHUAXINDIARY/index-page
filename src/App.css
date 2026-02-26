@@ -605,6 +605,11 @@ body {
     gap: var(--spacing-xs);
   }
 
+  /* 移动端隐藏重新布局按钮 */
+  .fixed-toolbar .shuffle-btn {
+    display: none;
+  }
+
   .toolbar-badge {
     padding: 6px 10px;
     font-size: 10px;

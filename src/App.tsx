@@ -139,7 +139,7 @@ const App = () => {
         <div className="fixed-toolbar">
           <ThemeToggle variant="badge" />
           <button
-            className="toolbar-badge"
+            className="toolbar-badge shuffle-btn"
             onClick={refreshLayout}
             title="重新布局 (Cmd/Ctrl + R)"
           >
@@ -235,7 +235,7 @@ const App = () => {
       <div className="fixed-toolbar">
         <ThemeToggle variant="badge" />
         <button
-          className="toolbar-badge"
+          className="toolbar-badge shuffle-btn"
           onClick={refreshLayout}
           title="重新布局 (Cmd/Ctrl + R)"
         >

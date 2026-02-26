@@ -29,6 +29,35 @@
   z-index: 1000;
 }
 
+/* 移动端蒙层 */
+.theme-panel-overlay {
+  display: none;
+}
+
+/* 移动端面板 - 全屏居中展示 */
+@media (max-width: 768px) {
+  .theme-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    min-width: 280px;
+    max-width: calc(100vw - 32px);
+    padding: var(--spacing-xl);
+  }
+
+  /* 移动端蒙层 - 点击可关闭 */
+  .theme-panel-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: var(--color-overlay-light);
+    z-index: 999;
+  }
+}
+
 /* 面板分区 */
 .theme-panel-section {
   display: flex;

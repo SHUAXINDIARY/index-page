@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Sun, Moon, Monitor } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import './ThemeToggle.css';
 
 /** 配色选项配置 */
@@ -13,11 +14,19 @@ const COLOR_OPTIONS = [
   { id: 'sunset' as const, label: '日落', color: '#E67E22' },
 ] as const;
 
-/** 面板弹出动画配置 */
-const PANEL_ANIMATION = {
+/** PC 端面板弹出动画配置 */
+const PANEL_ANIMATION_PC = {
   initial: { opacity: 0, scale: 0.9, y: 10 },
   animate: { opacity: 1, scale: 1, y: 0 },
   exit: { opacity: 0, scale: 0.9, y: 10 },
+  transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] as const },
+};
+
+/** 移动端面板弹出动画配置 - 不使用 transform 避免覆盖 CSS 居中定位 */
+const PANEL_ANIMATION_MOBILE = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
   transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] as const },
 };
 
@@ -29,12 +38,16 @@ interface ThemeToggleProps {
 
 export const ThemeToggle = ({ variant = 'icon' }: ThemeToggleProps) => {
   const { mode, resolvedMode, color, setMode, setColor } = useTheme();
+  const isMobile = useIsMobile();
 
   /** 面板是否打开 */
   const [isOpen, setIsOpen] = useState(false);
 
   /** 组件容器 ref，用于检测外部点击 */
   const containerRef = useRef<HTMLDivElement>(null);
+
+  /** 根据设备选择动画配置 */
+  const panelAnimation = isMobile ? PANEL_ANIMATION_MOBILE : PANEL_ANIMATION_PC;
 
   /** 切换面板开关 */
   const togglePanel = useCallback(() => {
@@ -58,14 +71,31 @@ export const ThemeToggle = ({ variant = 'icon' }: ThemeToggleProps) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
+  /** 关闭面板 */
+  const closePanel = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
   return (
     <div className="theme-toggle-container" ref={containerRef}>
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            className="theme-panel"
-            {...PANEL_ANIMATION}
-          >
+          <>
+            {/* 移动端蒙层 - 点击关闭 */}
+            {isMobile && (
+              <motion.div
+                className="theme-panel-overlay"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={closePanel}
+              />
+            )}
+            <motion.div
+              className="theme-panel"
+              {...panelAnimation}
+            >
             {/* 模式切换 */}
             <div className="theme-panel-section">
               <div className="theme-mode-buttons">
@@ -114,7 +144,8 @@ export const ThemeToggle = ({ variant = 'icon' }: ThemeToggleProps) => {
                 ))}
               </div>
             </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
