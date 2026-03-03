@@ -30,7 +30,7 @@ const CARD_SIZES: Record<string, { width: number; height: number }> = {
   worldMap: { width: 320, height: 200 },
   location: { width: 120, height: 40 },
   clock: { width: 195, height: 72 },
-  calendar: { width: 300, height: 301 },
+  calendar: { width: 300, height: 330 },
   music: { width: 320, height: 86 },
 };
 
