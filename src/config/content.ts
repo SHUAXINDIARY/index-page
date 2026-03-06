@@ -169,7 +169,7 @@ export const contentConfig: ContentConfig = {
     {
       icon: 'Photography',
       label: '摄影',
-      url: 'https://gallary.shuaxinjs.cn/',
+      url: 'https://gallery.shuaxinjs.cn/',
     },
     {
       icon: 'Ark',
