@@ -3,19 +3,17 @@ import { UserCard } from './components/UserCard';
 import { ImageCard } from './components/ImageCard';
 import { WelcomeCard } from './components/WelcomeCard';
 import { Clock } from './components/Clock';
-import { Calendar } from './components/Calendar';
 import { ActionButton } from './components/ActionButton';
 import { ArticleCard } from './components/ArticleCard';
 import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
-import { WorldMap } from './components/WorldMap';
 import { ThemeToggle } from './components/ThemeToggle';
 import { contentConfig } from './config/content';
 import { LocateFixed, Github, Shuffle } from 'lucide-react';
 import blogData from './config/blog-data.json';
 import { useRandomLayout, type CardConfig } from './hooks/useRandomLayout';
 import { useIsMobile } from './hooks/useIsMobile';
-import { useMemo, type CSSProperties } from 'react';
+import { lazy, Suspense, useMemo, type CSSProperties } from 'react';
 
 /** GitHub 仓库地址 */
 const GITHUB_REPO_URL = 'https://github.com/SHUAXINDIARY/index-page';
@@ -47,6 +45,38 @@ const MOBILE_CARD_ORDER = [
   'worldMap',
   'social',
 ] as const;
+
+/** 延迟加载日历组件，避免阻塞首屏渲染 */
+const LazyCalendar = lazy(async () => {
+  const module = await import('./components/Calendar');
+  return { default: module.Calendar };
+});
+
+/** 延迟加载地图组件，避免 maplibre 占用首屏主线程 */
+const LazyWorldMap = lazy(async () => {
+  const module = await import('./components/WorldMap');
+  return { default: module.WorldMap };
+});
+
+/** 延迟组件占位卡片 ID 类型 */
+type DeferredCardId = 'calendar' | 'worldMap';
+
+/** 延迟加载期间的轻量占位，保持布局稳定 */
+const DeferredCardFallback = ({ cardId }: { cardId: DeferredCardId }) => {
+  const cardSize = CARD_SIZES[cardId];
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        width: '100%',
+        height: '100%',
+        minHeight: cardSize.height,
+        borderRadius: 16,
+        background: 'var(--card-bg-color, rgba(127, 127, 127, 0.12))',
+      }}
+    />
+  );
+};
 
 const App = () => {
   const isMobile = useIsMobile();
@@ -104,13 +134,21 @@ const App = () => {
       case 'welcome':
         return <WelcomeCard config={contentConfig.welcome} />;
       case 'worldMap':
-        return contentConfig.worldMap ? <WorldMap config={contentConfig.worldMap} /> : null;
+        return contentConfig.worldMap ? (
+          <Suspense fallback={<DeferredCardFallback cardId="worldMap" />}>
+            <LazyWorldMap config={contentConfig.worldMap} />
+          </Suspense>
+        ) : null;
       case 'location':
         return <ActionButton icon={<LocateFixed size={16} />} label="中国 | 北京" />;
       case 'clock':
         return <Clock />;
       case 'calendar':
-        return <Calendar />;
+        return (
+          <Suspense fallback={<DeferredCardFallback cardId="calendar" />}>
+            <LazyCalendar />
+          </Suspense>
+        );
       case 'music':
         return <MusicPlayer config={contentConfig.music} />;
       default:
@@ -206,7 +244,9 @@ const App = () => {
         {/* World Map */}
         {contentConfig.worldMap && (
           <div style={getCardStyle('worldMap')}>
-            <WorldMap config={contentConfig.worldMap} />
+            <Suspense fallback={<DeferredCardFallback cardId="worldMap" />}>
+              <LazyWorldMap config={contentConfig.worldMap} />
+            </Suspense>
           </div>
         )}
 
@@ -222,7 +262,9 @@ const App = () => {
 
         {/* Calendar */}
         <div style={getCardStyle('calendar')}>
-          <Calendar />
+          <Suspense fallback={<DeferredCardFallback cardId="calendar" />}>
+            <LazyCalendar />
+          </Suspense>
         </div>
 
         {/* Music Player */}
