@@ -1,5 +1,6 @@
 .calendar-card {
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   padding: var(--spacing-xl);
   overflow: hidden;
 }

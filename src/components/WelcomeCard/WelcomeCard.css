@@ -1,7 +1,8 @@
 .welcome-card {
   text-align: center;
   padding: 32px var(--spacing-xl);
-  width: 320px;
+  width: 100%;
+  max-width: 320px;
 }
 
 .welcome-avatar {
@@ -38,6 +39,10 @@
   color: var(--color-secondary);
   margin: 0;
   line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .highlight {

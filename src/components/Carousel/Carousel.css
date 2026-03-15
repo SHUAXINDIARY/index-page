@@ -59,6 +59,14 @@
   cursor: pointer;
   padding: 0;
   transition: background-color 0.2s ease;
+  position: relative;
+}
+
+/* 扩大触控热区到 44px */
+.carousel-indicator::before {
+  content: '';
+  position: absolute;
+  inset: -18px -10px;
 }
 
 .carousel-indicator:hover {
@@ -158,8 +166,8 @@
 /* 响应式设计 */
 @media (max-width: 768px) {
   .carousel-fullscreen-close {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     top: 16px;
     right: 16px;
   }

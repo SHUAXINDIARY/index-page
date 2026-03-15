@@ -1,5 +1,52 @@
 # 更新日志
 
+## 2026-03-15
+
+### 🔧 响应式适配优化
+
+全面提升跨设备体验，新增平板端布局，优化触控交互和文本溢出处理。
+
+**平板端适配：**
+- ✅ 新增 `useBreakpoint` Hook，替代原有 `useIsMobile`，支持 mobile / tablet / desktop 三档断点检测
+- ✅ 平板端（768-1024px）采用两列网格布局，大卡片横跨两列
+- ✅ ThemeToggle 面板在平板端同样使用居中蒙层模式
+
+**触控目标优化（所有可交互元素 ≥ 44x44px）：**
+- ✅ SocialLinks 图标从 36px 升至 40px（含 padding 达 64px）
+- ✅ MusicPlayer 上一曲/下一曲按钮从 36px 升至 44px
+- ✅ ThemeToggle 配色圆点从 28px 升至 32px + 隐形触控扩展区域
+- ✅ Carousel / ImageCard 全屏关闭按钮移动端统一 44px
+- ✅ Carousel 指示器添加隐形触控热区
+- ✅ IframeModal 关闭和新标签按钮从 36px 升至 44px
+- ✅ UserCard 菜单项添加 min-height: 44px
+- ✅ ActionButton 添加 min-height: 44px
+- ✅ 移动端工具栏按钮 min-height: 44px
+
+**文本溢出处理：**
+- ✅ ArticleCard 标题两行截断，分类单行省略
+- ✅ MusicPlayer 标题单行省略，info 区域 min-width: 0 防溢出
+- ✅ WelcomeCard 介绍文案四行截断
+- ✅ RecommendCard 名称单行省略，描述三行截断
+
+**卡片宽度自适应：**
+- ✅ 所有卡片组件从固定 `width` 改为 `width: 100% + max-width`，在紧凑布局中自适应容器宽度
+
+**移动端横屏：**
+- ✅ 横屏模式自动切换为两列网格布局
+
+**安全区域适配：**
+- ✅ 底部工具栏和容器 padding 使用 `env(safe-area-inset-bottom)` 适配刘海屏/圆角屏
+- ✅ 使用 `100dvh` 替代 `100vh` 避免移动端浏览器地址栏遮挡
+
+**影响的文件：**
+- 新增 `src/hooks/useBreakpoint.ts` - 三档断点检测 Hook
+- `src/App.tsx` - 重构为 compact 布局统一移动端/平板端
+- `src/App.css` - 紧凑布局、平板两列网格、横屏适配、安全区域
+- `src/components/ThemeToggle/` - 使用 useBreakpoint 替代 useIsMobile
+- 各组件 CSS - 触控目标、文本溢出、宽度自适应优化
+
+---
+
 ## 2026-02-09
 
 ### ✨ 新增功能

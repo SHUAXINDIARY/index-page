@@ -34,8 +34,8 @@
   display: none;
 }
 
-/* 移动端面板 - 全屏居中展示 */
-@media (max-width: 768px) {
+/* 移动端/平板端面板 - 全屏居中展示 */
+@media (max-width: 1024px) {
   .theme-panel {
     position: fixed;
     top: 50%;
@@ -48,7 +48,7 @@
     padding: var(--spacing-xl);
   }
 
-  /* 移动端蒙层 - 点击可关闭 */
+  /* 触控设备蒙层 - 点击可关闭 */
   .theme-panel-overlay {
     display: block;
     position: fixed;
@@ -153,10 +153,10 @@
   justify-content: flex-start;
 }
 
-/* 配色圆点 */
+/* 配色圆点 - 视觉 32px，触控区域 44px */
 .theme-color-dot {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-full);
   border: 2px solid var(--color-border);
   background: var(--dot-color);
@@ -165,6 +165,12 @@
   transition: all var(--duration-fast) var(--easing-default);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   position: relative;
+}
+
+.theme-color-dot::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
 }
 
 .theme-color-dot:hover {

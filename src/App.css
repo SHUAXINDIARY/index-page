@@ -477,18 +477,20 @@ body {
 }
 
 /* ========================================
-   移动端布局
+   紧凑布局（移动端 + 平板端共用）
    ======================================== */
-.app-container--mobile {
+.app-container--compact {
   min-height: 100vh;
+  min-height: 100dvh;
   display: block;
   padding: 16px;
-  padding-bottom: 80px;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
   overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
-.mobile-layout {
+.compact-layout {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -497,63 +499,94 @@ body {
   align-items: center;
 }
 
-.mobile-card {
+.compact-card {
   width: 100%;
-  max-width: 360px;
+  max-width: 400px;
   display: flex;
   justify-content: center;
 }
 
-/* 移动端卡片自适应宽度 */
-.mobile-card > * {
+.compact-card > * {
   width: 100% !important;
   height: auto !important;
 }
 
-/* 特定卡片的移动端高度调整 */
-.mobile-card--welcome > * {
+/* 特定卡片的最小高度 */
+.compact-card--welcome > * {
   min-height: 280px;
 }
 
-.mobile-card--user > * {
+.compact-card--user > * {
   min-height: 280px;
 }
 
-.mobile-card--calendar > * {
+.compact-card--calendar > * {
   min-height: 280px;
 }
 
-.mobile-card--image > * {
+.compact-card--image > * {
   min-height: 160px;
 }
 
-.mobile-card--worldMap > * {
+.compact-card--worldMap > * {
   min-height: 200px;
 }
 
-.mobile-card--music > * {
+.compact-card--music > * {
   min-height: 80px;
 }
 
-.mobile-card--article > * {
+.compact-card--article > * {
   min-height: 140px;
 }
 
-.mobile-card--social > * {
+.compact-card--social > * {
   min-height: auto;
 }
 
-/* 小型卡片在移动端的行内布局 */
-.mobile-card--clock,
-.mobile-card--location {
+/* 小型卡片行内布局 */
+.compact-card--clock,
+.compact-card--location {
   max-width: fit-content;
 }
 
-.mobile-card--clock > *,
-.mobile-card--location > * {
+.compact-card--clock > *,
+.compact-card--location > * {
   width: auto !important;
 }
 
+/* ========================================
+   平板端布局 - 两列网格
+   ======================================== */
+.app-container--tablet .compact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 720px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.app-container--tablet .compact-card {
+  max-width: 100%;
+}
+
+/* 大卡片横跨两列 */
+.app-container--tablet .compact-card--welcome,
+.app-container--tablet .compact-card--worldMap {
+  grid-column: span 2;
+}
+
+/* 小型卡片在平板端不强制宽度 */
+.app-container--tablet .compact-card--clock,
+.app-container--tablet .compact-card--location {
+  max-width: 100%;
+  justify-self: start;
+}
+
+/* ========================================
+   中等屏幕适配 (≤1200px)
+   ======================================== */
 @media (max-width: 1200px) {
   .content-grid {
     grid-template-columns: 1fr;
@@ -585,18 +618,20 @@ body {
   }
 }
 
-/* 移动端专用媒体查询 */
-@media (max-width: 768px) {
-  .app-container--mobile {
+/* ========================================
+   移动端专用媒体查询 (≤767px)
+   ======================================== */
+@media (max-width: 767px) {
+  .app-container--compact {
     padding: 12px;
-    padding-bottom: 70px;
+    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
   }
 
-  .mobile-layout {
+  .compact-layout {
     gap: 12px;
   }
 
-  .mobile-card {
+  .compact-card {
     max-width: 100%;
   }
 
@@ -607,6 +642,7 @@ body {
     justify-content: center;
     flex-wrap: wrap;
     gap: var(--spacing-xs);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   /* 移动端隐藏重新布局按钮 */
@@ -615,8 +651,36 @@ body {
   }
 
   .toolbar-badge {
-    padding: 6px 10px;
-    font-size: 10px;
+    padding: 8px 12px;
+    font-size: 11px;
+    min-height: 44px;
+  }
+}
+
+/* ========================================
+   移动端横屏
+   ======================================== */
+@media (max-width: 767px) and (orientation: landscape) {
+  .app-container--compact {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .compact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    max-width: 100%;
+    align-items: start;
+  }
+
+  .compact-card--welcome {
+    grid-column: span 2;
+  }
+
+  .compact-card--clock,
+  .compact-card--location {
+    max-width: 100%;
+    justify-self: start;
   }
 }
 

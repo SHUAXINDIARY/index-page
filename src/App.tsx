@@ -12,7 +12,7 @@ import { contentConfig } from './config/content';
 import { LocateFixed, Github, Shuffle } from 'lucide-react';
 import blogData from './config/blog-data.json';
 import { useRandomLayout, type CardConfig } from './hooks/useRandomLayout';
-import { useIsMobile } from './hooks/useIsMobile';
+import { useBreakpoint } from './hooks/useBreakpoint';
 import { lazy, Suspense, useMemo, type CSSProperties } from 'react';
 import { motion } from 'motion/react';
 
@@ -33,8 +33,8 @@ const CARD_SIZES: Record<string, { width: number; height: number }> = {
   music: { width: 320, height: 86 },
 };
 
-/** 移动端布局 - 渲染顺序 */
-const MOBILE_CARD_ORDER = [
+/** 移动端/平板端布局 - 渲染顺序 */
+const COMPACT_CARD_ORDER = [
   'welcome',
   'user',
   'clock',
@@ -80,7 +80,10 @@ const DeferredCardFallback = ({ cardId }: { cardId: DeferredCardId }) => {
 };
 
 const App = () => {
-  const isMobile = useIsMobile();
+  const breakpoint = useBreakpoint();
+
+  /** 是否使用紧凑布局（移动端 + 平板端） */
+  const isCompact = breakpoint !== 'desktop';
 
   /** 卡片配置列表 */
   const cardConfigs: CardConfig[] = useMemo(
@@ -171,14 +174,16 @@ const App = () => {
     }
   };
 
-  /** 移动端布局 */
-  if (isMobile) {
+  /** 移动端 & 平板端紧凑布局 */
+  if (isCompact) {
     /** 可见卡片索引计数器 */
     let visibleIndex = 0;
     return (
-      <div className="app-container app-container--mobile">
-        <div className="mobile-layout">
-          {MOBILE_CARD_ORDER.map((cardId) => {
+      <div
+        className={`app-container app-container--compact ${breakpoint === 'tablet' ? 'app-container--tablet' : 'app-container--mobile'}`}
+      >
+        <div className="compact-layout">
+          {COMPACT_CARD_ORDER.map((cardId) => {
             if (cardId === 'worldMap' && !contentConfig.worldMap) return null;
             const content = renderCard(cardId);
             if (!content) return null;
@@ -186,7 +191,7 @@ const App = () => {
             return (
               <motion.div
                 key={cardId}
-                className={`mobile-card mobile-card--${cardId}`}
+                className={`compact-card compact-card--${cardId}`}
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{

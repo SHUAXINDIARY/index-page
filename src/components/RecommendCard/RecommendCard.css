@@ -1,5 +1,6 @@
 .recommend-card {
-  width: 320px;
+  width: 100%;
+  max-width: 320px;
 }
 
 .recommend-header {
@@ -36,6 +37,7 @@
 
 .recommend-info {
   flex: 1;
+  min-width: 0;
 }
 
 .recommend-name {
@@ -43,6 +45,9 @@
   font-weight: 600;
   color: var(--color-recommend-name);
   margin: 0 0 6px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .recommend-description {
@@ -50,5 +55,9 @@
   color: var(--color-recommend-desc);
   margin: 0;
   line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 

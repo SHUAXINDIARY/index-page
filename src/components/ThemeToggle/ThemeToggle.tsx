@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Sun, Moon, Monitor } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
-import { useIsMobile } from '../../hooks/useIsMobile';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 import './ThemeToggle.css';
 
 /** 配色选项配置 */
@@ -38,7 +38,10 @@ interface ThemeToggleProps {
 
 export const ThemeToggle = ({ variant = 'icon' }: ThemeToggleProps) => {
   const { mode, resolvedMode, color, setMode, setColor } = useTheme();
-  const isMobile = useIsMobile();
+  const breakpoint = useBreakpoint();
+
+  /** 是否为触控优先设备（移动端/平板端） */
+  const isTouchFirst = breakpoint !== 'desktop';
 
   /** 面板是否打开 */
   const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +50,7 @@ export const ThemeToggle = ({ variant = 'icon' }: ThemeToggleProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   /** 根据设备选择动画配置 */
-  const panelAnimation = isMobile ? PANEL_ANIMATION_MOBILE : PANEL_ANIMATION_PC;
+  const panelAnimation = isTouchFirst ? PANEL_ANIMATION_MOBILE : PANEL_ANIMATION_PC;
 
   /** 切换面板开关 */
   const togglePanel = useCallback(() => {
@@ -81,8 +84,8 @@ export const ThemeToggle = ({ variant = 'icon' }: ThemeToggleProps) => {
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* 移动端蒙层 - 点击关闭 */}
-            {isMobile && (
+            {/* 触控设备蒙层 - 点击关闭 */}
+            {isTouchFirst && (
               <motion.div
                 className="theme-panel-overlay"
                 initial={{ opacity: 0 }}
