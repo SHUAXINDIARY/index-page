@@ -20,5 +20,20 @@
   font-weight: 300;
   color: var(--color-secondary);
   letter-spacing: 1px;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.clock-digit-slot {
+  display: inline-block;
+  position: relative;
+  width: 0.62em;
+  overflow: hidden;
+}
+
+.clock-digit {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
 }
 

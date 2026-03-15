@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import { Play, Pause, SkipForward, Loader2 } from 'lucide-react';
 import { Card } from '../Card';
 import './MusicPlayer.css';
@@ -157,32 +158,69 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
         </h4>
         <div className="music-progress">
           <div 
-            className="music-progress-bar" 
+            className={`music-progress-bar${isPlaying ? ' music-progress-bar--playing' : ''}`}
             style={{ width: `${isPlaying ? progress : config.progress}%` }}
-          ></div>
+          />
         </div>
       </div>
       <div className="music-controls">
-        <button className="music-play-button" onClick={togglePlay} disabled={isLoading}>
-          {isLoading ? (
-            <Loader2 size={24} className="music-loading-icon" />
-          ) : isPlaying ? (
-            <Pause size={24} fill="white" />
-          ) : (
-            <Play size={24} fill="white" />
-          )}
-        </button>
-        <button 
-          className="music-next-button" 
+        <motion.button
+          className="music-play-button"
+          onClick={togglePlay}
+          disabled={isLoading}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            {isLoading ? (
+              <motion.span
+                key="loading"
+                className="music-icon-wrapper"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.5, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <Loader2 size={24} className="music-loading-icon" />
+              </motion.span>
+            ) : isPlaying ? (
+              <motion.span
+                key="pause"
+                className="music-icon-wrapper"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.5, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <Pause size={24} fill="white" />
+              </motion.span>
+            ) : (
+              <motion.span
+                key="play"
+                className="music-icon-wrapper"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.5, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <Play size={24} fill="white" />
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.button>
+        <motion.button
+          className="music-next-button"
           onClick={playNext}
           disabled={isLoading || !config.urlList || config.urlList.length === 0}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
         >
           {isLoading ? (
             <Loader2 size={20} className="music-loading-icon" />
           ) : (
             <SkipForward size={20} />
           )}
-        </button>
+        </motion.button>
       </div>
     </Card>
   );

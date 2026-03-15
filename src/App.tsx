@@ -14,6 +14,7 @@ import blogData from './config/blog-data.json';
 import { useRandomLayout, type CardConfig } from './hooks/useRandomLayout';
 import { useIsMobile } from './hooks/useIsMobile';
 import { lazy, Suspense, useMemo, type CSSProperties } from 'react';
+import { motion } from 'motion/react';
 
 /** GitHub 仓库地址 */
 const GITHUB_REPO_URL = 'https://github.com/SHUAXINDIARY/index-page';
@@ -89,27 +90,39 @@ const App = () => {
       { id: 'social', size: CARD_SIZES.social },
       { id: 'image', size: CARD_SIZES.image },
       { id: 'welcome', size: CARD_SIZES.welcome },
-      ...(contentConfig.worldMap ? [{ id: 'worldMap', size: CARD_SIZES.worldMap }] : []),
+      ...(contentConfig.worldMap
+        ? [{ id: 'worldMap', size: CARD_SIZES.worldMap }]
+        : []),
       { id: 'location', size: CARD_SIZES.location },
       { id: 'clock', size: CARD_SIZES.clock },
       { id: 'calendar', size: CARD_SIZES.calendar },
       { id: 'music', size: CARD_SIZES.music },
     ],
-    []
+    [],
   );
 
   const { layout, refreshLayout } = useRandomLayout(cardConfigs);
 
-  /** 生成卡片样式 - PC 端随机布局 */
-  const getCardStyle = (cardId: string): CSSProperties => {
+  /** 生成卡片位置目标值 - PC 端随机布局 */
+  const getCardMotionProps = (cardId: string) => {
     const pos = layout.positions[cardId];
-    if (!pos) return {};
+    if (!pos) return { style: {} as CSSProperties, animate: {} };
     return {
-      position: 'absolute',
-      left: pos.x,
-      top: pos.y,
-      width: pos.width,
-      height: pos.height,
+      style: {
+        position: 'absolute' as const,
+        width: pos.width,
+        height: pos.height,
+      },
+      animate: {
+        x: pos.x,
+        y: pos.y,
+      },
+      transition: {
+        type: 'spring' as const,
+        stiffness: 200,
+        damping: 28,
+        mass: 0.8,
+      },
     };
   };
 
@@ -140,7 +153,9 @@ const App = () => {
           </Suspense>
         ) : null;
       case 'location':
-        return <ActionButton icon={<LocateFixed size={16} />} label="中国 | 北京" />;
+        return (
+          <ActionButton icon={<LocateFixed size={16} />} label="中国 | 北京" />
+        );
       case 'clock':
         return <Clock />;
       case 'calendar':
@@ -158,6 +173,8 @@ const App = () => {
 
   /** 移动端布局 */
   if (isMobile) {
+    /** 可见卡片索引计数器 */
+    let visibleIndex = 0;
     return (
       <div className="app-container app-container--mobile">
         <div className="mobile-layout">
@@ -165,16 +182,32 @@ const App = () => {
             if (cardId === 'worldMap' && !contentConfig.worldMap) return null;
             const content = renderCard(cardId);
             if (!content) return null;
+            const staggerIndex = visibleIndex++;
             return (
-              <div key={cardId} className={`mobile-card mobile-card--${cardId}`}>
+              <motion.div
+                key={cardId}
+                className={`mobile-card mobile-card--${cardId}`}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  delay: staggerIndex * 0.06,
+                  ease: [0.25, 1, 0.5, 1],
+                }}
+              >
                 {content}
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* 底部固定工具栏 */}
-        <div className="fixed-toolbar">
+        <motion.div
+          className="fixed-toolbar"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6, ease: [0.25, 1, 0.5, 1] }}
+        >
           <ThemeToggle variant="badge" />
           <button
             className="toolbar-badge shuffle-btn"
@@ -193,7 +226,7 @@ const App = () => {
             <Github size={14} />
             <span>使用同款</span>
           </a>
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -212,69 +245,74 @@ const App = () => {
         }}
       >
         {/* User Card */}
-        <div style={getCardStyle('user')}>
+        <motion.div {...getCardMotionProps('user')}>
           <UserCard config={contentConfig.user} />
-        </div>
+        </motion.div>
 
         {/* Article Card */}
-        <div style={getCardStyle('article')}>
+        <motion.div {...getCardMotionProps('article')}>
           <ArticleCard
             config={{
               ...contentConfig.article,
               ...(blogData.latestPost || {}),
             }}
           />
-        </div>
+        </motion.div>
 
         {/* Social Links */}
-        <div style={getCardStyle('social')}>
+        <motion.div {...getCardMotionProps('social')}>
           <SocialLinks links={contentConfig.socialLinks} />
-        </div>
+        </motion.div>
 
         {/* Image Card */}
-        <div style={getCardStyle('image')}>
+        <motion.div {...getCardMotionProps('image')}>
           <ImageCard images={contentConfig.images} />
-        </div>
+        </motion.div>
 
         {/* Welcome Card */}
-        <div style={getCardStyle('welcome')}>
+        <motion.div {...getCardMotionProps('welcome')}>
           <WelcomeCard config={contentConfig.welcome} />
-        </div>
+        </motion.div>
 
         {/* World Map */}
         {contentConfig.worldMap && (
-          <div style={getCardStyle('worldMap')}>
+          <motion.div {...getCardMotionProps('worldMap')}>
             <Suspense fallback={<DeferredCardFallback cardId="worldMap" />}>
               <LazyWorldMap config={contentConfig.worldMap} />
             </Suspense>
-          </div>
+          </motion.div>
         )}
 
         {/* Location Button */}
-        <div style={getCardStyle('location')}>
+        <motion.div {...getCardMotionProps('location')}>
           <ActionButton icon={<LocateFixed size={16} />} label="中国 | 北京" />
-        </div>
+        </motion.div>
 
         {/* Clock */}
-        <div style={getCardStyle('clock')}>
+        <motion.div {...getCardMotionProps('clock')}>
           <Clock />
-        </div>
+        </motion.div>
 
         {/* Calendar */}
-        <div style={getCardStyle('calendar')}>
+        <motion.div {...getCardMotionProps('calendar')}>
           <Suspense fallback={<DeferredCardFallback cardId="calendar" />}>
             <LazyCalendar />
           </Suspense>
-        </div>
+        </motion.div>
 
         {/* Music Player */}
-        <div style={getCardStyle('music')}>
+        <motion.div {...getCardMotionProps('music')}>
           <MusicPlayer config={contentConfig.music} />
-        </div>
+        </motion.div>
       </div>
 
       {/* 底部固定工具栏 */}
-      <div className="fixed-toolbar">
+      <motion.div
+        className="fixed-toolbar"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.6, ease: [0.25, 1, 0.5, 1] }}
+      >
         <ThemeToggle variant="badge" />
         <button
           className="toolbar-badge shuffle-btn"
@@ -293,7 +331,7 @@ const App = () => {
           <Github size={14} />
           <span>使用同款</span>
         </a>
-      </div>
+      </motion.div>
     </div>
   );
 };
