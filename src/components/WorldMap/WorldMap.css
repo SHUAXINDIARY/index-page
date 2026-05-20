@@ -12,118 +12,6 @@
   border-radius: var(--radius-xl);
 }
 
-/* MapLibre 样式覆盖 */
-.world-map-container :global(.maplibregl-ctrl-top-right) {
-  top: var(--spacing-md);
-  right: var(--spacing-md);
-}
-
-.world-map-container :global(.maplibregl-ctrl) {
-  border-radius: var(--radius-sm);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.world-map-container :global(.maplibregl-popup-content) {
-  border-radius: var(--radius-sm);
-  padding: var(--spacing-md);
-  font-size: 14px;
-}
-
-.world-map-popup {
-  min-width: 120px;
-}
-
-.world-map-popup strong {
-  display: block;
-  margin-bottom: 4px;
-  /* color: var(--color-primary); */
-  color: black;
-  font-size: 14px;
-}
-
-.world-map-popup p {
-  margin: 0;
-  /* color: var(--color-secondary); */
-  color: #7b888e;
-  font-size: 12px;
-}
-
-.world-map-popup-link-row {
-  margin-top: var(--spacing-sm);
-}
-
-.world-map-popup-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-xs) 10px;
-  border-radius: var(--radius-sm);
-  background: var(--color-card);
-  color: var(--color-primary);
-  font-weight: 500;
-  font-size: 12px;
-  text-decoration: none;
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-glass);
-  transition: all var(--duration-fast) var(--easing-default);
-}
-
-.world-map-popup-link:hover {
-  background: var(--color-card-hover);
-  color: var(--color-accent);
-  transform: translateY(-1px);
-}
-
-.world-map-popup-link:active {
-  transform: scale(0.98);
-}
-
-/* 标记点容器样式 */
-.world-map-marker-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 标记点小圆点样式 */
-.world-map-marker-dot {
-  transition: transform var(--duration-fast) var(--easing-default),
-              box-shadow var(--duration-fast) var(--easing-default);
-}
-
-.world-map-marker-container:hover .world-map-marker-dot {
-  transform: scale(1.4);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-}
-
-/* 不同类型标记点的颜色 - 作为后备 */
-.world-map-marker-travel .world-map-marker-dot {
-  background-color: #ff8c42 !important;
-}
-
-.world-map-marker-residence .world-map-marker-dot {
-  background-color: #4a90e2 !important;
-}
-
-.world-map-marker-wish .world-map-marker-dot {
-  background-color: #ff6b9d !important;
-}
-
-.world-map-marker-airport .world-map-marker-dot {
-  background-color: #DDFF00 !important;
-}
-
-/* 隐藏 MapLibre 默认标记样式 */
-.maplibregl-marker {
-  background: none !important;
-  border: none !important;
-}
-
-.maplibregl-marker svg {
-  display: none !important;
-}
-
-/* 全屏按钮样式 */
 .world-map-fullscreen-button {
   position: absolute;
   top: var(--spacing-md);
@@ -133,7 +21,6 @@
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   background: var(--color-card);
-  /* color: var(--color-primary); */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -148,7 +35,6 @@
   transform: scale(1.1);
 }
 
-/* 图例基础样式（普通模式和全屏模式共用） */
 .world-map-legend,
 .world-map-fullscreen-legend {
   position: absolute;
@@ -164,7 +50,6 @@
   box-shadow: var(--shadow-glass);
 }
 
-/* 图例位置差异 */
 .world-map-legend {
   bottom: var(--spacing-lg);
   right: var(--spacing-lg);
@@ -206,12 +91,10 @@
 
 .world-map-legend-label {
   font-size: 12px;
-  /* color: var(--color-primary); */
-  color: black;
+  color: var(--color-primary);
   font-weight: 500;
 }
 
-/* 全屏地图样式 */
 .world-map-fullscreen {
   position: fixed;
   top: 0;
@@ -220,16 +103,6 @@
   bottom: 0;
   z-index: 9999;
   background: var(--color-overlay);
-  animation: world-map-fadeIn 0.3s ease;
-}
-
-@keyframes world-map-fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 .world-map-fullscreen-close {
@@ -241,6 +114,7 @@
   border-radius: var(--radius-full);
   border: none;
   background: rgba(255, 255, 255, 0.2);
+  color: var(--color-text-on-dark);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -257,7 +131,6 @@
   transform: scale(1.1);
 }
 
-/* 按钮 active 状态共用样式 */
 .world-map-fullscreen-button:active,
 .world-map-fullscreen-close:active,
 .world-map-legend-item:active {
@@ -270,13 +143,10 @@
   position: relative;
 }
 
-.world-map-fullscreen-container :global(.maplibregl-ctrl-top-right) {
-  top: 16px;
-  right: 64px;
-  z-index: 9999;
+.annotated-world-map--fullscreen::before {
+  inset: 2rem;
 }
 
-/* 响应式设计 */
 @media (max-width: 768px) {
   .world-map-card {
     height: 400px;
@@ -307,10 +177,5 @@
     height: 36px;
     top: 12px;
     left: 12px;
-  }
-
-  .world-map-fullscreen-container :global(.maplibregl-ctrl-top-right) {
-    top: 12px;
-    right: 56px;
   }
 }

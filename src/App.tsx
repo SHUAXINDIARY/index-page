@@ -53,7 +53,7 @@ const LazyCalendar = lazy(async () => {
   return { default: module.Calendar };
 });
 
-/** 延迟加载地图组件，避免 maplibre 占用首屏主线程 */
+/** 延迟加载地图组件，避免 Canvas 地图占用首屏主线程 */
 const LazyWorldMap = lazy(async () => {
   const module = await import('./components/WorldMap');
   return { default: module.WorldMap };

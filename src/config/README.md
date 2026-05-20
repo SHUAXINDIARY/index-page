@@ -101,38 +101,43 @@ images: Array<{
 
 ```typescript
 worldMap?: {
-  style?: string;                    // 地图样式 URL（可选，默认为 MapLibre 默认样式）
   markers?: Array<{
     name: string;                     // 地点名称
     lat: number;                      // 纬度
     lng: number;                      // 经度
     type: 'travel' | 'residence' | 'wish' | 'airport'; // 标记类型
     description?: string;             // 描述信息（可选）
+    imgUrl?: string;                  // 照片链接（可选）
+  }>;
+  routes?: Array<{                    // 可选航迹弧线
+    name: string;
+    startLat: number;
+    startLng: number;
+    endLat: number;
+    endLng: number;
+    scope: 'domestic' | 'international';
   }>;
   legend?: Array<{
-    type: 'travel' | 'residence' | 'wish' | 'airport'; // 类型
-    label: string;                    // 图例标签
+    type: 'travel' | 'residence' | 'wish' | 'airport';
+    label: string;
   }>;
 }
 ```
 
 **标记类型说明：**
-- `travel` - 旅行地点（橙色标记）
-- `residence` - 居住地点（蓝色标记）
-- `wish` - 愿望地点（粉色标记）
-- `airport` - 机场（灰色标记）
+- `travel` - 旅行地点（橙色）
+- `residence` - 居住地点（蓝色）
+- `wish` - 愿望地点（粉色）
+- `airport` - 机场（黄绿色）
 
 **功能说明：**
-- 🗺️ 基于 MapLibre GL 的交互式地图
-- 📍 支持多种类型的标记点，自动处理重叠问题
-- 🔍 支持缩放、拖拽、全屏查看
-- 💬 点击标记点显示地点信息弹窗
-- 🎨 可自定义地图样式（支持本地 JSON 文件或远程 URL）
+- 🗺️ Canvas + SVG 底图，随 `data-theme-mode` 切换深浅色
+- 📍 悬停 tooltip、键盘方向键聚焦标记
+- 🔍 滚轮缩放、放大后拖拽、全屏模式
 
 **示例配置：**
 ```typescript
 worldMap: {
-  style: '/positron.json', // 本地样式文件路径
   markers: [
     {
       name: '北京',

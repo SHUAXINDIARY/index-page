@@ -101,6 +101,37 @@
   --font-display: "Averia Gruesa Libre", cursive;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 
                "Liberation Mono", "Courier New", monospace;
+
+  /* 世界地图 Canvas（plane-list 风格底图） */
+  --world-map-bg:
+    radial-gradient(circle at 72% 28%, rgba(74, 144, 226, 0.12), transparent 12rem),
+    radial-gradient(circle at 18% 18%, rgba(78, 63, 66, 0.06), transparent 10rem),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(238, 238, 238, 0.98));
+  --world-map-frame: rgba(78, 63, 66, 0.12);
+  --world-map-vignette:
+    linear-gradient(to right, rgba(238, 238, 238, 0.5), transparent 18%, transparent 82%, rgba(238, 238, 238, 0.45)),
+    linear-gradient(to bottom, rgba(238, 238, 238, 0.35), transparent 28%, rgba(238, 238, 238, 0.3));
+  --world-map-tooltip-bg: rgba(255, 255, 255, 0.96);
+  --world-map-tooltip-border: rgba(78, 63, 66, 0.14);
+  --world-map-tooltip-shadow: 0 0.85rem 1.8rem rgba(78, 63, 66, 0.12);
+  --world-map-route-international: rgba(74, 144, 226, 0.55);
+  --world-map-route-domestic: rgba(123, 136, 142, 0.45);
+  --world-map-marker-travel-fill: #ff8c42;
+  --world-map-marker-travel-stroke: #ffffff;
+  --world-map-marker-travel-fill-active: #ff9f5c;
+  --world-map-marker-travel-stroke-active: #ffffff;
+  --world-map-marker-residence-fill: #4a90e2;
+  --world-map-marker-residence-stroke: #ffffff;
+  --world-map-marker-residence-fill-active: #5ba0f0;
+  --world-map-marker-residence-stroke-active: #ffffff;
+  --world-map-marker-wish-fill: #ff6b9d;
+  --world-map-marker-wish-stroke: #ffffff;
+  --world-map-marker-wish-fill-active: #ff85b0;
+  --world-map-marker-wish-stroke-active: #ffffff;
+  --world-map-marker-airport-fill: #c8d600;
+  --world-map-marker-airport-stroke: #4e3f42;
+  --world-map-marker-airport-fill-active: #d8e820;
+  --world-map-marker-airport-stroke-active: #4e3f42;
 }
 
 /* ========================================
@@ -170,6 +201,36 @@
   --color-recommend-avatar-bg: #2A2A40;
   --color-recommend-name: #E8E0E0;
   --color-recommend-desc: #9CA3AF;
+
+  --world-map-bg:
+    radial-gradient(circle at 72% 28%, rgba(93, 173, 226, 0.18), transparent 12rem),
+    radial-gradient(circle at 18% 18%, rgba(124, 200, 235, 0.1), transparent 10rem),
+    linear-gradient(135deg, rgba(26, 26, 46, 0.96), rgba(36, 36, 56, 0.88));
+  --world-map-frame: rgba(124, 200, 235, 0.12);
+  --world-map-vignette:
+    linear-gradient(to right, rgba(26, 26, 46, 0.42), transparent 18%, transparent 82%, rgba(26, 26, 46, 0.38)),
+    linear-gradient(to bottom, rgba(26, 26, 46, 0.3), transparent 28%, rgba(26, 26, 46, 0.26));
+  --world-map-tooltip-bg: rgba(36, 36, 56, 0.94);
+  --world-map-tooltip-border: rgba(255, 255, 255, 0.14);
+  --world-map-tooltip-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.34);
+  --world-map-route-international: rgba(158, 216, 242, 0.58);
+  --world-map-route-domestic: rgba(124, 200, 235, 0.4);
+  --world-map-marker-travel-fill: #ff8c42;
+  --world-map-marker-travel-stroke: rgba(255, 255, 255, 0.92);
+  --world-map-marker-travel-fill-active: #ffab6e;
+  --world-map-marker-travel-stroke-active: #ffffff;
+  --world-map-marker-residence-fill: #5ba0f0;
+  --world-map-marker-residence-stroke: rgba(255, 255, 255, 0.9);
+  --world-map-marker-residence-fill-active: #7cb8ff;
+  --world-map-marker-residence-stroke-active: #ffffff;
+  --world-map-marker-wish-fill: #ff6b9d;
+  --world-map-marker-wish-stroke: rgba(255, 255, 255, 0.9);
+  --world-map-marker-wish-fill-active: #ff8fb5;
+  --world-map-marker-wish-stroke-active: #ffffff;
+  --world-map-marker-airport-fill: #d8e820;
+  --world-map-marker-airport-stroke: rgba(26, 26, 46, 0.85);
+  --world-map-marker-airport-fill-active: #eeff40;
+  --world-map-marker-airport-stroke-active: #1a1a2e;
 }
 
 /* ========================================

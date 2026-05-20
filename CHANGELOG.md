@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-05-20
+
+### 🗺️ 世界地图：MapLibre → Canvas 底图
+
+- ✅ 移除 `maplibre-gl` 依赖，改用 [plane-list 地图组件](https://github.com/SHUAXINDIARY/plane-list/tree/main/src/components/map) 的 Canvas + Natural Earth SVG 方案
+- ✅ 支持滚轮缩放、放大后拖拽平移、标记悬停 tooltip、键盘方向键聚焦
+- ✅ 深浅色主题自动切换 `map.svg` / `map-light.svg`，跟随 `data-theme-mode`
+- ✅ 保留图例筛选、全屏模式、同坐标标记分散与照片链接
+
 ## 2026-03-15
 
 ### 🔧 响应式适配优化

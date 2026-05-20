@@ -21,7 +21,7 @@
 - **ImageCard** - 可复用的图片展示卡片
 - **Clock** - 实时数字时钟
 - **Calendar** - 月历组件，支持 ICS 文件解析，显示节假日标记，鼠标悬停显示节日信息
-- **WorldMap** - 交互式世界地图，基于 MapLibre GL，支持标记旅行地点、居住地等
+- **WorldMap** - Canvas 世界地图（Natural Earth SVG 底图），支持旅行/居住/机场等标记
 - **ActionButton** - 操作按钮组件
 - **ArticleCard** - 文章信息展示卡片
 - **RecommendCard** - 推荐内容卡片
@@ -115,19 +115,18 @@ import { Tooltip } from './components/Tooltip';
 ### WorldMap（世界地图组件）
 
 **功能特性：**
-- 🗺️ 基于 MapLibre GL 的交互式地图
-- 📍 支持多种类型的标记点（旅行、居住、愿望、机场）
-- 🔍 支持缩放、拖拽、全屏查看
-- 💬 点击标记点显示地点信息弹窗
-- 🎨 可自定义地图样式
-- 🎯 自动处理相同位置的标记点重叠问题
+- 🗺️ Canvas 绘制底图（移植自 [plane-list/map](https://github.com/SHUAXINDIARY/plane-list/tree/main/src/components/map)）
+- 📍 多种标记类型（旅行、居住、愿望、机场），图例可筛选
+- 🔍 滚轮缩放、放大后拖拽、全屏查看
+- 💬 悬停 tooltip（名称、描述、照片链接）
+- 🎯 同坐标标记自动分散
 
 **配置：**
 - 通过 `src/config/content.ts` 中的 `worldMap` 配置
-- 包含 `style`（地图样式）、`markers`（标记点）、`legend`（图例）
+- 包含 `markers`（标记点）、`legend`（图例）、可选 `routes`（航迹）
 
-**依赖：**
-- `maplibre-gl` - 地图渲染库
+**模块：**
+- `AnnotatedWorldMap.tsx` / `canvasMap.ts` / `assets/map.svg`
 
 ### MusicPlayer（音乐播放器）
 

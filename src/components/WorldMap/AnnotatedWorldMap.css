@@ -1,0 +1,108 @@
+.annotated-world-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  background: var(--world-map-bg);
+  border-radius: inherit;
+}
+
+.annotated-world-map--zoomed {
+  cursor: grab;
+}
+
+.annotated-world-map--dragging {
+  cursor: grabbing;
+}
+
+.annotated-world-map::before {
+  position: absolute;
+  inset: 1.25rem;
+  border: 1px solid var(--world-map-frame);
+  border-radius: 0.8rem;
+  content: '';
+  pointer-events: none;
+}
+
+.annotated-world-map::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: var(--world-map-vignette);
+  content: '';
+}
+
+.annotated-world-map__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  outline: none;
+}
+
+.annotated-world-map__canvas:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -0.2rem;
+}
+
+.annotated-world-map__tooltip {
+  position: absolute;
+  z-index: 6;
+  will-change: left, top;
+  max-width: min(14rem, calc(100% - 2rem));
+  padding: 0.5rem 0.7rem;
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  text-align: center;
+  pointer-events: auto;
+  background-color: var(--world-map-tooltip-bg);
+  border: 1px solid var(--world-map-tooltip-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--world-map-tooltip-shadow);
+  transform: translate3d(-50%, calc(-100% - 0.72rem), 0);
+}
+
+.annotated-world-map__tooltip-title {
+  display: block;
+  margin: 0 0 0.2rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.annotated-world-map__tooltip-desc {
+  margin: 0 0 0.35rem;
+  color: var(--color-secondary);
+  font-size: 0.72rem;
+}
+
+.annotated-world-map__tooltip-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  color: var(--color-accent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-card);
+}
+
+.annotated-world-map__tooltip-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .annotated-world-map::before {
+    inset: 0.65rem;
+  }
+
+  .annotated-world-map__tooltip {
+    max-width: min(14rem, calc(100vw - 2.25rem));
+  }
+}

@@ -46,7 +46,7 @@ src/components/
 | 库名 | 用途 | 文档 |
 |------|------|------|
 | lucide-react | 图标库 | https://lucide.dev/ |
-| maplibre-gl | 地图渲染 | https://maplibre.org/maplibre-gl-js/docs/ |
+| Canvas 世界地图 | 旅行足迹底图（plane-list 方案） | https://github.com/SHUAXINDIARY/plane-list/blob/main/docs/map.md |
 | dayjs | 日期处理 | https://day.js.org/ |
 | ical.js | iCal 日历解析 | https://github.com/kewisch/ical.js |
 | motion | React 动画库 | https://motion.dev/docs/react |

@@ -13,7 +13,7 @@
 - 📅 **日历组件** - 月历视图，高亮当天，支持 ICS 文件解析，鼠标悬停显示节日信息
 - 🔗 **社交链接** - 快速访问各个社交平台
 - 🖼️ **图片展示** - 可自定义的图片卡片
-- 🗺️ **世界地图** - 基于 MapLibre 的交互式地图，支持标记旅行地点、居住地等
+- 🗺️ **世界地图** - Canvas 绘制的 Natural Earth 风格底图，支持标记旅行/居住/机场等
 - ⚙️ **自定义插件** - 构建时自动抓取博客文章、生成音乐列表
 - 📱 **全面响应式** - 三档断点适配（移动端/平板端/桌面端），平板两列网格布局，横屏自适应，触控目标 ≥ 44px，安全区域适配
 
@@ -25,7 +25,7 @@
 - **图标**: Lucide React
 - **日期处理**: Day.js
 - **日历解析**: ical.js（ICS 文件解析）
-- **地图渲染**: MapLibre GL（交互式地图）
+- **地图渲染**: Canvas + SVG 底图（[plane-list/map](https://github.com/SHUAXINDIARY/plane-list/tree/main/src/components/map)）
 - **HTML 解析**: Cheerio（构建时）
 
 ## 🚀 快速开始
@@ -69,7 +69,6 @@ index-page/
 ├── public/              # 静态资源
 │   ├── bgm/           # 音乐文件目录
 │   ├── *.ics          # ICS 日历文件（可选）
-│   ├── *.json         # 地图样式文件（可选，如 positron.json）
 │   └── index.html      # HTML 模板
 ├── plugins/            # 自定义 Rsbuild 插件
 │   ├── fetch-blog-plugin.ts    # 博客文章抓取插件
@@ -104,7 +103,7 @@ index-page/
 - **音乐配置** (`music`) - 播放器标题和音乐列表
 - **社交链接** (`socialLinks`) - 各平台链接
 - **图片配置** (`images`) - 图片卡片数据
-- **世界地图** (`worldMap`) - 地图样式、标记点和图例配置
+- **世界地图** (`worldMap`) - 标记点、可选航迹与图例配置
 - **日历配置** (`calendar`) - ICS 文件路径（支持本地路径或远程 URL）
 
 详细配置说明请查看 [config/README.md](./src/config/README.md)。
@@ -158,12 +157,6 @@ index-page/
 1. 在 `src/config/content.ts` 中配置 `worldMap`：
    ```typescript
    worldMap: {
-     // 地图样式 URL（可选，默认为 MapLibre 默认样式）
-     style: '/positron.json', // 本地样式文件
-     // 或使用远程 URL
-     // style: 'https://demotiles.maplibre.org/style.json',
-     
-     // 标记点配置
      markers: [
        {
          name: '北京',
@@ -171,36 +164,28 @@ index-page/
          lng: 116.4074,
          type: 'travel', // 'travel' | 'residence' | 'wish' | 'airport'
          description: '中国北京',
+         imgUrl: 'https://example.com/photos', // 可选
        },
-       // ... 更多标记点
      ],
-     
-     // 图例配置
      legend: [
        { type: 'travel', label: '旅行' },
        { type: 'residence', label: '居住' },
-       { type: 'wish', label: '愿望' },
        { type: 'airport', label: '机场' },
      ],
    }
    ```
 
 2. **标记点类型**：
-   - `travel` - 旅行地点（橙色标记）
-   - `residence` - 居住地点（蓝色标记）
-   - `wish` - 愿望地点（粉色标记）
-   - `airport` - 机场（灰色标记）
+   - `travel` - 旅行地点（橙色）
+   - `residence` - 居住地点（蓝色）
+   - `wish` - 愿望地点（粉色）
+   - `airport` - 机场（黄绿色）
 
-3. **地图样式**：
-   - 可以将 MapLibre 兼容的样式 JSON 文件放置在 `public/` 目录下
-   - 支持本地路径或远程 URL
-   - 如果不配置 `style`，将使用 MapLibre 默认样式
-
-4. **功能特性**：
-   - 交互式地图，支持缩放和拖拽
-   - 点击标记点显示地点信息
-   - 支持全屏查看
-   - 自动处理相同位置的标记点重叠问题
+3. **交互**：
+   - 滚轮缩放；放大后可拖拽平移
+   - 悬停显示名称与说明；可选「查看照片」链接
+   - 双击或左上角按钮进入全屏；图例可点击筛选类型
+   - 实现细节见 `src/components/WorldMap/`（移植自 [plane-list 地图文档](https://github.com/SHUAXINDIARY/plane-list/blob/main/docs/map.md)）
 
 ## 📚 相关资源
 
@@ -209,4 +194,4 @@ index-page/
 - [React 文档](https://react.dev) - React 官方文档
 - [TypeScript 文档](https://www.typescriptlang.org) - TypeScript 官方文档
 - [ical.js 文档](https://kewisch.github.io/ical.js/api/) - iCalendar 解析库 API 文档
-- [MapLibre GL 文档](https://maplibre.org/maplibre-gl-js/docs/) - MapLibre GL JS 地图库文档
+- [plane-list 地图组件](https://github.com/SHUAXINDIARY/plane-list/tree/main/src/components/map) - Canvas 世界地图参考实现

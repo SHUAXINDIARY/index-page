@@ -76,9 +76,25 @@ export interface WorldMapLegendItem {
   label: string;
 }
 
+export interface WorldMapRouteConfig {
+  /** 航线名称 */
+  name: string;
+  /** 起点纬度 */
+  startLat: number;
+  /** 起点经度 */
+  startLng: number;
+  /** 终点纬度 */
+  endLat: number;
+  /** 终点经度 */
+  endLng: number;
+  /** 航迹范围：domestic 实线 / international 虚线 */
+  scope: 'domestic' | 'international';
+}
+
 export interface WorldMapConfig {
-  style?: string; // MapLibre 样式 URL，默认为 demotiles.maplibre.org
   markers?: WorldMapMarker[];
+  /** 可选航迹弧线 */
+  routes?: WorldMapRouteConfig[];
   legend?: WorldMapLegendItem[];
 }
 
@@ -209,11 +225,8 @@ export const contentConfig: ContentConfig = {
     },
   ],
 
-  // 世界地图配置
+  // 世界地图配置（Canvas 底图，见 src/components/WorldMap）
   worldMap: {
-    // 使用 MapLibre 默认样式，也可以使用其他 MapLibre 兼容的样式 URL
-    // style: 'https://demotiles.maplibre.org/style.json',
-    style: '/positron.json',
     markers: [
       // 居住地点（蓝色）
       {
