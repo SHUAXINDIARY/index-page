@@ -84,9 +84,28 @@
   width: 12px;
   height: 12px;
   border-radius: var(--radius-full);
-  border: 2px solid white;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--color-primary) 20%, transparent);
   flex-shrink: 0;
+}
+
+.world-map-legend-dot--travel {
+  background-color: var(--world-map-marker-travel-fill);
+  border: 2px solid var(--world-map-marker-travel-stroke);
+}
+
+.world-map-legend-dot--residence {
+  background-color: var(--world-map-marker-residence-fill);
+  border: 2px solid var(--world-map-marker-residence-stroke);
+}
+
+.world-map-legend-dot--wish {
+  background-color: var(--world-map-marker-wish-fill);
+  border: 2px solid var(--world-map-marker-wish-stroke);
+}
+
+.world-map-legend-dot--airport {
+  background-color: var(--world-map-marker-airport-fill);
+  border: 2px solid var(--world-map-marker-airport-stroke);
 }
 
 .world-map-legend-label {

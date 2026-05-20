@@ -7,12 +7,12 @@ export const FULLSCREEN_QUERY_VALUE = 'fullscreen';
 /** 标记点偏移距离（经纬度），用于同坐标多点分散 */
 export const MARKER_OFFSET_DISTANCE = 0.15;
 
-/** 图例圆点颜色（与画布 token 一致，供 DOM 图例使用） */
-export const MARKER_COLOR_MAP: Record<string, string> = {
-  travel: '#ff8c42',
-  residence: '#4a90e2',
-  wish: '#ff6b9d',
-  airport: '#c8d600',
+/** 图例圆点 CSS 类（颜色来自 --world-map-marker-* token） */
+export const MARKER_LEGEND_TOKEN_CLASS: Record<string, string> = {
+  travel: 'world-map-legend-dot--travel',
+  residence: 'world-map-legend-dot--residence',
+  wish: 'world-map-legend-dot--wish',
+  airport: 'world-map-legend-dot--airport',
 };
 
 /** 默认地图无障碍名称 */

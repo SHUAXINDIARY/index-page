@@ -12,7 +12,7 @@ import {
   FULLSCREEN_QUERY_KEY,
   FULLSCREEN_QUERY_VALUE,
   DEFAULT_MAP_ARIA_LABEL,
-  MARKER_COLOR_MAP,
+  MARKER_LEGEND_TOKEN_CLASS,
 } from './constant';
 import type { WorldMapProps } from './types';
 import './WorldMap.css';
@@ -29,7 +29,7 @@ interface LegendItemProps {
 
 const LegendItem = memo(function LegendItem({ type, label, isVisible, onClick }: LegendItemProps) {
   const handleClick = useCallback(() => onClick(type), [onClick, type]);
-  const color = MARKER_COLOR_MAP[type] ?? '#666666';
+  const dotClassName = MARKER_LEGEND_TOKEN_CLASS[type] ?? 'world-map-legend-dot--travel';
 
   return (
     <div
@@ -45,11 +45,8 @@ const LegendItem = memo(function LegendItem({ type, label, isVisible, onClick }:
       tabIndex={0}
     >
       <div
-        className="world-map-legend-dot"
-        style={{
-          backgroundColor: color,
-          opacity: isVisible ? 1 : 0.3,
-        }}
+        className={`world-map-legend-dot ${dotClassName}`}
+        style={{ opacity: isVisible ? 1 : 0.3 }}
       />
       <span className="world-map-legend-label" style={{ opacity: isVisible ? 1 : 0.5 }}>
         {label}
@@ -59,7 +56,7 @@ const LegendItem = memo(function LegendItem({ type, label, isVisible, onClick }:
 });
 
 export const WorldMap = memo(function WorldMap({ config }: WorldMapProps) {
-  const { resolvedMode } = useTheme();
+  const { resolvedMode, color: themeColor } = useTheme();
 
   const [isFullscreen, setIsFullscreen] = useState(() => {
     if (typeof window === 'undefined') return false;
@@ -150,6 +147,7 @@ export const WorldMap = memo(function WorldMap({ config }: WorldMapProps) {
     routes: canvasRoutes,
     ariaLabel,
     themeMode: resolvedMode,
+    themeColor,
     viewportTransform,
     onViewportTransformChange: setViewportTransform,
   };

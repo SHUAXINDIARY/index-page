@@ -102,36 +102,82 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 
                "Liberation Mono", "Courier New", monospace;
 
-  /* 世界地图 Canvas（plane-list 风格底图） */
+  /* 世界地图：从品牌语义色派生（随 data-theme-mode / data-theme-color 联动） */
   --world-map-bg:
-    radial-gradient(circle at 72% 28%, rgba(74, 144, 226, 0.12), transparent 12rem),
-    radial-gradient(circle at 18% 18%, rgba(78, 63, 66, 0.06), transparent 10rem),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(238, 238, 238, 0.98));
-  --world-map-frame: rgba(78, 63, 66, 0.12);
+    radial-gradient(
+      circle at 72% 28%,
+      color-mix(in srgb, var(--color-accent) 14%, transparent),
+      transparent 12rem
+    ),
+    radial-gradient(
+      circle at 18% 18%,
+      color-mix(in srgb, var(--color-primary) 8%, transparent),
+      transparent 10rem
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-card-solid) 92%, transparent),
+      color-mix(in srgb, var(--color-bg) 98%, transparent)
+    );
+  --world-map-frame: color-mix(in srgb, var(--color-primary) 14%, transparent);
   --world-map-vignette:
-    linear-gradient(to right, rgba(238, 238, 238, 0.5), transparent 18%, transparent 82%, rgba(238, 238, 238, 0.45)),
-    linear-gradient(to bottom, rgba(238, 238, 238, 0.35), transparent 28%, rgba(238, 238, 238, 0.3));
-  --world-map-tooltip-bg: rgba(255, 255, 255, 0.96);
-  --world-map-tooltip-border: rgba(78, 63, 66, 0.14);
-  --world-map-tooltip-shadow: 0 0.85rem 1.8rem rgba(78, 63, 66, 0.12);
-  --world-map-route-international: rgba(74, 144, 226, 0.55);
-  --world-map-route-domestic: rgba(123, 136, 142, 0.45);
-  --world-map-marker-travel-fill: #ff8c42;
-  --world-map-marker-travel-stroke: #ffffff;
-  --world-map-marker-travel-fill-active: #ff9f5c;
-  --world-map-marker-travel-stroke-active: #ffffff;
-  --world-map-marker-residence-fill: #4a90e2;
-  --world-map-marker-residence-stroke: #ffffff;
-  --world-map-marker-residence-fill-active: #5ba0f0;
-  --world-map-marker-residence-stroke-active: #ffffff;
-  --world-map-marker-wish-fill: #ff6b9d;
-  --world-map-marker-wish-stroke: #ffffff;
-  --world-map-marker-wish-fill-active: #ff85b0;
-  --world-map-marker-wish-stroke-active: #ffffff;
-  --world-map-marker-airport-fill: #c8d600;
-  --world-map-marker-airport-stroke: #4e3f42;
-  --world-map-marker-airport-fill-active: #d8e820;
-  --world-map-marker-airport-stroke-active: #4e3f42;
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-bg) 50%, transparent),
+      transparent 18%,
+      transparent 82%,
+      color-mix(in srgb, var(--color-bg) 45%, transparent)
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-bg) 35%, transparent),
+      transparent 28%,
+      color-mix(in srgb, var(--color-bg) 30%, transparent)
+    );
+  --world-map-tooltip-bg: color-mix(in srgb, var(--color-card-solid) 96%, transparent);
+  --world-map-tooltip-border: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  --world-map-tooltip-shadow: 0 0.85rem 1.8rem color-mix(in srgb, var(--color-primary) 12%, transparent);
+  --world-map-route-international: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  --world-map-route-domestic: color-mix(in srgb, var(--color-secondary) 45%, transparent);
+  --world-map-marker-travel-fill: var(--color-accent);
+  --world-map-marker-travel-stroke: var(--color-card-solid);
+  --world-map-marker-travel-fill-active: color-mix(in srgb, var(--color-accent) 88%, var(--color-card-solid) 12%);
+  --world-map-marker-travel-stroke-active: var(--color-text-on-dark);
+  --world-map-marker-residence-fill: color-mix(in srgb, var(--color-accent) 42%, var(--color-secondary) 58%);
+  --world-map-marker-residence-stroke: var(--color-card-solid);
+  --world-map-marker-residence-fill-active: color-mix(in srgb, var(--color-accent) 55%, var(--color-secondary) 45%);
+  --world-map-marker-residence-stroke-active: var(--color-text-on-dark);
+  --world-map-marker-wish-fill: color-mix(in srgb, var(--color-accent) 68%, var(--color-primary) 32%);
+  --world-map-marker-wish-stroke: var(--color-card-solid);
+  --world-map-marker-wish-fill-active: color-mix(in srgb, var(--color-accent) 78%, var(--color-card-solid) 22%);
+  --world-map-marker-wish-stroke-active: var(--color-text-on-dark);
+  --world-map-marker-airport-fill: color-mix(in srgb, var(--color-accent) 28%, var(--color-primary) 72%);
+  --world-map-marker-airport-stroke: var(--color-primary);
+  --world-map-marker-airport-fill-active: color-mix(in srgb, var(--color-accent) 38%, var(--color-primary) 62%);
+  --world-map-marker-airport-stroke-active: var(--color-bg);
+
+  /* 世界地图 SVG 底图（品牌色派生，运行时注入 map-light.svg） */
+  --world-map-svg-ocean-top: color-mix(in srgb, var(--color-accent) 12%, var(--color-card-solid) 88%);
+  --world-map-svg-ocean-bottom: color-mix(in srgb, var(--color-accent) 20%, var(--color-secondary) 80%);
+  --world-map-svg-shadow-flood: color-mix(in srgb, var(--color-primary) 50%, var(--color-bg) 50%);
+  --world-map-svg-shadow-opacity: 0.1;
+  --world-map-svg-frame-stroke: color-mix(in srgb, var(--color-accent) 32%, transparent);
+  --world-map-svg-graticule-stroke: color-mix(in srgb, var(--color-secondary) 38%, transparent);
+  --world-map-svg-country-stroke: color-mix(in srgb, var(--color-primary) 24%, var(--color-card-solid) 76%);
+  --world-map-svg-country-hover-fill: color-mix(in srgb, var(--color-accent) 42%, var(--color-card-solid) 58%);
+  --world-map-svg-country-hover-stroke: color-mix(in srgb, var(--color-accent) 52%, var(--color-primary) 48%);
+  --world-map-svg-land-na: color-mix(in srgb, var(--color-accent) 10%, var(--color-card-solid) 90%);
+  --world-map-svg-land-sa: color-mix(in srgb, var(--color-accent) 14%, var(--color-bg) 86%);
+  --world-map-svg-land-eu: color-mix(in srgb, var(--color-secondary) 16%, var(--color-card-solid) 84%);
+  --world-map-svg-land-af: color-mix(in srgb, var(--color-accent) 12%, var(--color-secondary) 88%);
+  --world-map-svg-land-as: color-mix(in srgb, var(--color-primary) 8%, var(--color-card-solid) 92%);
+  --world-map-svg-land-oc: color-mix(in srgb, var(--color-accent) 18%, var(--color-card-solid) 82%);
+  --world-map-svg-land-an: color-mix(in srgb, var(--color-card-solid) 92%, var(--color-accent) 8%);
+  --world-map-svg-land-other: color-mix(in srgb, var(--color-primary) 10%, var(--color-card-solid) 90%);
+  --world-map-svg-outline-stroke: color-mix(in srgb, var(--color-accent) 44%, var(--color-primary) 56%);
+  --world-map-svg-label-fill: color-mix(in srgb, var(--color-primary) 72%, transparent);
+  --world-map-svg-label-stroke: color-mix(in srgb, var(--color-card-solid) 88%, transparent);
+  --world-map-svg-caption-fill: color-mix(in srgb, var(--color-secondary) 68%, transparent);
 }
 
 /* ========================================
@@ -202,35 +248,33 @@
   --color-recommend-name: #E8E0E0;
   --color-recommend-desc: #9CA3AF;
 
-  --world-map-bg:
-    radial-gradient(circle at 72% 28%, rgba(93, 173, 226, 0.18), transparent 12rem),
-    radial-gradient(circle at 18% 18%, rgba(124, 200, 235, 0.1), transparent 10rem),
-    linear-gradient(135deg, rgba(26, 26, 46, 0.96), rgba(36, 36, 56, 0.88));
-  --world-map-frame: rgba(124, 200, 235, 0.12);
-  --world-map-vignette:
-    linear-gradient(to right, rgba(26, 26, 46, 0.42), transparent 18%, transparent 82%, rgba(26, 26, 46, 0.38)),
-    linear-gradient(to bottom, rgba(26, 26, 46, 0.3), transparent 28%, rgba(26, 26, 46, 0.26));
-  --world-map-tooltip-bg: rgba(36, 36, 56, 0.94);
-  --world-map-tooltip-border: rgba(255, 255, 255, 0.14);
-  --world-map-tooltip-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.34);
-  --world-map-route-international: rgba(158, 216, 242, 0.58);
-  --world-map-route-domestic: rgba(124, 200, 235, 0.4);
-  --world-map-marker-travel-fill: #ff8c42;
-  --world-map-marker-travel-stroke: rgba(255, 255, 255, 0.92);
-  --world-map-marker-travel-fill-active: #ffab6e;
-  --world-map-marker-travel-stroke-active: #ffffff;
-  --world-map-marker-residence-fill: #5ba0f0;
-  --world-map-marker-residence-stroke: rgba(255, 255, 255, 0.9);
-  --world-map-marker-residence-fill-active: #7cb8ff;
-  --world-map-marker-residence-stroke-active: #ffffff;
-  --world-map-marker-wish-fill: #ff6b9d;
-  --world-map-marker-wish-stroke: rgba(255, 255, 255, 0.9);
-  --world-map-marker-wish-fill-active: #ff8fb5;
-  --world-map-marker-wish-stroke-active: #ffffff;
-  --world-map-marker-airport-fill: #d8e820;
-  --world-map-marker-airport-stroke: rgba(26, 26, 46, 0.85);
-  --world-map-marker-airport-fill-active: #eeff40;
-  --world-map-marker-airport-stroke-active: #1a1a2e;
+  /* 暗色下标记描边略提亮，其余地图 token 随 :root 派生自动适配 */
+  --world-map-marker-travel-stroke: color-mix(in srgb, var(--color-card-solid) 92%, transparent);
+  --world-map-marker-residence-stroke: color-mix(in srgb, var(--color-card-solid) 90%, transparent);
+  --world-map-marker-wish-stroke: color-mix(in srgb, var(--color-card-solid) 90%, transparent);
+  --world-map-tooltip-shadow: 0 0.85rem 1.8rem color-mix(in srgb, var(--color-shadow-outer) 85%, transparent);
+
+  --world-map-svg-ocean-top: color-mix(in srgb, var(--color-accent) 18%, var(--color-bg) 82%);
+  --world-map-svg-ocean-bottom: color-mix(in srgb, var(--color-accent) 24%, var(--color-card-solid) 76%);
+  --world-map-svg-shadow-flood: color-mix(in srgb, var(--color-bg) 70%, var(--color-primary) 30%);
+  --world-map-svg-shadow-opacity: 0.28;
+  --world-map-svg-frame-stroke: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  --world-map-svg-graticule-stroke: color-mix(in srgb, var(--color-secondary) 32%, transparent);
+  --world-map-svg-country-stroke: color-mix(in srgb, var(--color-secondary) 38%, transparent);
+  --world-map-svg-country-hover-fill: color-mix(in srgb, var(--color-accent) 38%, var(--color-card-solid) 62%);
+  --world-map-svg-country-hover-stroke: color-mix(in srgb, var(--color-accent) 48%, var(--color-card-solid) 52%);
+  --world-map-svg-land-na: color-mix(in srgb, var(--color-accent) 14%, var(--color-card-solid) 86%);
+  --world-map-svg-land-sa: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg) 88%);
+  --world-map-svg-land-eu: color-mix(in srgb, var(--color-secondary) 20%, var(--color-card-solid) 80%);
+  --world-map-svg-land-af: color-mix(in srgb, var(--color-accent) 10%, var(--color-secondary) 90%);
+  --world-map-svg-land-as: color-mix(in srgb, var(--color-primary) 12%, var(--color-card-solid) 88%);
+  --world-map-svg-land-oc: color-mix(in srgb, var(--color-accent) 16%, var(--color-card-solid) 84%);
+  --world-map-svg-land-an: color-mix(in srgb, var(--color-card-solid) 30%, var(--color-bg) 70%);
+  --world-map-svg-land-other: color-mix(in srgb, var(--color-primary) 14%, var(--color-card-solid) 86%);
+  --world-map-svg-outline-stroke: color-mix(in srgb, var(--color-accent) 36%, var(--color-secondary) 64%);
+  --world-map-svg-label-fill: color-mix(in srgb, var(--color-primary) 58%, transparent);
+  --world-map-svg-label-stroke: color-mix(in srgb, var(--color-bg) 72%, transparent);
+  --world-map-svg-caption-fill: color-mix(in srgb, var(--color-secondary) 52%, transparent);
 }
 
 /* ========================================

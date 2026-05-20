@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent, PointerEvent, ReactElement } from 'react';
-import worldMapDarkImageUrl from './assets/map.svg';
-import worldMapLightImageUrl from './assets/map-light.svg';
+import worldMapBaseSvgUrl from './assets/map-light.svg';
+import { loadThemedWorldMapImage } from './worldMapSvgLoader';
 import {
   MAP_ZOOM_STEP,
   MAX_MAP_SCALE,
@@ -41,10 +41,14 @@ interface MapDragState {
   startViewportY: number;
 }
 
+import type { ThemeColor } from '../../hooks/themeContext';
+
 /** 扩展 Props：支持受控视口与主题 */
 export interface AnnotatedWorldMapCanvasProps extends AnnotatedWorldMapProps {
   /** 当前生效的主题模式，用于切换底图 SVG */
   themeMode: 'light' | 'dark';
+  /** 当前主题配色，用于在切换时刷新 Canvas 调色板 */
+  themeColor: ThemeColor;
   /** 受控视口状态 */
   viewportTransform?: ViewportTransform;
   /** 视口变化回调 */
@@ -71,36 +75,13 @@ const countRoutesByScope = (
   return { domesticRouteCount, internationalRouteCount };
 };
 
-/**
- * 按主题返回底图 SVG URL
- */
-const resolveWorldMapImageUrl = (mode: 'light' | 'dark'): string => {
-  return mode === 'light' ? worldMapLightImageUrl : worldMapDarkImageUrl;
-};
-
-/**
- * 加载 SVG 为 Canvas 可用位图
- */
-const loadWorldMapImage = (imageUrl: string): Promise<HTMLImageElement> => {
-  return new Promise((resolve, reject): void => {
-    const image = new Image();
-
-    image.onload = (): void => {
-      resolve(image);
-    };
-    image.onerror = (): void => {
-      reject(new Error('世界地图 SVG 加载失败'));
-    };
-    image.src = imageUrl;
-  });
-};
-
 export const AnnotatedWorldMap = ({
   markers,
   routes = [],
   ariaLabel,
   className,
   themeMode,
+  themeColor,
   viewportTransform: controlledViewport,
   onViewportTransformChange,
 }: AnnotatedWorldMapCanvasProps): ReactElement => {
@@ -170,6 +151,14 @@ export const AnnotatedWorldMap = ({
     viewportTransformRef.current = viewportTransform;
   }, [viewportTransform]);
 
+  /** 主题变化时丢弃缓存调色板与离屏图层，重新从 CSS 变量读取 */
+  useEffect((): void => {
+    mapCanvasPaletteRef.current = null;
+    mapLayerCacheRef.current = null;
+    mapLayerCacheKeyRef.current = null;
+    redrawMapCanvasRef.current();
+  }, [themeMode, themeColor]);
+
   /** 更新视口（受控 / 非受控） */
   const updateViewport = useCallback(
     (updater: (current: ViewportTransform) => ViewportTransform): void => {
@@ -193,7 +182,10 @@ export const AnnotatedWorldMap = ({
 
     const loadImage = async (): Promise<void> => {
       try {
-        const image = await loadWorldMapImage(resolveWorldMapImageUrl(themeMode));
+        const image = await loadThemedWorldMapImage({
+          svgAssetUrl: worldMapBaseSvgUrl,
+          mode: themeMode,
+        });
 
         if (isCancelled) {
           return;
@@ -209,6 +201,7 @@ export const AnnotatedWorldMap = ({
 
         worldMapImageRef.current = image;
         setIsWorldMapImageReady(true);
+        redrawMapCanvasRef.current();
       } catch {
         if (!isCancelled) {
           worldMapImageRef.current = null;
@@ -222,7 +215,7 @@ export const AnnotatedWorldMap = ({
     return (): void => {
       isCancelled = true;
     };
-  }, [themeMode]);
+  }, [themeMode, themeColor]);
 
   useEffect((): (() => void) | undefined => {
     const container = mapContainerRef.current;
