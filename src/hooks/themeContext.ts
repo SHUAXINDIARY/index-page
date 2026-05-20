@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 /** 主题模式 */
 export type ThemeMode = 'light' | 'dark' | 'system';
@@ -85,4 +85,18 @@ export const applyTheme = (resolved: 'light' | 'dark', color: ThemeColor): void 
   const root = document.documentElement;
   root.setAttribute('data-theme-mode', resolved);
   root.setAttribute('data-theme-color', color);
+};
+
+/**
+ * 主题管理 Hook
+ * 须在 ThemeProvider 内使用，与 ThemeToggle 等组件共享状态
+ */
+export const useTheme = (): UseThemeReturn => {
+  const context = useContext(ThemeContext);
+
+  if (context === null) {
+    throw new Error('useTheme 必须在 ThemeProvider 内使用');
+  }
+
+  return context;
 };

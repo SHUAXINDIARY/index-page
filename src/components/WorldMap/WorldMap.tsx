@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState, memo } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'motion/react';
-import { useTheme } from '../../hooks/useTheme';
+import { useTheme } from '../../hooks/themeContext';
 import { Card } from '../Card';
 import { X, Maximize2 } from 'lucide-react';
 import { AnnotatedWorldMap } from './AnnotatedWorldMap';

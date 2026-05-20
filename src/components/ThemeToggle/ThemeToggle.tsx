@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Sun, Moon, Monitor } from 'lucide-react';
-import { useTheme } from '../../hooks/useTheme';
+import { useTheme } from '../../hooks/themeContext';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 import './ThemeToggle.css';
 
