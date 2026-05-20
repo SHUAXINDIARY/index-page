@@ -114,10 +114,28 @@ export const WorldMap = memo(function WorldMap({ config }: WorldMapProps) {
     });
   }, []);
 
+  /** 地图视口初始状态（最小缩放、无平移） */
+  const resetViewportTransform = useCallback((): void => {
+    setViewportTransform({
+      scale: MIN_MAP_SCALE,
+      x: 0,
+      y: 0,
+    });
+  }, []);
+
+  const handleOpenFullscreen = useCallback(() => {
+    setIsFullscreen(true);
+  }, []);
+
+  const handleCloseFullscreen = useCallback(() => {
+    setIsFullscreen(false);
+    resetViewportTransform();
+  }, [resetViewportTransform]);
+
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
+    const handleEscape = (e: KeyboardEvent): void => {
       if (e.key === 'Escape' && isFullscreen) {
-        setIsFullscreen(false);
+        handleCloseFullscreen();
       }
     };
 
@@ -132,15 +150,7 @@ export const WorldMap = memo(function WorldMap({ config }: WorldMapProps) {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = '';
     };
-  }, [isFullscreen]);
-
-  const handleOpenFullscreen = useCallback(() => {
-    setIsFullscreen(true);
-  }, []);
-
-  const handleCloseFullscreen = useCallback(() => {
-    setIsFullscreen(false);
-  }, []);
+  }, [handleCloseFullscreen, isFullscreen]);
 
   const mapCommonProps = {
     markers: visibleMarkers,
