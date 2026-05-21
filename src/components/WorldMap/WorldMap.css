@@ -56,8 +56,8 @@
 }
 
 .world-map-fullscreen-legend {
-  bottom: 45px;
-  left: var(--spacing-md);
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
 }
 
 .world-map-legend-item {
@@ -190,8 +190,8 @@
   }
 
   .world-map-fullscreen-legend {
-    bottom: 16px;
-    left: 16px;
+    bottom: 12px;
+    right: 12px;
   }
 
   .world-map-legend-label {
