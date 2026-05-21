@@ -645,6 +645,10 @@ body {
   min-height: 140px;
 }
 
+.compact-card--aircraftLog > * {
+  min-height: 140px;
+}
+
 .compact-card--social > * {
   min-height: auto;
 }

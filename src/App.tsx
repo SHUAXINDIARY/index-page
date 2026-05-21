@@ -5,6 +5,7 @@ import { WelcomeCard } from './components/WelcomeCard';
 import { Clock } from './components/Clock';
 import { ActionButton } from './components/ActionButton';
 import { ArticleCard } from './components/ArticleCard';
+import { AircraftLogCard } from './components/AircraftLogCard';
 import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
 import { ThemeToggle } from './components/ThemeToggle';
@@ -23,6 +24,7 @@ const GITHUB_REPO_URL = 'https://github.com/SHUAXINDIARY/index-page';
 const CARD_SIZES: Record<string, { width: number; height: number }> = {
   user: { width: 280, height: 314 },
   article: { width: 280, height: 165 },
+  aircraftLog: { width: 280, height: 165 },
   social: { width: 280, height: 136 },
   image: { width: 240, height: 180 },
   welcome: { width: 320, height: 329 },
@@ -42,6 +44,7 @@ const COMPACT_CARD_ORDER = [
   'image',
   'calendar',
   'article',
+  'aircraftLog',
   'music',
   'worldMap',
   'social',
@@ -90,6 +93,7 @@ const App = () => {
     () => [
       { id: 'user', size: CARD_SIZES.user },
       { id: 'article', size: CARD_SIZES.article },
+      { id: 'aircraftLog', size: CARD_SIZES.aircraftLog },
       { id: 'social', size: CARD_SIZES.social },
       { id: 'image', size: CARD_SIZES.image },
       { id: 'welcome', size: CARD_SIZES.welcome },
@@ -143,6 +147,8 @@ const App = () => {
             }}
           />
         );
+      case 'aircraftLog':
+        return <AircraftLogCard config={contentConfig.aircraftLog} />;
       case 'social':
         return <SocialLinks links={contentConfig.socialLinks} />;
       case 'image':
@@ -262,6 +268,11 @@ const App = () => {
               ...(blogData.latestPost || {}),
             }}
           />
+        </motion.div>
+
+        {/* Aircraft Log Wiki */}
+        <motion.div {...getCardMotionProps('aircraftLog')}>
+          <AircraftLogCard config={contentConfig.aircraftLog} />
         </motion.div>
 
         {/* Social Links */}

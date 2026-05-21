@@ -36,6 +36,15 @@ export const contentConfigExample: ContentConfig = {
         tag: '推荐阅读',
     },
 
+    // 航司 Wiki 示例
+    aircraftLog: {
+        tag: '航司 Wiki',
+        icon: '✈️',
+        title: 'Plane List',
+        description: '航司机型资料库 · 机型检索与航司信息',
+        url: 'https://aircraftlog.shuaxinjs.cn/',
+    },
+
     // 推荐信息示例
     recommend: {
         name: 'Tech Weekly',

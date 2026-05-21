@@ -8,6 +8,7 @@
 - 🌓 **主题切换系统** - 支持明暗模式切换 + 5 套配色主题（暖棕/海洋蓝/森林绿/薰衣草紫/日落橘），跟随系统偏好，localStorage 持久化
 - 👤 **用户信息卡片** - 展示头像、标签和导航菜单
 - 📝 **文章卡片** - 自动抓取并展示最新博客文章
+- ✈️ **航司 Wiki 卡片** - 跳转 [Plane List 航司机型资料库](https://aircraftlog.shuaxinjs.cn/)
 - 🎵 **音乐播放器** - 支持随机播放、进度显示
 - ⏰ **实时时钟** - 数字时钟显示
 - 📅 **日历组件** - 月历视图，高亮当天，支持 ICS 文件解析，鼠标悬停显示节日信息
@@ -77,6 +78,7 @@ index-page/
 │   ├── components/     # React 组件
 │   │   ├── UserCard/          # 用户信息卡片
 │   │   ├── ArticleCard/       # 文章卡片
+│   │   ├── AircraftLogCard/   # 航司 Wiki 卡片
 │   │   ├── MusicPlayer/       # 音乐播放器
 │   │   ├── Clock/             # 时钟组件
 │   │   ├── Calendar/          # 日历组件

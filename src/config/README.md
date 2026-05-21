@@ -47,6 +47,18 @@ article: {
 }
 ```
 
+### 3.1 航司 Wiki (`aircraftLog`)
+
+```typescript
+aircraftLog: {
+  tag: string;         // 角标文案
+  icon: string;        // 图标 emoji
+  title: string;       // 主标题
+  description: string; // 简介
+  url: string;         // 资料库链接
+}
+```
+
 ### 4. 推荐信息 (`recommend`)
 
 ```typescript
@@ -219,6 +231,7 @@ import { contentConfig } from './config/content';
 
 <UserCard config={contentConfig.user} />
 <ArticleCard config={contentConfig.article} />
+<AircraftLogCard config={contentConfig.aircraftLog} />
 <MusicPlayer config={contentConfig.music} />
 <WorldMap config={contentConfig.worldMap} />
 <Calendar /> // Calendar 组件会自动读取 contentConfig.calendar
