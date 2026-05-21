@@ -111,6 +111,8 @@ export const AnnotatedWorldMap = ({
   const mapCanvasMetricsRef = useRef<MapCanvasRenderMetrics | null>(null);
   const mapCanvasPaletteRef = useRef<MapCanvasPalette | null>(null);
   const isMapPanInteractingRef = useRef(false);
+  /** 指针是否在 tooltip 上，避免移向「查看照片」时 hover 被清掉 */
+  const isPointerOverTooltipRef = useRef(false);
 
   const viewportTransform = controlledViewport ?? internalViewport;
   const { domesticRouteCount, internationalRouteCount } = countRoutesByScope(routes);
@@ -524,7 +526,12 @@ export const AnnotatedWorldMap = ({
   }, [zoomMapFromWheel]);
 
   const startMapDrag = (event: PointerEvent): void => {
-    if (event.button !== 0 || !isMapZoomed) {
+    if (
+      event.button !== 0 ||
+      !isMapZoomed ||
+      (event.target instanceof Element &&
+        event.target.closest('.annotated-world-map__tooltip') !== null)
+    ) {
       return;
     }
 
@@ -585,6 +592,16 @@ export const AnnotatedWorldMap = ({
       return;
     }
 
+    if (isPointerOverTooltipRef.current) {
+      return;
+    }
+
+    const elementAtPointer = document.elementFromPoint(clientX, clientY);
+
+    if (elementAtPointer?.closest('.annotated-world-map__tooltip') !== null) {
+      return;
+    }
+
     const containerRect = container.getBoundingClientRect();
     const localX = clientX - containerRect.left;
     const localY = clientY - containerRect.top;
@@ -619,11 +636,20 @@ export const AnnotatedWorldMap = ({
   };
 
   const handleCanvasPointerLeave = (): void => {
-    if (dragStateRef.current !== null) {
+    if (dragStateRef.current !== null || isPointerOverTooltipRef.current) {
       return;
     }
 
     setHoveredMarker(null);
+  };
+
+  const handleTooltipPointerEnter = (): void => {
+    isPointerOverTooltipRef.current = true;
+  };
+
+  const handleTooltipPointerLeave = (event: PointerEvent): void => {
+    isPointerOverTooltipRef.current = false;
+    updatePointerOverMap(event.clientX, event.clientY);
   };
 
   const handleCanvasKeyDown = (event: KeyboardEvent): void => {
@@ -679,7 +705,12 @@ export const AnnotatedWorldMap = ({
         }}
       />
       {tooltipMarker && markerTooltipStyle ? (
-        <div className="annotated-world-map__tooltip" style={markerTooltipStyle}>
+        <div
+          className="annotated-world-map__tooltip"
+          style={markerTooltipStyle}
+          onPointerEnter={handleTooltipPointerEnter}
+          onPointerLeave={handleTooltipPointerLeave}
+        >
           <strong className="annotated-world-map__tooltip-title">{tooltipMarker.name}</strong>
           {tooltipMarker.description ? (
             <p className="annotated-world-map__tooltip-desc">{tooltipMarker.description}</p>

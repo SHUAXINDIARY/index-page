@@ -68,6 +68,16 @@
   transform: translate3d(-50%, calc(-100% - 0.72rem), 0);
 }
 
+/* 填充 tooltip 与标记点之间的空隙，便于鼠标移入可点击区域 */
+.annotated-world-map__tooltip::before {
+  position: absolute;
+  top: 100%;
+  left: -0.75rem;
+  right: -0.75rem;
+  height: 0.85rem;
+  content: '';
+}
+
 .annotated-world-map__tooltip-title {
   display: block;
   margin: 0 0 0.2rem;
