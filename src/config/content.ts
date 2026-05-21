@@ -468,9 +468,10 @@ export const contentConfig: ContentConfig = {
       {
         name: '清迈市',
         lat: 18.788343,
-        lng: 98.985300,
+        lng: 98.9853,
         type: 'travel',
         description: '泰国清迈府清迈市',
+        imgUrl: 'https://gallery.shuaxinjs.cn/?tags=ChiangMai',
       },
       // 机场
       {
