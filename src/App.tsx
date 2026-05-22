@@ -5,7 +5,6 @@ import { WelcomeCard } from './components/WelcomeCard';
 import { Clock } from './components/Clock';
 import { ActionButton } from './components/ActionButton';
 import { ArticleCard } from './components/ArticleCard';
-// import { AircraftLogCard } from './components/AircraftLogCard';
 import { OpenSourceCard } from './components/OpenSourceCard';
 import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
@@ -25,7 +24,6 @@ const GITHUB_REPO_URL = 'https://github.com/SHUAXINDIARY/index-page';
 const CARD_SIZES: Record<string, { width: number; height: number }> = {
   user: { width: 280, height: 314 },
   article: { width: 280, height: 165 },
-  // aircraftLog: { width: 280, height: 165 },
   openSource: { width: 320, height: 190 },
   social: { width: 280, height: 136 },
   image: { width: 240, height: 180 },
@@ -46,7 +44,6 @@ const COMPACT_CARD_ORDER = [
   'image',
   'calendar',
   'article',
-  // 'aircraftLog',
   'openSource',
   'music',
   'worldMap',
@@ -96,7 +93,6 @@ const App = () => {
     () => [
       { id: 'user', size: CARD_SIZES.user },
       { id: 'article', size: CARD_SIZES.article },
-      // { id: 'aircraftLog', size: CARD_SIZES.aircraftLog },
       { id: 'openSource', size: CARD_SIZES.openSource },
       { id: 'social', size: CARD_SIZES.social },
       { id: 'image', size: CARD_SIZES.image },
@@ -151,8 +147,6 @@ const App = () => {
             }}
           />
         );
-      // case 'aircraftLog':
-      //   return <AircraftLogCard config={contentConfig.aircraftLog} />;
       case 'openSource':
         return <OpenSourceCard config={contentConfig.openSource} />;
       case 'social':
@@ -275,11 +269,6 @@ const App = () => {
             }}
           />
         </motion.div>
-
-        {/* Aircraft Log Wiki */}
-        {/* <motion.div {...getCardMotionProps('aircraftLog')}>
-          <AircraftLogCard config={contentConfig.aircraftLog} />
-        </motion.div> */}
 
         {/* Open Source Projects */}
         <motion.div {...getCardMotionProps('openSource')}>

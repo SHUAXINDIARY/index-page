@@ -78,7 +78,6 @@ index-page/
 │   ├── components/     # React 组件
 │   │   ├── UserCard/          # 用户信息卡片
 │   │   ├── ArticleCard/       # 文章卡片
-│   │   ├── AircraftLogCard/   # 航司 Wiki 卡片
 │   │   ├── MusicPlayer/       # 音乐播放器
 │   │   ├── Clock/             # 时钟组件
 │   │   ├── Calendar/          # 日历组件

@@ -32,20 +32,6 @@ export interface ArticleInfo {
   tag: string;
 }
 
-/** 航司 Wiki（Plane List）卡片信息 */
-export interface AircraftLogInfo {
-  /** 角标文案 */
-  tag: string;
-  /** 展示图标（emoji） */
-  icon: string;
-  /** 主标题 */
-  title: string;
-  /** 副标题或简介 */
-  description: string;
-  /** 资料库站点链接 */
-  url: string;
-}
-
 /** 开源项目维护状态 */
 export type OpenSourceProjectStatus = 'active' | 'maintained' | 'archived';
 
@@ -159,8 +145,6 @@ export interface ContentConfig {
   user: UserInfo;
   welcome: WelcomeInfo;
   article: ArticleInfo;
-  /** 航司 Wiki 卡片 */
-  aircraftLog: AircraftLogInfo;
   /** 开源项目卡片 */
   openSource: OpenSourceInfo;
   recommend: RecommendInfo;
@@ -215,15 +199,6 @@ export const contentConfig: ContentConfig = {
     date: '2025/11/29',
     icon: '📝',
     tag: '最新文章',
-  },
-
-  // 航司 Wiki（Plane List 航司机型资料库）
-  aircraftLog: {
-    tag: '航司 Wiki',
-    icon: '✈️',
-    title: 'Plane List',
-    description: '航司机型资料库 · 机型检索与航司信息',
-    url: 'https://aircraftlog.shuaxinjs.cn/',
   },
 
   // 开源项目
@@ -847,7 +822,6 @@ export const {
   user,
   welcome,
   article,
-  aircraftLog,
   openSource,
   recommend,
   music,

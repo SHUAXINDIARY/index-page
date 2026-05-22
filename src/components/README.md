@@ -24,7 +24,6 @@
 - **WorldMap** - Canvas 世界地图（Natural Earth SVG 底图），支持旅行/居住/机场等标记
 - **ActionButton** - 操作按钮组件
 - **ArticleCard** - 文章信息展示卡片
-- **AircraftLogCard** - 航司 Wiki（Plane List）入口卡片
 - **RecommendCard** - 推荐内容卡片
 - **MusicPlayer** - 音乐播放器控制卡片
 - **SocialLinks** - 社交平台链接组
@@ -172,15 +171,6 @@ import { Tooltip } from './components/Tooltip';
 **配置：**
 - 通过 `src/config/content.ts` 中的 `article` 配置
 - 数据可由 `FetchBlogPlugin` 自动生成
-
-### AircraftLogCard（航司 Wiki 卡片）
-
-**功能特性：**
-- ✈️ 展示 Plane List 航司机型资料库入口
-- 🔗 点击卡片在新标签页打开资料库站点
-
-**配置：**
-- 通过 `src/config/content.ts` 中的 `aircraftLog` 配置
 
 ### WelcomeCard（欢迎卡片）
 

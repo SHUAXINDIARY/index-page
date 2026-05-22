@@ -36,13 +36,25 @@ export const contentConfigExample: ContentConfig = {
         tag: '推荐阅读',
     },
 
-    // 航司 Wiki 示例
-    aircraftLog: {
-        tag: '航司 Wiki',
-        icon: '✈️',
-        title: 'Plane List',
-        description: '航司机型资料库 · 机型检索与航司信息',
-        url: 'https://aircraftlog.shuaxinjs.cn/',
+    // 开源项目示例
+    openSource: {
+        tag: 'Open Source',
+        title: '开源项目',
+        description: '展示正在维护的开源项目与工具。',
+        ctaLabel: '查看全部',
+        projects: [
+            {
+                name: 'example-project',
+                description: '一个用于演示配置结构的开源项目。',
+                repoUrl: 'https://github.com/yourusername/example-project',
+                homepageUrl: 'https://example.com/',
+                language: 'TypeScript',
+                tags: ['React', 'Demo'],
+                status: 'active',
+                role: '作者与维护者',
+                featured: true,
+            },
+        ],
     },
 
     // 推荐信息示例

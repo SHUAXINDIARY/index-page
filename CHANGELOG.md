@@ -1,12 +1,5 @@
 # 更新日志
 
-## 2026-05-21
-
-### ✈️ 航司 Wiki 卡片
-
-- ✅ 新增 `AircraftLogCard` 组件，展示 [Plane List 航司机型资料库](https://aircraftlog.shuaxinjs.cn/) 入口
-- ✅ 在 `content.ts` 增加 `aircraftLog` 配置项，并接入桌面随机布局与移动端紧凑布局
-
 ## 2026-05-20
 
 ### 🗺️ 世界地图：MapLibre → Canvas 底图
