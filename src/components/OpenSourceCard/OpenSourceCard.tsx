@@ -214,13 +214,18 @@ export const OpenSourceCard = ({ config }: OpenSourceCardProps) => {
           aria-haspopup="dialog"
           aria-label="查看全部开源项目"
         >
-          <span className="open-source-card-kicker">{config.tag}</span>
-
-          <span className="open-source-card-title-row">
-            <span className="open-source-card-icon" aria-hidden="true">
-              <FolderGit2 size={22} strokeWidth={1.85} />
+          <span className="open-source-card-header">
+            <span className="open-source-card-title-row">
+              <span className="open-source-card-icon" aria-hidden="true">
+                <FolderGit2 size={21} strokeWidth={1.85} />
+              </span>
+              <span className="open-source-card-heading-copy">
+                <span className="open-source-card-kicker">{config.tag}</span>
+                <span className="open-source-card-title">{config.title}</span>
+              </span>
             </span>
-            <span className="open-source-card-title">{config.title}</span>
+
+            <span className="open-source-card-count">{config.projects.length} 个</span>
           </span>
 
           <span className="open-source-card-description">{config.description}</span>
@@ -228,14 +233,14 @@ export const OpenSourceCard = ({ config }: OpenSourceCardProps) => {
           <span className="open-source-card-preview" aria-label="重点开源项目">
             {previewProjects.map((project) => (
               <span key={project.name} className="open-source-card-project">
-                <span>{project.name}</span>
+                <strong>{project.name}</strong>
                 <small>{project.language}</small>
               </span>
             ))}
           </span>
 
           <span className="open-source-card-footer">
-            <span>{config.projects.length} 个项目</span>
+            <span>精选项目</span>
             <span className="open-source-card-action">
               {config.ctaLabel}
               <ArrowUpRight size={14} strokeWidth={2} aria-hidden="true" />

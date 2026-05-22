@@ -162,6 +162,7 @@ const [page, setPage] = useState(1);
 - 组件须适配移动端/平板/桌面（`useBreakpoint`、紧凑布局与随机布局并存）。
 - 处理文案溢出、空状态、错误状态、加载状态与极端数据量。
 - 样式优先复用 `App.css` 中的设计 token（`--color-*`、`--spacing-*`、`--radius-*` 等）及现有组件模式，避免引入不一致的视觉系统。
+- 弹窗、抽屉、面板等局部滚动区须使用稳定滚动槽位（如 `scrollbar-gutter: stable`）和局部滚动隔离（如 `overscroll-behavior: contain`），滚动条颜色、宽度与圆角须复用设计 token 或 `color-mix()` 派生值，避免浏览器默认滚动条挤压内容或破坏样式风格。
 - 界面设计、审查或体验优化任务优先遵循 `.agents/skills/impeccable/`。
 
 ## 生态管理

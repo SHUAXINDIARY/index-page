@@ -11,8 +11,8 @@
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
-  padding: var(--spacing-xl);
+  gap: 10px;
+  padding: 18px;
   border: 0;
   border-radius: inherit;
   background:
@@ -47,16 +47,24 @@
   text-transform: uppercase;
 }
 
+.open-source-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
 .open-source-card-title-row {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 10px;
+  min-width: 0;
 }
 
 .open-source-card-icon {
   flex: 0 0 auto;
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -66,38 +74,71 @@
   color: var(--color-accent);
 }
 
+.open-source-card-heading-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.open-source-card-heading-copy .open-source-card-kicker {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-accent) 88%, var(--color-primary) 12%);
+  line-height: 1;
+}
+
 .open-source-card-title {
+  display: block;
+  overflow: hidden;
   color: var(--color-primary);
   font-size: 18px;
   font-weight: 650;
   letter-spacing: -0.02em;
+  line-height: 1.12;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.open-source-card-count {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  border: 1px solid var(--color-primary-alpha-008);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-card-solid) 52%, transparent);
+  color: var(--color-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .open-source-card-description {
   color: var(--color-secondary);
   font-size: 13px;
-  line-height: 1.55;
+  line-height: 1.45;
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
 }
 
 .open-source-card-preview {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-sm);
+  gap: 7px;
 }
 
 .open-source-card-project {
   min-width: 0;
-  padding: var(--spacing-sm);
+  padding: 8px 9px;
   border: 1px solid var(--color-primary-alpha-008);
   border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--color-card-solid) 46%, transparent);
 }
 
-.open-source-card-project span,
+.open-source-card-project strong,
 .open-source-card-project small {
   display: block;
   overflow: hidden;
@@ -105,10 +146,11 @@
   white-space: nowrap;
 }
 
-.open-source-card-project span {
+.open-source-card-project strong {
   color: var(--color-primary);
   font-size: 12px;
   font-weight: 600;
+  line-height: 1.2;
 }
 
 .open-source-card-project small {
@@ -123,7 +165,7 @@
   justify-content: space-between;
   gap: var(--spacing-sm);
   margin-top: auto;
-  padding-top: var(--spacing-md);
+  padding-top: 8px;
   border-top: 1px solid var(--color-primary-alpha-008);
   color: var(--color-secondary);
   font-size: 12px;
@@ -250,7 +292,31 @@
   flex-direction: column;
   gap: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 8px 28px 28px;
+  scrollbar-color: color-mix(in srgb, var(--color-primary) 22%, transparent) transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.open-source-project-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.open-source-project-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.open-source-project-list::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  background-clip: content-box;
+}
+
+.open-source-project-list::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-accent) 36%, transparent);
+  background-clip: content-box;
 }
 
 .open-source-project-row {
@@ -428,6 +494,16 @@
 
   .open-source-project-list {
     padding: 4px 18px 22px;
+  }
+
+  .open-source-card-trigger {
+    gap: var(--spacing-md);
+    padding: 20px;
+  }
+
+  .open-source-card-description {
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
   }
 
   .open-source-card-preview {
