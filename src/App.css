@@ -649,6 +649,10 @@ body {
   min-height: 140px;
 }
 
+.compact-card--openSource > * {
+  min-height: 180px;
+}
+
 .compact-card--social > * {
   min-height: auto;
 }

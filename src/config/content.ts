@@ -46,6 +46,45 @@ export interface AircraftLogInfo {
   url: string;
 }
 
+/** 开源项目维护状态 */
+export type OpenSourceProjectStatus = 'active' | 'maintained' | 'archived';
+
+/** 单个开源项目的展示信息 */
+export interface OpenSourceProject {
+  /** 项目名称 */
+  name: string;
+  /** 项目一句话说明 */
+  description: string;
+  /** 代码仓库地址 */
+  repoUrl: string;
+  /** 可访问的线上地址 */
+  homepageUrl?: string;
+  /** 主要技术栈或语言 */
+  language: string;
+  /** 项目标签，用于 modal 内快速扫读 */
+  tags: string[];
+  /** 项目当前维护状态 */
+  status: OpenSourceProjectStatus;
+  /** 作者在项目中的主要职责 */
+  role: string;
+  /** 是否作为卡片预览重点展示 */
+  featured?: boolean;
+}
+
+/** 开源项目卡片与详情弹窗配置 */
+export interface OpenSourceInfo {
+  /** 卡片角标文案 */
+  tag: string;
+  /** 卡片标题 */
+  title: string;
+  /** 卡片描述 */
+  description: string;
+  /** 卡片行动按钮文案 */
+  ctaLabel: string;
+  /** 需要在弹窗中完整展示的开源项目列表 */
+  projects: OpenSourceProject[];
+}
+
 export interface RecommendInfo {
   name: string;
   description: string;
@@ -122,6 +161,8 @@ export interface ContentConfig {
   article: ArticleInfo;
   /** 航司 Wiki 卡片 */
   aircraftLog: AircraftLogInfo;
+  /** 开源项目卡片 */
+  openSource: OpenSourceInfo;
   recommend: RecommendInfo;
   music: MusicInfo;
   socialLinks: SocialLink[];
@@ -143,11 +184,11 @@ export const contentConfig: ContentConfig = {
         label: '技术博客',
         url: 'https://blog.shuaxindiary.cn/',
       },
-      {
-        icon: 'FolderOpen',
-        label: '开源项目',
-        url: 'https://github.com/SHUAXINDIARY?tab=repositories&q=&type=source&language=&sort=stargazers',
-      },
+      // {
+      //   icon: 'FolderOpen',
+      //   label: '开源项目',
+      //   url: 'https://github.com/SHUAXINDIARY?tab=repositories&q=&type=source&language=&sort=stargazers',
+      // },
       {
         icon: 'Info',
         label: '关于我',
@@ -183,6 +224,88 @@ export const contentConfig: ContentConfig = {
     title: 'Plane List',
     description: '航司机型资料库 · 机型检索与航司信息',
     url: 'https://aircraftlog.shuaxinjs.cn/',
+  },
+
+  // 开源项目
+  openSource: {
+    tag: 'Open Source',
+    title: '开源项目',
+    description: '把个人页面、航司资料库与兴趣工具沉淀成可复用的项目。',
+    ctaLabel: '查看全部',
+    projects: [
+      {
+        name: 'index-page',
+        description: '个人主页与卡片式索引页，整合博客、音乐、地图、社交入口和随机布局。',
+        repoUrl: 'https://github.com/SHUAXINDIARY/index-page',
+        homepageUrl: 'https://shuaxinjs.cn/',
+        language: 'TypeScript',
+        tags: ['React', 'Rsbuild', 'Design System'],
+        status: 'active',
+        role: '作者与维护者',
+        featured: true,
+      },
+      {
+        name: 'plane-list',
+        description: '航司机型资料库底图与数据方案，支持旅行足迹和航线展示能力。',
+        repoUrl: 'https://github.com/SHUAXINDIARY/plane-list',
+        homepageUrl: 'https://aircraftlog.shuaxinjs.cn/',
+        language: 'TypeScript',
+        tags: ['Canvas', 'Map', 'Aircraft'],
+        status: 'maintained',
+        role: '作者与维护者',
+        featured: true,
+      },
+      {
+        name: 'arknights-artwork',
+        description: '明日方舟插画收集与浏览入口，面向同好整理可访问的作品索引。',
+        repoUrl: 'https://github.com/SHUAXINDIARY/arknights-artwork',
+        homepageUrl: 'https://arknightsartwork.shuaxinjs.cn/',
+        language: 'JavaScript',
+        tags: ['Gallery', 'Archive', 'Fan Site'],
+        status: 'maintained',
+        role: '作者与维护者',
+      },
+      {
+        name: 'Arknights',
+        description: '明日方舟相关素材与数据整理项目，为同好站点和收藏入口提供内容基础。',
+        repoUrl: 'https://github.com/SHUAXINDIARY/Arknights',
+        homepageUrl: 'https://arknights.shuaxinjs.cn/',
+        language: 'JavaScript',
+        tags: ['Arknights', 'Archive', 'Data'],
+        status: 'maintained',
+        role: '作者与维护者',
+      },
+      {
+        name: 'ArknightsLive2d-Web',
+        description: '明日方舟 Live2D Web 展示项目，用浏览器承载角色动态预览体验。',
+        repoUrl: 'https://github.com/SHUAXINDIARY/ArknightsLive2d-Web',
+        homepageUrl: "https://arknightslive2d.shuaxinjs.cn/",
+        language: 'JavaScript',
+        tags: ['Arknights', 'Live2D', 'Web'],
+        status: 'maintained',
+        role: '作者与维护者',
+      },
+      {
+        name: 'national-flag-svg',
+        description: '国家与地区旗帜 SVG 资源集合，适合在网页、地图和资料索引中复用。',
+        repoUrl: 'https://github.com/SHUAXINDIARY/national-flag-svg',
+        language: 'SVG & Canvas',
+        homepageUrl: 'https://national-flag-svg.pages.dev/',
+        tags: ['SVG', 'Canvas', 'Flags', 'Assets'],
+        status: 'maintained',
+        role: '作者与维护者',
+      },
+      {
+        name: 'blog',
+        description: '个人技术博客与长期笔记站点，记录前端工程、影像、旅行和工具实践。',
+        repoUrl: 'https://github.com/SHUAXINDIARY/blog',
+        homepageUrl: 'https://blog.shuaxindiary.cn/',
+        language: 'Markdown',
+        tags: ['Blog', 'Notes', 'Frontend'],
+        status: 'active',
+        role: '作者与维护者',
+      },
+    ],
   },
 
   // 推荐信息
@@ -715,6 +838,7 @@ export const {
   welcome,
   article,
   aircraftLog,
+  openSource,
   recommend,
   music,
   socialLinks,
