@@ -62,21 +62,29 @@ const getReadableHost = (url: string): string => {
 /** 单个项目详情行 */
 const OpenSourceProjectRow = ({ project }: OpenSourceProjectRowProps) => {
   /** 仓库主机名，用于链接辅助说明 */
-  const repoHost = useMemo(() => getReadableHost(project.repoUrl), [project.repoUrl]);
+  const repoHost = useMemo(
+    () => getReadableHost(project.repoUrl),
+    [project.repoUrl],
+  );
 
   return (
     <article className="open-source-project-row">
       <div className="open-source-project-main">
         <div className="open-source-project-heading">
           <h3>{project.name}</h3>
-          <span className={`open-source-status open-source-status--${project.status}`}>
+          <span
+            className={`open-source-status open-source-status--${project.status}`}
+          >
             {statusLabelMap[project.status]}
           </span>
         </div>
 
         <p className="open-source-project-description">{project.description}</p>
 
-        <div className="open-source-project-tags" aria-label={`${project.name} 项目标签`}>
+        <div
+          className="open-source-project-tags"
+          aria-label={`${project.name} 项目标签`}
+        >
           {project.tags.map((tag) => (
             <span key={tag}>{tag}</span>
           ))}
@@ -97,7 +105,11 @@ const OpenSourceProjectRow = ({ project }: OpenSourceProjectRowProps) => {
           {repoHost}
         </a>
         {project.homepageUrl ? (
-          <a href={project.homepageUrl} target="_blank" rel="noopener noreferrer">
+          <a
+            href={project.homepageUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <ExternalLink size={15} strokeWidth={1.9} aria-hidden="true" />
             线上预览
           </a>
@@ -168,7 +180,7 @@ const OpenSourceModal = ({ config, onClose }: OpenSourceModalProps) => {
 
         <div className="open-source-modal-summary" aria-label="开源项目概览">
           <span>{config.projects.length} 个项目</span>
-          <span>React / Rsbuild / Canvas</span>
+          <span>React / Rsbuild / Canvas / Vue / Node</span>
           <span>个人工具与内容索引</span>
         </div>
 
@@ -189,8 +201,11 @@ export const OpenSourceCard = ({ config }: OpenSourceCardProps) => {
 
   /** 卡片预览优先展示 featured 项目 */
   const previewProjects = useMemo(() => {
-    const featuredProjects = config.projects.filter((project) => project.featured);
-    const sourceProjects = featuredProjects.length > 0 ? featuredProjects : config.projects;
+    const featuredProjects = config.projects.filter(
+      (project) => project.featured,
+    );
+    const sourceProjects =
+      featuredProjects.length > 0 ? featuredProjects : config.projects;
     return sourceProjects.slice(0, CARD_PREVIEW_LIMIT);
   }, [config.projects]);
 
@@ -225,10 +240,14 @@ export const OpenSourceCard = ({ config }: OpenSourceCardProps) => {
               </span>
             </span>
 
-            <span className="open-source-card-count">{config.projects.length} 个</span>
+            <span className="open-source-card-count">
+              {config.projects.length} 个
+            </span>
           </span>
 
-          <span className="open-source-card-description">{config.description}</span>
+          <span className="open-source-card-description">
+            {config.description}
+          </span>
 
           <span className="open-source-card-preview" aria-label="重点开源项目">
             {previewProjects.map((project) => (
@@ -251,7 +270,11 @@ export const OpenSourceCard = ({ config }: OpenSourceCardProps) => {
 
       <AnimatePresence>
         {isModalOpen ? (
-          <OpenSourceModal key="open-source-modal" config={config} onClose={handleCloseModal} />
+          <OpenSourceModal
+            key="open-source-modal"
+            config={config}
+            onClose={handleCloseModal}
+          />
         ) : null}
       </AnimatePresence>
     </>
