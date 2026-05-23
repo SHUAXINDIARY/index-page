@@ -205,12 +205,13 @@ export const contentConfig: ContentConfig = {
   openSource: {
     tag: 'Open Source',
     title: '开源项目',
-    description: '把个人页面、航司资料库与兴趣工具沉淀成可复用的项目。',
+    description: '一些玩具。',
     ctaLabel: '查看全部',
     projects: [
       {
         name: 'index-page',
-        description: '个人主页与卡片式索引页，整合博客、音乐、地图、社交入口和随机布局。',
+        description:
+          '个人主页与卡片式索引页，整合博客、音乐、地图、社交入口和随机布局。',
         repoUrl: 'https://github.com/SHUAXINDIARY/index-page',
         homepageUrl: 'https://shuaxinjs.cn/',
         language: 'TypeScript',
@@ -221,7 +222,8 @@ export const contentConfig: ContentConfig = {
       },
       {
         name: 'plane-list',
-        description: '航司机型资料库底图与数据方案，支持旅行足迹和航线展示能力。',
+        description:
+          '航司机型资料库底图与数据方案，支持旅行足迹和航线展示能力。',
         repoUrl: 'https://github.com/SHUAXINDIARY/plane-list',
         homepageUrl: 'https://aircraftlog.shuaxinjs.cn/',
         language: 'TypeScript',
@@ -232,7 +234,8 @@ export const contentConfig: ContentConfig = {
       },
       {
         name: 'arknights-artwork',
-        description: '明日方舟插画收集与浏览入口，面向同好整理可访问的作品索引。',
+        description:
+          '明日方舟插画收集与浏览入口，面向同好整理可访问的作品索引。',
         repoUrl: 'https://github.com/SHUAXINDIARY/arknights-artwork',
         homepageUrl: 'https://arknightsartwork.shuaxinjs.cn/',
         language: 'JavaScript',
@@ -242,7 +245,8 @@ export const contentConfig: ContentConfig = {
       },
       {
         name: 'Arknights',
-        description: '明日方舟相关素材与数据整理项目，为同好站点和收藏入口提供内容基础。',
+        description:
+          '明日方舟相关素材与数据整理项目，为同好站点和收藏入口提供内容基础。',
         repoUrl: 'https://github.com/SHUAXINDIARY/Arknights',
         homepageUrl: 'https://arknights.shuaxinjs.cn/',
         language: 'JavaScript',
@@ -252,9 +256,10 @@ export const contentConfig: ContentConfig = {
       },
       {
         name: 'ArknightsLive2d-Web',
-        description: '明日方舟 Live2D Web 展示项目，用浏览器承载角色动态预览体验。',
+        description:
+          '明日方舟 Live2D Web 展示项目，用浏览器承载角色动态预览体验。',
         repoUrl: 'https://github.com/SHUAXINDIARY/ArknightsLive2d-Web',
-        homepageUrl: "https://arknightslive2d.shuaxinjs.cn/",
+        homepageUrl: 'https://arknightslive2d.shuaxinjs.cn/',
         language: 'JavaScript',
         tags: ['Arknights', 'Live2D', 'Web'],
         status: 'maintained',
@@ -262,7 +267,8 @@ export const contentConfig: ContentConfig = {
       },
       {
         name: 'national-flag-svg',
-        description: '国家与地区旗帜 SVG 资源集合，适合在网页、地图和资料索引中复用。',
+        description:
+          '国家与地区旗帜 SVG 资源集合，适合在网页、地图和资料索引中复用。',
         repoUrl: 'https://github.com/SHUAXINDIARY/national-flag-svg',
         language: 'SVG & Canvas',
         homepageUrl: 'https://national-flag-svg.pages.dev/',
@@ -272,7 +278,8 @@ export const contentConfig: ContentConfig = {
       },
       {
         name: 'vue-ganttastic-demo',
-        description: '基于 Vue 3 与 vue-ganttastic 的多任务并行甘特图可视化示例。',
+        description:
+          '基于 Vue 3 与 vue-ganttastic 的多任务并行甘特图可视化示例。',
         repoUrl: 'https://github.com/SHUAXINDIARY/vue-ganttastic-demo',
         homepageUrl: 'https://vue-ganttastic-demo.pages.dev/',
         language: 'Vue / TypeScript',
@@ -282,7 +289,8 @@ export const contentConfig: ContentConfig = {
       },
       {
         name: 'blog',
-        description: '个人技术博客与长期笔记站点，记录前端工程、影像、旅行和工具实践。',
+        description:
+          '个人技术博客与长期笔记站点，记录前端工程、影像、旅行和工具实践。',
         repoUrl: 'https://github.com/SHUAXINDIARY/blog',
         homepageUrl: 'https://blog.shuaxindiary.cn/',
         language: 'Markdown',
