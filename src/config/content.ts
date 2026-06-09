@@ -378,6 +378,13 @@ export const contentConfig: ContentConfig = {
       },
       // 旅行地点（橙色）
       {
+        name: '悉尼',
+        lat: -33.86785,
+        lng: 151.20732,
+        type: 'travel',
+        description: '澳大利亚悉尼',
+      },
+      {
         name: '北京',
         lat: 39.929986,
         lng: 116.395645,
@@ -614,6 +621,13 @@ export const contentConfig: ContentConfig = {
         imgUrl: 'https://gallery.shuaxinjs.cn/?tags=ChiangMai',
       },
       // 机场
+      {
+        name: '悉尼金斯福德·史密斯国际机场',
+        lat: -33.939922,
+        lng: 151.175276,
+        type: 'airport',
+        description: '澳大利亚新南威尔士州悉尼金斯福德·史密斯国际机场（SYD）',
+      },
       {
         name: '北京大兴国际机场',
         lat: 39.509945,
