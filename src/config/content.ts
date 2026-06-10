@@ -629,6 +629,13 @@ export const contentConfig: ContentConfig = {
         description: '澳大利亚新南威尔士州悉尼金斯福德·史密斯国际机场（SYD）',
       },
       {
+        name: '新加坡樟宜机场',
+        lat: 1.36442,
+        lng: 103.991531,
+        type: 'airport',
+        description: '新加坡樟宜机场（SIN）',
+      },
+      {
         name: '北京大兴国际机场',
         lat: 39.509945,
         lng: 116.41092,
