@@ -297,6 +297,17 @@ export const contentConfig: ContentConfig = {
         status: 'maintained',
         role: '作者与维护者',
       },
+      {
+        name: 'Panorama-Preview',
+        description:
+          'equirectangular 全景图预览与裁切方案，支持拖拽选视角、预设批量导出与超采样透视渲染。',
+        repoUrl: 'https://github.com/SHUAXINDIARY/Panorama-Preview',
+        homepageUrl: 'https://panorama-preview.pages.dev/',
+        language: 'JavaScript',
+        tags: ['Panorama', 'Three.js', 'WebGL', 'Photo Sphere Viewer'],
+        status: 'maintained',
+        role: '作者与维护者',
+      },
     ],
   },
 
