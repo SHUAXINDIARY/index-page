@@ -1,6 +1,11 @@
-import type { CSSProperties, ReactNode } from 'react';
-import { useId, useState } from 'react';
-import { motion } from 'motion/react';
+import type { CSSProperties, PointerEvent, ReactNode } from 'react';
+import { useId, useRef, useState } from 'react';
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from 'motion/react';
 import './Card.css';
 
 /** 随机延迟范围（秒） */
@@ -14,6 +19,12 @@ const RANDOM_DURATION_MAX = 0.5;
 /** 随机 Y 轴偏移范围（像素） */
 const RANDOM_Y_MIN = 15;
 const RANDOM_Y_MAX = 30;
+
+/** 3D 倾斜最大角度（度） */
+const MAX_ROTATE_X = 7;
+const MAX_ROTATE_Y = 9;
+
+const TILT_SPRING = { stiffness: 220, damping: 24, mass: 0.7 };
 
 /** 生成指定范围内的随机数 */
 const randomInRange = (min: number, max: number) =>
@@ -49,11 +60,38 @@ export const Card = ({
 }: CardProps) => {
   /** 随机动画参数，使用惰性初始化确保只在首次渲染时生成 */
   const [animationParams] = useState(createAnimationParams);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const rotateX = useSpring(useMotionValue(0), TILT_SPRING);
+  const rotateY = useSpring(useMotionValue(0), TILT_SPRING);
   const filterId = `liquid-glass-${useId().replace(/:/g, '')}`;
   const cardStyle = {
     ...style,
     '--liquid-glass-filter': `url(#${filterId})`,
   } as CSSProperties;
+
+  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (prefersReducedMotion || event.pointerType !== 'mouse') return;
+
+    const card = cardRef.current;
+    if (!card) return;
+
+    const bounds = card.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width;
+    const y = (event.clientY - bounds.top) / bounds.height;
+
+    rotateX.set((0.5 - y) * MAX_ROTATE_X * 2);
+    rotateY.set((x - 0.5) * MAX_ROTATE_Y * 2);
+    card.style.setProperty('--card-glare-x', `${x * 100}%`);
+    card.style.setProperty('--card-glare-y', `${y * 100}%`);
+    card.style.setProperty('--card-glare-opacity', '1');
+  };
+
+  const resetTilt = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+    cardRef.current?.style.setProperty('--card-glare-opacity', '0');
+  };
 
   return (
     <motion.div
@@ -100,9 +138,21 @@ export const Card = ({
           </filter>
         </defs>
       </svg>
-      <div className={`card ${className}`} style={cardStyle} onClick={onClick}>
+      <motion.div
+        ref={cardRef}
+        className={`card ${className}`}
+        style={{ ...cardStyle, rotateX, rotateY }}
+        whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.015 }}
+        whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
+        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={resetTilt}
+        onPointerCancel={resetTilt}
+        onClick={onClick}
+      >
+        <span className="card-glare" aria-hidden="true" />
         {children}
-      </div>
+      </motion.div>
     </motion.div>
   );
 };

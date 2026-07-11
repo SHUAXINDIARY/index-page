@@ -12,8 +12,13 @@
 }
 
 .card {
+  --card-glare-x: 50%;
+  --card-glare-y: 50%;
+  --card-glare-opacity: 0;
+
   position: relative;
   isolation: isolate;
+  transform-style: preserve-3d;
   background:
     linear-gradient(
       145deg,
@@ -33,13 +38,30 @@
     0 18px 45px -28px
       color-mix(in srgb, var(--color-shadow-outer) 80%, transparent),
     0 8px 24px -18px color-mix(in srgb, var(--color-primary) 18%, transparent);
-  /* hover 效果和主题切换过渡 */
+  will-change: transform;
+  /* 主题切换与材质变化过渡 */
   transition:
-    transform var(--duration-fast) var(--easing-default),
     box-shadow var(--duration-normal) var(--easing-default),
     background var(--duration-normal) var(--easing-default),
     border-color var(--duration-normal) var(--easing-default),
     color var(--duration-normal) var(--easing-default);
+}
+
+.card-glare {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--card-glare-x) var(--card-glare-y),
+    color-mix(in srgb, var(--color-card-solid) 42%, transparent) 0,
+    color-mix(in srgb, var(--color-card-solid) 16%, transparent) 16%,
+    transparent 46%
+  );
+  opacity: var(--card-glare-opacity);
+  transform: translateZ(42px);
+  transition: opacity 220ms var(--easing-out-quart);
+  pointer-events: none;
 }
 
 .card::before {
@@ -74,7 +96,6 @@
       transparent 44%
     ),
     var(--color-card-hover);
-  transform: translateY(-4px) scale(1.02);
   box-shadow:
     0 1px 0 color-mix(in srgb, var(--color-card-solid) 68%, transparent) inset,
     0 -1px 0 color-mix(in srgb, var(--color-primary) 8%, transparent) inset,
@@ -93,6 +114,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .card {
+    will-change: auto;
     transition:
       background var(--duration-normal) var(--easing-default),
       border-color var(--duration-normal) var(--easing-default),
@@ -101,5 +123,19 @@
 
   .card:hover {
     transform: none;
+  }
+
+  .card-glare {
+    display: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .card {
+    will-change: auto;
+  }
+
+  .card-glare {
+    display: none;
   }
 }
