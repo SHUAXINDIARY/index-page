@@ -21,10 +21,10 @@ const RANDOM_Y_MIN = 15;
 const RANDOM_Y_MAX = 30;
 
 /** 3D 倾斜最大角度（度） */
-const MAX_ROTATE_X = 7;
-const MAX_ROTATE_Y = 9;
+const MAX_ROTATE_X = 11;
+const MAX_ROTATE_Y = 14;
 
-const TILT_SPRING = { stiffness: 220, damping: 24, mass: 0.7 };
+const TILT_SPRING = { stiffness: 190, damping: 21, mass: 0.72 };
 
 /** 生成指定范围内的随机数 */
 const randomInRange = (min: number, max: number) =>
@@ -142,7 +142,7 @@ export const Card = ({
         ref={cardRef}
         className={`card ${className}`}
         style={{ ...cardStyle, rotateX, rotateY }}
-        whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.015 }}
+        whileHover={prefersReducedMotion ? undefined : { y: -10, scale: 1.035 }}
         whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
         transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
         onPointerMove={handlePointerMove}
