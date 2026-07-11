@@ -21,8 +21,8 @@ const RANDOM_Y_MIN = 15;
 const RANDOM_Y_MAX = 30;
 
 /** 3D 倾斜最大角度（度） */
-const MAX_ROTATE_X = 11;
-const MAX_ROTATE_Y = 14;
+const MAX_ROTATE_X = 13;
+const MAX_ROTATE_Y = 17;
 
 const TILT_SPRING = { stiffness: 190, damping: 21, mass: 0.72 };
 
@@ -85,12 +85,16 @@ export const Card = ({
     card.style.setProperty('--card-glare-x', `${x * 100}%`);
     card.style.setProperty('--card-glare-y', `${y * 100}%`);
     card.style.setProperty('--card-glare-opacity', '1');
+    card.style.setProperty('--card-shadow-x', `${(0.5 - x) * 24}px`);
+    card.style.setProperty('--card-shadow-y', `${28 + (0.5 - y) * 14}px`);
   };
 
   const resetTilt = () => {
     rotateX.set(0);
     rotateY.set(0);
     cardRef.current?.style.setProperty('--card-glare-opacity', '0');
+    cardRef.current?.style.setProperty('--card-shadow-x', '0px');
+    cardRef.current?.style.setProperty('--card-shadow-y', '34px');
   };
 
   return (
@@ -141,7 +145,7 @@ export const Card = ({
       <motion.div
         ref={cardRef}
         className={`card ${className}`}
-        style={{ ...cardStyle, rotateX, rotateY }}
+        style={{ ...cardStyle, transformPerspective: 720, rotateX, rotateY }}
         whileHover={prefersReducedMotion ? undefined : { y: -10, scale: 1.035 }}
         whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
         transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}

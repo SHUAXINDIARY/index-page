@@ -15,6 +15,8 @@
   --card-glare-x: 50%;
   --card-glare-y: 50%;
   --card-glare-opacity: 0;
+  --card-shadow-x: 0px;
+  --card-shadow-y: 34px;
 
   position: relative;
   isolation: isolate;
@@ -54,9 +56,9 @@
   border-radius: inherit;
   background: radial-gradient(
     circle at var(--card-glare-x) var(--card-glare-y),
-    color-mix(in srgb, var(--color-card-solid) 52%, transparent) 0,
-    color-mix(in srgb, var(--color-card-solid) 20%, transparent) 18%,
-    transparent 52%
+    color-mix(in srgb, var(--color-card-solid) 34%, transparent) 0,
+    color-mix(in srgb, var(--color-card-solid) 11%, transparent) 14%,
+    transparent 38%
   );
   opacity: var(--card-glare-opacity);
   transform: translateZ(42px);
@@ -92,16 +94,17 @@
   background:
     linear-gradient(
       145deg,
-      color-mix(in srgb, var(--color-card-solid) 28%, transparent),
-      transparent 44%
+      color-mix(in srgb, var(--color-card-solid) 20%, transparent),
+      transparent 40%
     ),
     var(--color-card-hover);
   box-shadow:
     0 1px 0 color-mix(in srgb, var(--color-card-solid) 68%, transparent) inset,
     0 -1px 0 color-mix(in srgb, var(--color-primary) 8%, transparent) inset,
-    0 42px 72px -30px
+    var(--card-shadow-x) var(--card-shadow-y) 72px -28px
       color-mix(in srgb, var(--color-shadow-outer) 100%, transparent),
-    0 20px 42px -18px color-mix(in srgb, var(--color-primary) 30%, transparent);
+    var(--card-shadow-x) var(--card-shadow-y) 40px -18px
+      color-mix(in srgb, var(--color-primary) 26%, transparent);
 }
 
 @supports not (backdrop-filter: url('#liquid-glass-filter')) {
