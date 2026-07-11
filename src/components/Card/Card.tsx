@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { motion } from 'motion/react';
 import './Card.css';
 
@@ -16,7 +16,8 @@ const RANDOM_Y_MIN = 15;
 const RANDOM_Y_MAX = 30;
 
 /** 生成指定范围内的随机数 */
-const randomInRange = (min: number, max: number) => min + Math.random() * (max - min);
+const randomInRange = (min: number, max: number) =>
+  min + Math.random() * (max - min);
 
 /** 生成随机动画参数 */
 const createAnimationParams = () => ({
@@ -39,9 +40,20 @@ interface CardProps {
   delay?: number;
 }
 
-export const Card = ({ children, className = '', style, onClick, delay = 0 }: CardProps) => {
+export const Card = ({
+  children,
+  className = '',
+  style,
+  onClick,
+  delay = 0,
+}: CardProps) => {
   /** 随机动画参数，使用惰性初始化确保只在首次渲染时生成 */
   const [animationParams] = useState(createAnimationParams);
+  const filterId = `liquid-glass-${useId().replace(/:/g, '')}`;
+  const cardStyle = {
+    ...style,
+    '--liquid-glass-filter': `url(#${filterId})`,
+  } as CSSProperties;
 
   return (
     <motion.div
@@ -54,10 +66,43 @@ export const Card = ({ children, className = '', style, onClick, delay = 0 }: Ca
         ease: [0.25, 0.1, 0.25, 1],
       }}
     >
-      <div className={`card ${className}`} style={style} onClick={onClick}>
+      <svg className="liquid-glass-filter" aria-hidden="true">
+        <defs>
+          <filter
+            id={filterId}
+            x="-12%"
+            y="-12%"
+            width="124%"
+            height="124%"
+            colorInterpolationFilters="sRGB"
+          >
+            <feGaussianBlur
+              in="SourceGraphic"
+              stdDeviation="0.7"
+              result="blurred"
+            />
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.008 0.014"
+              numOctaves="2"
+              seed="7"
+              result="displacementMap"
+            />
+            <feDisplacementMap
+              in="blurred"
+              in2="displacementMap"
+              scale="22"
+              xChannelSelector="R"
+              yChannelSelector="G"
+              result="refracted"
+            />
+            <feColorMatrix in="refracted" type="saturate" values="1.35" />
+          </filter>
+        </defs>
+      </svg>
+      <div className={`card ${className}`} style={cardStyle} onClick={onClick}>
         {children}
       </div>
     </motion.div>
   );
 };
-
