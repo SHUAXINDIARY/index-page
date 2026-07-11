@@ -138,12 +138,46 @@
 }
 
 /* 面板标签 */
+.theme-panel-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
 .theme-panel-label {
   font-size: 11px;
   color: var(--color-secondary);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.theme-background-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+}
+
+.theme-background-toggle:hover {
+  color: var(--color-primary);
+}
+
+.theme-background-toggle input {
+  width: 14px;
+  height: 14px;
+  margin: 0 1px 0 0;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.theme-background-toggle:focus-within {
+  color: var(--color-primary);
 }
 
 /* 配色选项容器 */
@@ -181,8 +215,9 @@
 .theme-color-dot.active {
   border-color: var(--color-accent);
   transform: scale(1.1);
-  box-shadow: 0 0 0 2px var(--color-accent-alpha-020),
-              0 3px 10px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 0 2px var(--color-accent-alpha-020),
+    0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .theme-color-dot.active::after {

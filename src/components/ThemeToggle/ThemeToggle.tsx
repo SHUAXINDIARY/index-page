@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { Sun, Moon, Monitor } from 'lucide-react';
+import { Sun, Moon, Monitor, Image } from 'lucide-react';
 import { useTheme } from '../../hooks/themeContext';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 import './ThemeToggle.css';
@@ -34,9 +34,17 @@ const PANEL_ANIMATION_MOBILE = {
 interface ThemeToggleProps {
   /** 样式变体：默认为圆形图标，badge 为徽章样式 */
   variant?: 'icon' | 'badge';
+  /** 是否展示页面背景图 */
+  backgroundImageEnabled?: boolean;
+  /** 页面背景图开关回调 */
+  onBackgroundImageChange?: (enabled: boolean) => void;
 }
 
-export const ThemeToggle = ({ variant = 'icon' }: ThemeToggleProps) => {
+export const ThemeToggle = ({
+  variant = 'icon',
+  backgroundImageEnabled = false,
+  onBackgroundImageChange,
+}: ThemeToggleProps) => {
   const { mode, resolvedMode, color, setMode, setColor } = useTheme();
   const breakpoint = useBreakpoint();
 
@@ -50,7 +58,9 @@ export const ThemeToggle = ({ variant = 'icon' }: ThemeToggleProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   /** 根据设备选择动画配置 */
-  const panelAnimation = isTouchFirst ? PANEL_ANIMATION_MOBILE : PANEL_ANIMATION_PC;
+  const panelAnimation = isTouchFirst
+    ? PANEL_ANIMATION_MOBILE
+    : PANEL_ANIMATION_PC;
 
   /** 切换面板开关 */
   const togglePanel = useCallback(() => {
@@ -95,58 +105,70 @@ export const ThemeToggle = ({ variant = 'icon' }: ThemeToggleProps) => {
                 onClick={closePanel}
               />
             )}
-            <motion.div
-              className="theme-panel"
-              {...panelAnimation}
-            >
-            {/* 模式切换 */}
-            <div className="theme-panel-section">
-              <div className="theme-mode-buttons">
-                <button
-                  className={`theme-mode-btn ${mode === 'light' ? 'active' : ''}`}
-                  onClick={() => setMode('light')}
-                  title="浅色模式"
-                >
-                  <Sun size={14} />
-                  <span>浅色</span>
-                </button>
-                <button
-                  className={`theme-mode-btn ${mode === 'dark' ? 'active' : ''}`}
-                  onClick={() => setMode('dark')}
-                  title="深色模式"
-                >
-                  <Moon size={14} />
-                  <span>深色</span>
-                </button>
-              </div>
-              <button
-                className={`theme-system-btn ${mode === 'system' ? 'active' : ''}`}
-                onClick={() => setMode('system')}
-                title="跟随系统"
-              >
-                <Monitor size={14} />
-                <span>跟随系统</span>
-              </button>
-            </div>
-
-            {/* 分割线 */}
-            <div className="theme-panel-divider" />
-
-            {/* 配色选择 */}
-            <div className="theme-panel-section">
-              <div className="theme-panel-label">配色</div>
-              <div className="theme-color-options">
-                {COLOR_OPTIONS.map((option) => (
+            <motion.div className="theme-panel" {...panelAnimation}>
+              {/* 模式切换 */}
+              <div className="theme-panel-section">
+                <div className="theme-mode-buttons">
                   <button
-                    key={option.id}
-                    className={`theme-color-dot ${color === option.id ? 'active' : ''}`}
-                    style={{ '--dot-color': option.color } as React.CSSProperties}
-                    onClick={() => setColor(option.id)}
-                    title={option.label}
-                  />
-                ))}
+                    className={`theme-mode-btn ${mode === 'light' ? 'active' : ''}`}
+                    onClick={() => setMode('light')}
+                    title="浅色模式"
+                  >
+                    <Sun size={14} />
+                    <span>浅色</span>
+                  </button>
+                  <button
+                    className={`theme-mode-btn ${mode === 'dark' ? 'active' : ''}`}
+                    onClick={() => setMode('dark')}
+                    title="深色模式"
+                  >
+                    <Moon size={14} />
+                    <span>深色</span>
+                  </button>
+                </div>
+                <button
+                  className={`theme-system-btn ${mode === 'system' ? 'active' : ''}`}
+                  onClick={() => setMode('system')}
+                  title="跟随系统"
+                >
+                  <Monitor size={14} />
+                  <span>跟随系统</span>
+                </button>
               </div>
-            </div>
+
+              {/* 分割线 */}
+              <div className="theme-panel-divider" />
+
+              {/* 配色选择 */}
+              <div className="theme-panel-section">
+                <div className="theme-panel-label-row">
+                  <div className="theme-panel-label">配色</div>
+                  <label className="theme-background-toggle">
+                    <input
+                      type="checkbox"
+                      checked={backgroundImageEnabled}
+                      onChange={(event) =>
+                        onBackgroundImageChange?.(event.target.checked)
+                      }
+                    />
+                    <Image size={13} aria-hidden="true" />
+                    <span>背景图</span>
+                  </label>
+                </div>
+                <div className="theme-color-options">
+                  {COLOR_OPTIONS.map((option) => (
+                    <button
+                      key={option.id}
+                      className={`theme-color-dot ${color === option.id ? 'active' : ''}`}
+                      style={
+                        { '--dot-color': option.color } as React.CSSProperties
+                      }
+                      onClick={() => setColor(option.id)}
+                      title={option.label}
+                    />
+                  ))}
+                </div>
+              </div>
             </motion.div>
           </>
         )}

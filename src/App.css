@@ -3,23 +3,23 @@
    ======================================== */
 :root {
   /* 品牌色 */
-  --color-primary: #4E3F42;        /* 主文字色 - 深棕褐色 */
-  --color-secondary: #7B888E;      /* 次要文字 - 灰蓝色 */
-  --color-accent: #DE4331;         /* 强调色 - 暖红色 */
-  
+  --color-primary: #4e3f42; /* 主文字色 - 深棕褐色 */
+  --color-secondary: #7b888e; /* 次要文字 - 灰蓝色 */
+  --color-accent: #de4331; /* 强调色 - 暖红色 */
+
   /* 背景色 */
-  --color-bg: #EEEEEE;             /* 页面背景 - 淡灰色 */
-  --color-card: rgba(255, 255, 255, 0.4);  /* 卡片背景 - 半透明白 */
-  --color-card-solid: #FFFFFF;     /* 实色白 */
-  
+  --color-bg: #eeeeee; /* 页面背景 - 淡灰色 */
+  --color-card: rgba(255, 255, 255, 0.4); /* 卡片背景 - 半透明白 */
+  --color-card-solid: #ffffff; /* 实色白 */
+
   /* 边框色 */
-  --color-border: #FFFFFF;         /* 边框 - 纯白 */
-  
+  --color-border: #ffffff; /* 边框 - 纯白 */
+
   /* 阴影色 */
   --color-shadow-outer: rgba(0, 0, 0, 0.05);
   --color-shadow-warm: rgb(226, 217, 206);
   --color-shadow-inset: rgba(255, 255, 255, 0.25);
-  
+
   /* 派生透明度变量 - 基于 primary/accent 的不同透明度 */
   --color-primary-alpha-005: rgba(78, 63, 66, 0.05);
   --color-primary-alpha-008: rgba(78, 63, 66, 0.08);
@@ -29,17 +29,17 @@
   --color-primary-alpha-040: rgba(78, 63, 66, 0.4);
   --color-accent-alpha-008: rgba(222, 67, 49, 0.08);
   --color-accent-alpha-020: rgba(222, 67, 49, 0.2);
-  
+
   /* 遮罩/覆盖色 */
   --color-overlay: rgba(0, 0, 0, 0.95);
   --color-overlay-light: rgba(0, 0, 0, 0.6);
-  
+
   /* 在深色背景上的文字颜色 */
   --color-text-on-dark: #ffffff;
-  
+
   /* 卡片 hover 背景 */
   --color-card-hover: rgba(255, 255, 255, 0.6);
-  
+
   /* 模态框/面板相关 */
   --color-modal-bg: #ffffff;
   --color-modal-header-bg: rgba(245, 245, 245, 0.95);
@@ -50,24 +50,24 @@
   --color-modal-close-text: #666666;
   --color-modal-close-hover-bg: rgba(255, 77, 77, 0.15);
   --color-modal-close-hover-text: #ff4d4d;
-  
+
   /* 社交图标背景 */
   --color-social-icon-bg: #070707;
   --color-social-icon-text: #ffffff;
-  
+
   /* 推荐卡片 */
   --color-recommend-header: #666666;
   --color-recommend-avatar-bg: #f0f0f0;
   --color-recommend-name: #333333;
   --color-recommend-desc: #666666;
-  
+
   /* 间距 */
   --spacing-xs: 6px;
   --spacing-sm: 8px;
   --spacing-md: 12px;
   --spacing-lg: 16px;
   --spacing-xl: 24px;
-  
+
   /* 圆角 */
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -75,7 +75,7 @@
   --radius-xl: 32px;
   --radius-2xl: 64px;
   --radius-full: 9999px;
-  
+
   /* 动效 */
   --duration-fast: 150ms;
   --duration-normal: 300ms;
@@ -85,22 +85,24 @@
   --easing-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --easing-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
   --easing-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  
+
   /* 阴影预设 */
-  --shadow-glass: 
+  --shadow-glass:
     rgba(0, 0, 0, 0.05) 0px 40px 50px -32px,
     rgba(255, 255, 255, 0.25) 0px 0px 20px 0px inset;
   --shadow-warm-lg: rgb(226, 217, 206) 0px 16px 32px -5px;
   --shadow-warm-md: rgb(226, 217, 206) 0px 12px 20px -5px;
   --shadow-inset-light: rgba(255, 255, 255, 0.4) 0px 0px 12px 0px inset;
-  
+
   /* 字体 */
-  --font-sans: "PingFang SC", -apple-system, system-ui, "Segoe UI", 
-               Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif,
-               "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", Arial;
-  --font-display: "Averia Gruesa Libre", cursive;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 
-               "Liberation Mono", "Courier New", monospace;
+  --font-sans:
+    'PingFang SC', -apple-system, system-ui, 'Segoe UI', Roboto, Ubuntu,
+    Cantarell, 'Noto Sans', sans-serif, 'Helvetica Neue', 'Hiragino Sans GB',
+    'Microsoft YaHei', Arial;
+  --font-display: 'Averia Gruesa Libre', cursive;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
 
   /* 世界地图：从品牌语义色派生（随 data-theme-mode / data-theme-color 联动） */
   --world-map-bg:
@@ -134,74 +136,199 @@
       transparent 28%,
       color-mix(in srgb, var(--color-bg) 30%, transparent)
     );
-  --world-map-tooltip-bg: color-mix(in srgb, var(--color-card-solid) 96%, transparent);
-  --world-map-tooltip-border: color-mix(in srgb, var(--color-primary) 14%, transparent);
-  --world-map-tooltip-shadow: 0 0.85rem 1.8rem color-mix(in srgb, var(--color-primary) 12%, transparent);
-  --world-map-route-international: color-mix(in srgb, var(--color-accent) 55%, transparent);
-  --world-map-route-domestic: color-mix(in srgb, var(--color-secondary) 45%, transparent);
+  --world-map-tooltip-bg: color-mix(
+    in srgb,
+    var(--color-card-solid) 96%,
+    transparent
+  );
+  --world-map-tooltip-border: color-mix(
+    in srgb,
+    var(--color-primary) 14%,
+    transparent
+  );
+  --world-map-tooltip-shadow: 0 0.85rem 1.8rem
+    color-mix(in srgb, var(--color-primary) 12%, transparent);
+  --world-map-route-international: color-mix(
+    in srgb,
+    var(--color-accent) 55%,
+    transparent
+  );
+  --world-map-route-domestic: color-mix(
+    in srgb,
+    var(--color-secondary) 45%,
+    transparent
+  );
   --world-map-marker-travel-fill: var(--color-accent);
   --world-map-marker-travel-stroke: var(--color-card-solid);
-  --world-map-marker-travel-fill-active: color-mix(in srgb, var(--color-accent) 88%, var(--color-card-solid) 12%);
+  --world-map-marker-travel-fill-active: color-mix(
+    in srgb,
+    var(--color-accent) 88%,
+    var(--color-card-solid) 12%
+  );
   --world-map-marker-travel-stroke-active: var(--color-text-on-dark);
-  --world-map-marker-residence-fill: color-mix(in srgb, var(--color-accent) 42%, var(--color-secondary) 58%);
+  --world-map-marker-residence-fill: color-mix(
+    in srgb,
+    var(--color-accent) 42%,
+    var(--color-secondary) 58%
+  );
   --world-map-marker-residence-stroke: var(--color-card-solid);
-  --world-map-marker-residence-fill-active: color-mix(in srgb, var(--color-accent) 55%, var(--color-secondary) 45%);
+  --world-map-marker-residence-fill-active: color-mix(
+    in srgb,
+    var(--color-accent) 55%,
+    var(--color-secondary) 45%
+  );
   --world-map-marker-residence-stroke-active: var(--color-text-on-dark);
-  --world-map-marker-wish-fill: color-mix(in srgb, var(--color-accent) 68%, var(--color-primary) 32%);
+  --world-map-marker-wish-fill: color-mix(
+    in srgb,
+    var(--color-accent) 68%,
+    var(--color-primary) 32%
+  );
   --world-map-marker-wish-stroke: var(--color-card-solid);
-  --world-map-marker-wish-fill-active: color-mix(in srgb, var(--color-accent) 78%, var(--color-card-solid) 22%);
+  --world-map-marker-wish-fill-active: color-mix(
+    in srgb,
+    var(--color-accent) 78%,
+    var(--color-card-solid) 22%
+  );
   --world-map-marker-wish-stroke-active: var(--color-text-on-dark);
-  --world-map-marker-airport-fill: color-mix(in srgb, var(--color-accent) 28%, var(--color-primary) 72%);
+  --world-map-marker-airport-fill: color-mix(
+    in srgb,
+    var(--color-accent) 28%,
+    var(--color-primary) 72%
+  );
   --world-map-marker-airport-stroke: var(--color-primary);
-  --world-map-marker-airport-fill-active: color-mix(in srgb, var(--color-accent) 38%, var(--color-primary) 62%);
+  --world-map-marker-airport-fill-active: color-mix(
+    in srgb,
+    var(--color-accent) 38%,
+    var(--color-primary) 62%
+  );
   --world-map-marker-airport-stroke-active: var(--color-bg);
 
   /* 世界地图 SVG 底图（品牌色派生，运行时注入 map-light.svg） */
-  --world-map-svg-ocean-top: color-mix(in srgb, var(--color-accent) 12%, var(--color-card-solid) 88%);
-  --world-map-svg-ocean-bottom: color-mix(in srgb, var(--color-accent) 20%, var(--color-secondary) 80%);
-  --world-map-svg-shadow-flood: color-mix(in srgb, var(--color-primary) 50%, var(--color-bg) 50%);
+  --world-map-svg-ocean-top: color-mix(
+    in srgb,
+    var(--color-accent) 12%,
+    var(--color-card-solid) 88%
+  );
+  --world-map-svg-ocean-bottom: color-mix(
+    in srgb,
+    var(--color-accent) 20%,
+    var(--color-secondary) 80%
+  );
+  --world-map-svg-shadow-flood: color-mix(
+    in srgb,
+    var(--color-primary) 50%,
+    var(--color-bg) 50%
+  );
   --world-map-svg-shadow-opacity: 0.1;
-  --world-map-svg-frame-stroke: color-mix(in srgb, var(--color-accent) 32%, transparent);
-  --world-map-svg-graticule-stroke: color-mix(in srgb, var(--color-secondary) 38%, transparent);
-  --world-map-svg-country-stroke: color-mix(in srgb, var(--color-primary) 24%, var(--color-card-solid) 76%);
-  --world-map-svg-country-hover-fill: color-mix(in srgb, var(--color-accent) 42%, var(--color-card-solid) 58%);
-  --world-map-svg-country-hover-stroke: color-mix(in srgb, var(--color-accent) 52%, var(--color-primary) 48%);
-  --world-map-svg-land-na: color-mix(in srgb, var(--color-accent) 10%, var(--color-card-solid) 90%);
-  --world-map-svg-land-sa: color-mix(in srgb, var(--color-accent) 14%, var(--color-bg) 86%);
-  --world-map-svg-land-eu: color-mix(in srgb, var(--color-secondary) 16%, var(--color-card-solid) 84%);
-  --world-map-svg-land-af: color-mix(in srgb, var(--color-accent) 12%, var(--color-secondary) 88%);
-  --world-map-svg-land-as: color-mix(in srgb, var(--color-primary) 8%, var(--color-card-solid) 92%);
-  --world-map-svg-land-oc: color-mix(in srgb, var(--color-accent) 18%, var(--color-card-solid) 82%);
-  --world-map-svg-land-an: color-mix(in srgb, var(--color-card-solid) 92%, var(--color-accent) 8%);
-  --world-map-svg-land-other: color-mix(in srgb, var(--color-primary) 10%, var(--color-card-solid) 90%);
-  --world-map-svg-outline-stroke: color-mix(in srgb, var(--color-accent) 44%, var(--color-primary) 56%);
-  --world-map-svg-label-fill: color-mix(in srgb, var(--color-primary) 72%, transparent);
-  --world-map-svg-label-stroke: color-mix(in srgb, var(--color-card-solid) 88%, transparent);
-  --world-map-svg-caption-fill: color-mix(in srgb, var(--color-secondary) 68%, transparent);
+  --world-map-svg-frame-stroke: color-mix(
+    in srgb,
+    var(--color-accent) 32%,
+    transparent
+  );
+  --world-map-svg-graticule-stroke: color-mix(
+    in srgb,
+    var(--color-secondary) 38%,
+    transparent
+  );
+  --world-map-svg-country-stroke: color-mix(
+    in srgb,
+    var(--color-primary) 24%,
+    var(--color-card-solid) 76%
+  );
+  --world-map-svg-country-hover-fill: color-mix(
+    in srgb,
+    var(--color-accent) 42%,
+    var(--color-card-solid) 58%
+  );
+  --world-map-svg-country-hover-stroke: color-mix(
+    in srgb,
+    var(--color-accent) 52%,
+    var(--color-primary) 48%
+  );
+  --world-map-svg-land-na: color-mix(
+    in srgb,
+    var(--color-accent) 10%,
+    var(--color-card-solid) 90%
+  );
+  --world-map-svg-land-sa: color-mix(
+    in srgb,
+    var(--color-accent) 14%,
+    var(--color-bg) 86%
+  );
+  --world-map-svg-land-eu: color-mix(
+    in srgb,
+    var(--color-secondary) 16%,
+    var(--color-card-solid) 84%
+  );
+  --world-map-svg-land-af: color-mix(
+    in srgb,
+    var(--color-accent) 12%,
+    var(--color-secondary) 88%
+  );
+  --world-map-svg-land-as: color-mix(
+    in srgb,
+    var(--color-primary) 8%,
+    var(--color-card-solid) 92%
+  );
+  --world-map-svg-land-oc: color-mix(
+    in srgb,
+    var(--color-accent) 18%,
+    var(--color-card-solid) 82%
+  );
+  --world-map-svg-land-an: color-mix(
+    in srgb,
+    var(--color-card-solid) 92%,
+    var(--color-accent) 8%
+  );
+  --world-map-svg-land-other: color-mix(
+    in srgb,
+    var(--color-primary) 10%,
+    var(--color-card-solid) 90%
+  );
+  --world-map-svg-outline-stroke: color-mix(
+    in srgb,
+    var(--color-accent) 44%,
+    var(--color-primary) 56%
+  );
+  --world-map-svg-label-fill: color-mix(
+    in srgb,
+    var(--color-primary) 72%,
+    transparent
+  );
+  --world-map-svg-label-stroke: color-mix(
+    in srgb,
+    var(--color-card-solid) 88%,
+    transparent
+  );
+  --world-map-svg-caption-fill: color-mix(
+    in srgb,
+    var(--color-secondary) 68%,
+    transparent
+  );
 }
 
 /* ========================================
    暗色模式
    ======================================== */
-[data-theme-mode="dark"] {
+[data-theme-mode='dark'] {
   /* 品牌色 */
-  --color-primary: #E8E0E0;
-  --color-secondary: #9CA3AF;
-  --color-accent: #EF5A4A;
-  
+  --color-primary: #e8e0e0;
+  --color-secondary: #9ca3af;
+  --color-accent: #ef5a4a;
+
   /* 背景色 */
-  --color-bg: #1A1A2E;
+  --color-bg: #1a1a2e;
   --color-card: rgba(255, 255, 255, 0.06);
   --color-card-solid: #242438;
-  
+
   /* 边框色 */
   --color-border: rgba(255, 255, 255, 0.1);
-  
+
   /* 阴影色 */
   --color-shadow-outer: rgba(0, 0, 0, 0.2);
   --color-shadow-warm: rgba(0, 0, 0, 0.3);
   --color-shadow-inset: rgba(255, 255, 255, 0.05);
-  
+
   /* 派生透明度变量 */
   --color-primary-alpha-005: rgba(232, 224, 224, 0.05);
   --color-primary-alpha-008: rgba(232, 224, 224, 0.08);
@@ -211,14 +338,14 @@
   --color-primary-alpha-040: rgba(232, 224, 224, 0.25);
   --color-accent-alpha-008: rgba(239, 90, 74, 0.12);
   --color-accent-alpha-020: rgba(239, 90, 74, 0.25);
-  
+
   /* 遮罩/覆盖色 */
   --color-overlay: rgba(0, 0, 0, 0.98);
   --color-overlay-light: rgba(0, 0, 0, 0.75);
-  
+
   /* 卡片 hover 背景 */
   --color-card-hover: rgba(255, 255, 255, 0.1);
-  
+
   /* 阴影预设 */
   --shadow-glass:
     rgba(0, 0, 0, 0.3) 0px 40px 50px -32px,
@@ -226,63 +353,156 @@
   --shadow-warm-lg: rgba(0, 0, 0, 0.4) 0px 16px 32px -5px;
   --shadow-warm-md: rgba(0, 0, 0, 0.3) 0px 12px 20px -5px;
   --shadow-inset-light: rgba(255, 255, 255, 0.08) 0px 0px 12px 0px inset;
-  
+
   /* 模态框/面板相关 */
   --color-modal-bg: #242438;
   --color-modal-header-bg: rgba(30, 30, 48, 0.95);
   --color-modal-header-border: rgba(255, 255, 255, 0.08);
   --color-modal-btn-bg: rgba(255, 255, 255, 0.08);
-  --color-modal-btn-text: #E8E0E0;
+  --color-modal-btn-text: #e8e0e0;
   --color-modal-btn-hover: rgba(255, 255, 255, 0.12);
-  --color-modal-close-text: #9CA3AF;
+  --color-modal-close-text: #9ca3af;
   --color-modal-close-hover-bg: rgba(239, 90, 74, 0.2);
-  --color-modal-close-hover-text: #EF5A4A;
-  
+  --color-modal-close-hover-text: #ef5a4a;
+
   /* 社交图标背景 */
-  --color-social-icon-bg: #E8E0E0;
-  --color-social-icon-text: #1A1A2E;
-  
+  --color-social-icon-bg: #e8e0e0;
+  --color-social-icon-text: #1a1a2e;
+
   /* 推荐卡片 */
-  --color-recommend-header: #9CA3AF;
-  --color-recommend-avatar-bg: #2A2A40;
-  --color-recommend-name: #E8E0E0;
-  --color-recommend-desc: #9CA3AF;
+  --color-recommend-header: #9ca3af;
+  --color-recommend-avatar-bg: #2a2a40;
+  --color-recommend-name: #e8e0e0;
+  --color-recommend-desc: #9ca3af;
 
   /* 暗色下标记描边略提亮，其余地图 token 随 :root 派生自动适配 */
-  --world-map-marker-travel-stroke: color-mix(in srgb, var(--color-card-solid) 92%, transparent);
-  --world-map-marker-residence-stroke: color-mix(in srgb, var(--color-card-solid) 90%, transparent);
-  --world-map-marker-wish-stroke: color-mix(in srgb, var(--color-card-solid) 90%, transparent);
-  --world-map-tooltip-shadow: 0 0.85rem 1.8rem color-mix(in srgb, var(--color-shadow-outer) 85%, transparent);
+  --world-map-marker-travel-stroke: color-mix(
+    in srgb,
+    var(--color-card-solid) 92%,
+    transparent
+  );
+  --world-map-marker-residence-stroke: color-mix(
+    in srgb,
+    var(--color-card-solid) 90%,
+    transparent
+  );
+  --world-map-marker-wish-stroke: color-mix(
+    in srgb,
+    var(--color-card-solid) 90%,
+    transparent
+  );
+  --world-map-tooltip-shadow: 0 0.85rem 1.8rem
+    color-mix(in srgb, var(--color-shadow-outer) 85%, transparent);
 
-  --world-map-svg-ocean-top: color-mix(in srgb, var(--color-accent) 18%, var(--color-bg) 82%);
-  --world-map-svg-ocean-bottom: color-mix(in srgb, var(--color-accent) 24%, var(--color-card-solid) 76%);
-  --world-map-svg-shadow-flood: color-mix(in srgb, var(--color-bg) 70%, var(--color-primary) 30%);
+  --world-map-svg-ocean-top: color-mix(
+    in srgb,
+    var(--color-accent) 18%,
+    var(--color-bg) 82%
+  );
+  --world-map-svg-ocean-bottom: color-mix(
+    in srgb,
+    var(--color-accent) 24%,
+    var(--color-card-solid) 76%
+  );
+  --world-map-svg-shadow-flood: color-mix(
+    in srgb,
+    var(--color-bg) 70%,
+    var(--color-primary) 30%
+  );
   --world-map-svg-shadow-opacity: 0.28;
-  --world-map-svg-frame-stroke: color-mix(in srgb, var(--color-accent) 28%, transparent);
-  --world-map-svg-graticule-stroke: color-mix(in srgb, var(--color-secondary) 32%, transparent);
-  --world-map-svg-country-stroke: color-mix(in srgb, var(--color-secondary) 38%, transparent);
-  --world-map-svg-country-hover-fill: color-mix(in srgb, var(--color-accent) 38%, var(--color-card-solid) 62%);
-  --world-map-svg-country-hover-stroke: color-mix(in srgb, var(--color-accent) 48%, var(--color-card-solid) 52%);
-  --world-map-svg-land-na: color-mix(in srgb, var(--color-accent) 14%, var(--color-card-solid) 86%);
-  --world-map-svg-land-sa: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg) 88%);
-  --world-map-svg-land-eu: color-mix(in srgb, var(--color-secondary) 20%, var(--color-card-solid) 80%);
-  --world-map-svg-land-af: color-mix(in srgb, var(--color-accent) 10%, var(--color-secondary) 90%);
-  --world-map-svg-land-as: color-mix(in srgb, var(--color-primary) 12%, var(--color-card-solid) 88%);
-  --world-map-svg-land-oc: color-mix(in srgb, var(--color-accent) 16%, var(--color-card-solid) 84%);
-  --world-map-svg-land-an: color-mix(in srgb, var(--color-card-solid) 30%, var(--color-bg) 70%);
-  --world-map-svg-land-other: color-mix(in srgb, var(--color-primary) 14%, var(--color-card-solid) 86%);
-  --world-map-svg-outline-stroke: color-mix(in srgb, var(--color-accent) 36%, var(--color-secondary) 64%);
-  --world-map-svg-label-fill: color-mix(in srgb, var(--color-primary) 58%, transparent);
-  --world-map-svg-label-stroke: color-mix(in srgb, var(--color-bg) 72%, transparent);
-  --world-map-svg-caption-fill: color-mix(in srgb, var(--color-secondary) 52%, transparent);
+  --world-map-svg-frame-stroke: color-mix(
+    in srgb,
+    var(--color-accent) 28%,
+    transparent
+  );
+  --world-map-svg-graticule-stroke: color-mix(
+    in srgb,
+    var(--color-secondary) 32%,
+    transparent
+  );
+  --world-map-svg-country-stroke: color-mix(
+    in srgb,
+    var(--color-secondary) 38%,
+    transparent
+  );
+  --world-map-svg-country-hover-fill: color-mix(
+    in srgb,
+    var(--color-accent) 38%,
+    var(--color-card-solid) 62%
+  );
+  --world-map-svg-country-hover-stroke: color-mix(
+    in srgb,
+    var(--color-accent) 48%,
+    var(--color-card-solid) 52%
+  );
+  --world-map-svg-land-na: color-mix(
+    in srgb,
+    var(--color-accent) 14%,
+    var(--color-card-solid) 86%
+  );
+  --world-map-svg-land-sa: color-mix(
+    in srgb,
+    var(--color-accent) 12%,
+    var(--color-bg) 88%
+  );
+  --world-map-svg-land-eu: color-mix(
+    in srgb,
+    var(--color-secondary) 20%,
+    var(--color-card-solid) 80%
+  );
+  --world-map-svg-land-af: color-mix(
+    in srgb,
+    var(--color-accent) 10%,
+    var(--color-secondary) 90%
+  );
+  --world-map-svg-land-as: color-mix(
+    in srgb,
+    var(--color-primary) 12%,
+    var(--color-card-solid) 88%
+  );
+  --world-map-svg-land-oc: color-mix(
+    in srgb,
+    var(--color-accent) 16%,
+    var(--color-card-solid) 84%
+  );
+  --world-map-svg-land-an: color-mix(
+    in srgb,
+    var(--color-card-solid) 30%,
+    var(--color-bg) 70%
+  );
+  --world-map-svg-land-other: color-mix(
+    in srgb,
+    var(--color-primary) 14%,
+    var(--color-card-solid) 86%
+  );
+  --world-map-svg-outline-stroke: color-mix(
+    in srgb,
+    var(--color-accent) 36%,
+    var(--color-secondary) 64%
+  );
+  --world-map-svg-label-fill: color-mix(
+    in srgb,
+    var(--color-primary) 58%,
+    transparent
+  );
+  --world-map-svg-label-stroke: color-mix(
+    in srgb,
+    var(--color-bg) 72%,
+    transparent
+  );
+  --world-map-svg-caption-fill: color-mix(
+    in srgb,
+    var(--color-secondary) 52%,
+    transparent
+  );
 }
 
 /* ========================================
    配色主题 - 海洋蓝
    ======================================== */
-[data-theme-color="ocean"] {
-  --color-primary: #2C3E50;
-  --color-accent: #2980B9;
+[data-theme-color='ocean'] {
+  --color-primary: #2c3e50;
+  --color-accent: #2980b9;
   --color-primary-alpha-005: rgba(44, 62, 80, 0.05);
   --color-primary-alpha-008: rgba(44, 62, 80, 0.08);
   --color-primary-alpha-010: rgba(44, 62, 80, 0.1);
@@ -296,12 +516,12 @@
   --shadow-warm-md: rgb(190, 210, 226) 0px 12px 20px -5px;
 }
 
-[data-theme-mode="dark"][data-theme-color="ocean"] {
-  --color-primary: #D4E6F1;
-  --color-accent: #5DADE2;
-  --color-bg: #0D1B2A;
+[data-theme-mode='dark'][data-theme-color='ocean'] {
+  --color-primary: #d4e6f1;
+  --color-accent: #5dade2;
+  --color-bg: #0d1b2a;
   --color-card: rgba(93, 173, 226, 0.06);
-  --color-card-solid: #1B2838;
+  --color-card-solid: #1b2838;
   --color-primary-alpha-005: rgba(212, 230, 241, 0.05);
   --color-primary-alpha-008: rgba(212, 230, 241, 0.08);
   --color-primary-alpha-010: rgba(212, 230, 241, 0.1);
@@ -310,16 +530,16 @@
   --color-primary-alpha-040: rgba(212, 230, 241, 0.25);
   --color-accent-alpha-008: rgba(93, 173, 226, 0.12);
   --color-accent-alpha-020: rgba(93, 173, 226, 0.25);
-  --color-social-icon-bg: #D4E6F1;
-  --color-social-icon-text: #0D1B2A;
+  --color-social-icon-bg: #d4e6f1;
+  --color-social-icon-text: #0d1b2a;
 }
 
 /* ========================================
    配色主题 - 森林绿
    ======================================== */
-[data-theme-color="forest"] {
-  --color-primary: #2D4A3E;
-  --color-accent: #27AE60;
+[data-theme-color='forest'] {
+  --color-primary: #2d4a3e;
+  --color-accent: #27ae60;
   --color-primary-alpha-005: rgba(45, 74, 62, 0.05);
   --color-primary-alpha-008: rgba(45, 74, 62, 0.08);
   --color-primary-alpha-010: rgba(45, 74, 62, 0.1);
@@ -333,12 +553,12 @@
   --shadow-warm-md: rgb(196, 217, 206) 0px 12px 20px -5px;
 }
 
-[data-theme-mode="dark"][data-theme-color="forest"] {
-  --color-primary: #D5E8D4;
-  --color-accent: #2ECC71;
-  --color-bg: #0D1F15;
+[data-theme-mode='dark'][data-theme-color='forest'] {
+  --color-primary: #d5e8d4;
+  --color-accent: #2ecc71;
+  --color-bg: #0d1f15;
   --color-card: rgba(46, 204, 113, 0.06);
-  --color-card-solid: #1A2E22;
+  --color-card-solid: #1a2e22;
   --color-primary-alpha-005: rgba(213, 232, 212, 0.05);
   --color-primary-alpha-008: rgba(213, 232, 212, 0.08);
   --color-primary-alpha-010: rgba(213, 232, 212, 0.1);
@@ -347,16 +567,16 @@
   --color-primary-alpha-040: rgba(213, 232, 212, 0.25);
   --color-accent-alpha-008: rgba(46, 204, 113, 0.12);
   --color-accent-alpha-020: rgba(46, 204, 113, 0.25);
-  --color-social-icon-bg: #D5E8D4;
-  --color-social-icon-text: #0D1F15;
+  --color-social-icon-bg: #d5e8d4;
+  --color-social-icon-text: #0d1f15;
 }
 
 /* ========================================
    配色主题 - 薰衣草紫
    ======================================== */
-[data-theme-color="lavender"] {
-  --color-primary: #4A3B5C;
-  --color-accent: #8E44AD;
+[data-theme-color='lavender'] {
+  --color-primary: #4a3b5c;
+  --color-accent: #8e44ad;
   --color-primary-alpha-005: rgba(74, 59, 92, 0.05);
   --color-primary-alpha-008: rgba(74, 59, 92, 0.08);
   --color-primary-alpha-010: rgba(74, 59, 92, 0.1);
@@ -370,12 +590,12 @@
   --shadow-warm-md: rgb(216, 206, 226) 0px 12px 20px -5px;
 }
 
-[data-theme-mode="dark"][data-theme-color="lavender"] {
-  --color-primary: #E0D4F0;
-  --color-accent: #BB6BD9;
-  --color-bg: #1A0D2E;
+[data-theme-mode='dark'][data-theme-color='lavender'] {
+  --color-primary: #e0d4f0;
+  --color-accent: #bb6bd9;
+  --color-bg: #1a0d2e;
   --color-card: rgba(187, 107, 217, 0.06);
-  --color-card-solid: #28183C;
+  --color-card-solid: #28183c;
   --color-primary-alpha-005: rgba(224, 212, 240, 0.05);
   --color-primary-alpha-008: rgba(224, 212, 240, 0.08);
   --color-primary-alpha-010: rgba(224, 212, 240, 0.1);
@@ -384,16 +604,16 @@
   --color-primary-alpha-040: rgba(224, 212, 240, 0.25);
   --color-accent-alpha-008: rgba(187, 107, 217, 0.12);
   --color-accent-alpha-020: rgba(187, 107, 217, 0.25);
-  --color-social-icon-bg: #E0D4F0;
-  --color-social-icon-text: #1A0D2E;
+  --color-social-icon-bg: #e0d4f0;
+  --color-social-icon-text: #1a0d2e;
 }
 
 /* ========================================
    配色主题 - 日落橘
    ======================================== */
-[data-theme-color="sunset"] {
-  --color-primary: #5C3A2E;
-  --color-accent: #E67E22;
+[data-theme-color='sunset'] {
+  --color-primary: #5c3a2e;
+  --color-accent: #e67e22;
   --color-primary-alpha-005: rgba(92, 58, 46, 0.05);
   --color-primary-alpha-008: rgba(92, 58, 46, 0.08);
   --color-primary-alpha-010: rgba(92, 58, 46, 0.1);
@@ -407,12 +627,12 @@
   --shadow-warm-md: rgb(226, 210, 196) 0px 12px 20px -5px;
 }
 
-[data-theme-mode="dark"][data-theme-color="sunset"] {
-  --color-primary: #F0DDD4;
-  --color-accent: #F39C12;
-  --color-bg: #2E1A0D;
+[data-theme-mode='dark'][data-theme-color='sunset'] {
+  --color-primary: #f0ddd4;
+  --color-accent: #f39c12;
+  --color-bg: #2e1a0d;
   --color-card: rgba(243, 156, 18, 0.06);
-  --color-card-solid: #3C2818;
+  --color-card-solid: #3c2818;
   --color-primary-alpha-005: rgba(240, 221, 212, 0.05);
   --color-primary-alpha-008: rgba(240, 221, 212, 0.08);
   --color-primary-alpha-010: rgba(240, 221, 212, 0.1);
@@ -421,8 +641,8 @@
   --color-primary-alpha-040: rgba(240, 221, 212, 0.25);
   --color-accent-alpha-008: rgba(243, 156, 18, 0.12);
   --color-accent-alpha-020: rgba(243, 156, 18, 0.25);
-  --color-social-icon-bg: #F0DDD4;
-  --color-social-icon-text: #2E1A0D;
+  --color-social-icon-bg: #f0ddd4;
+  --color-social-icon-text: #2e1a0d;
 }
 
 /* 引入 Google Fonts */
@@ -435,8 +655,9 @@ body {
   background: var(--color-bg);
   min-height: 100vh;
   overflow: hidden;
-  transition: background-color var(--duration-normal) var(--easing-default),
-              color var(--duration-normal) var(--easing-default);
+  transition:
+    background-color var(--duration-normal) var(--easing-default),
+    color var(--duration-normal) var(--easing-default);
 }
 
 * {
@@ -450,6 +671,12 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  background-color: var(--color-bg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  transition: background-color var(--duration-normal) var(--easing-default);
 }
 
 /* 随机布局容器 */
@@ -520,14 +747,15 @@ body {
   justify-content: center;
   font-size: 28px;
   box-shadow: var(--shadow-glass);
-  transition: transform var(--duration-fast) var(--easing-default),
-              box-shadow var(--duration-fast) var(--easing-default);
+  transition:
+    transform var(--duration-fast) var(--easing-default),
+    box-shadow var(--duration-fast) var(--easing-default);
   cursor: pointer;
 }
 
 .decorative-icon:hover {
   transform: translateY(-4px) scale(1.05);
-  box-shadow: 
+  box-shadow:
     var(--color-shadow-outer) 0px 45px 55px -32px,
     var(--color-shadow-inset) 0px 0px 24px 0px inset;
 }
@@ -535,7 +763,6 @@ body {
 .decorative-icon:active {
   transform: scale(0.95);
 }
-
 
 /* 底部固定工具栏 */
 .fixed-toolbar {
@@ -564,15 +791,16 @@ body {
   text-decoration: none;
   cursor: pointer;
   font-family: inherit;
-  transition: transform var(--duration-fast) var(--easing-default),
-              box-shadow var(--duration-fast) var(--easing-default),
-              background var(--duration-fast) var(--easing-default);
+  transition:
+    transform var(--duration-fast) var(--easing-default),
+    box-shadow var(--duration-fast) var(--easing-default),
+    background var(--duration-fast) var(--easing-default);
 }
 
 .toolbar-badge:hover {
   background: var(--color-card-hover);
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     var(--color-shadow-outer) 0px 45px 55px -32px,
     var(--color-shadow-inset) 0px 0px 24px 0px inset;
 }

@@ -14,7 +14,14 @@ import { LocateFixed, Github, Shuffle } from 'lucide-react';
 import blogData from './config/blog-data.json';
 import { useRandomLayout, type CardConfig } from './hooks/useRandomLayout';
 import { useBreakpoint } from './hooks/useBreakpoint';
-import { lazy, Suspense, useMemo, type CSSProperties } from 'react';
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useMemo,
+  useState,
+  type CSSProperties,
+} from 'react';
 import { motion } from 'motion/react';
 
 /** GitHub 仓库地址 */
@@ -84,6 +91,7 @@ const DeferredCardFallback = ({ cardId }: { cardId: DeferredCardId }) => {
 
 const App = () => {
   const breakpoint = useBreakpoint();
+  const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
 
   /** 是否使用紧凑布局（移动端 + 平板端） */
   const isCompact = breakpoint !== 'desktop';
@@ -109,6 +117,20 @@ const App = () => {
   );
 
   const { layout, refreshLayout } = useRandomLayout(cardConfigs);
+
+  const handleBackgroundImageChange = useCallback((enabled: boolean) => {
+    if (!enabled || contentConfig.images.length === 0) {
+      setBackgroundImage(null);
+      return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * contentConfig.images.length);
+    setBackgroundImage(contentConfig.images[randomIndex].imageUrl);
+  }, []);
+
+  const appContainerStyle = backgroundImage
+    ? ({ backgroundImage: `url("${backgroundImage}")` } as CSSProperties)
+    : undefined;
 
   /** 生成卡片位置目标值 - PC 端随机布局 */
   const getCardMotionProps = (cardId: string) => {
@@ -187,6 +209,7 @@ const App = () => {
     return (
       <div
         className={`app-container app-container--compact ${breakpoint === 'tablet' ? 'app-container--tablet' : 'app-container--mobile'}`}
+        style={appContainerStyle}
       >
         <div className="compact-layout">
           {COMPACT_CARD_ORDER.map((cardId) => {
@@ -219,7 +242,11 @@ const App = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6, ease: [0.25, 1, 0.5, 1] }}
         >
-          <ThemeToggle variant="badge" />
+          <ThemeToggle
+            variant="badge"
+            backgroundImageEnabled={Boolean(backgroundImage)}
+            onBackgroundImageChange={handleBackgroundImageChange}
+          />
           <button
             className="toolbar-badge shuffle-btn"
             onClick={refreshLayout}
@@ -244,7 +271,7 @@ const App = () => {
 
   /** PC 端随机布局 */
   return (
-    <div className="app-container">
+    <div className="app-container" style={appContainerStyle}>
       <div
         className="random-layout-container"
         style={{
@@ -329,7 +356,11 @@ const App = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.6, ease: [0.25, 1, 0.5, 1] }}
       >
-        <ThemeToggle variant="badge" />
+        <ThemeToggle
+          variant="badge"
+          backgroundImageEnabled={Boolean(backgroundImage)}
+          onBackgroundImageChange={handleBackgroundImageChange}
+        />
         <button
           className="toolbar-badge shuffle-btn"
           onClick={refreshLayout}
