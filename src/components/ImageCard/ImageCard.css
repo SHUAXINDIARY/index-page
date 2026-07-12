@@ -10,7 +10,11 @@
   justify-content: center;
   flex-shrink: 0;
   position: relative;
-  box-shadow: var(--shadow-warm-lg);
+}
+
+.card.image-card,
+.card.image-card:hover {
+  box-shadow: none;
 }
 
 /* 全屏模式下的 slide 高度 */
@@ -28,7 +32,9 @@
   max-height: 100%;
   object-fit: contain;
   display: block;
-  transition: opacity 0.3s ease, transform 0.2s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.2s ease;
   cursor: pointer;
   user-select: none;
   touch-action: pan-y;
@@ -186,12 +192,12 @@
     gap: 8px;
   }
 
-.image-card-fullscreen-indicators .carousel-indicator {
-  width: 8px;
-  height: 8px;
-}
+  .image-card-fullscreen-indicators .carousel-indicator {
+    width: 8px;
+    height: 8px;
+  }
 
-.image-card-fullscreen-indicators .carousel-indicator.active {
-  width: 24px;
-}
+  .image-card-fullscreen-indicators .carousel-indicator.active {
+    width: 24px;
+  }
 }
