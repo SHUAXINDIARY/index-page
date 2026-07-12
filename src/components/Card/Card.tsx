@@ -64,10 +64,13 @@ export const Card = ({
   const prefersReducedMotion = useReducedMotion();
   const rotateX = useSpring(useMotionValue(0), TILT_SPRING);
   const rotateY = useSpring(useMotionValue(0), TILT_SPRING);
-  const filterId = `liquid-glass-${useId().replace(/:/g, '')}`;
+  const id = useId().replace(/:/g, '');
+  const filterId = `liquid-glass-${id}`;
+  const safariFilterId = `liquid-glass-safari-${id}`;
   const cardStyle = {
     ...style,
     '--liquid-glass-filter': `url(#${filterId})`,
+    '--liquid-glass-safari-filter': `url(#${safariFilterId})`,
   } as CSSProperties;
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
@@ -140,6 +143,36 @@ export const Card = ({
             />
             <feColorMatrix in="refracted" type="saturate" values="1.35" />
           </filter>
+          <filter
+            id={safariFilterId}
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+            colorInterpolationFilters="sRGB"
+          >
+            <feGaussianBlur
+              in="SourceGraphic"
+              stdDeviation="12"
+              result="safariBlurred"
+            />
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.008 0.014"
+              numOctaves="2"
+              seed="7"
+              result="safariDisplacementMap"
+            />
+            <feDisplacementMap
+              in="safariBlurred"
+              in2="safariDisplacementMap"
+              scale="28"
+              xChannelSelector="R"
+              yChannelSelector="G"
+              result="safariRefracted"
+            />
+            <feColorMatrix in="safariRefracted" type="saturate" values="1.25" />
+          </filter>
         </defs>
       </svg>
       <motion.div
@@ -154,6 +187,7 @@ export const Card = ({
         onPointerCancel={resetTilt}
         onClick={onClick}
       >
+        <span className="card-safari-refraction" aria-hidden="true" />
         <span className="card-glare" aria-hidden="true" />
         {children}
       </motion.div>

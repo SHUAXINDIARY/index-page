@@ -128,8 +128,14 @@ const App = () => {
     setBackgroundImage(contentConfig.images[randomIndex].imageUrl);
   }, []);
 
-  const appContainerStyle = backgroundImage
-    ? ({ backgroundImage: `url("${backgroundImage}")` } as CSSProperties)
+  const appBackgroundImage = backgroundImage
+    ? `url("${backgroundImage}")`
+    : undefined;
+  const appContainerStyle = appBackgroundImage
+    ? ({
+        backgroundImage: appBackgroundImage,
+        '--app-background-image': appBackgroundImage,
+      } as CSSProperties)
     : undefined;
 
   /** 生成卡片位置目标值 - PC 端随机布局 */
@@ -208,7 +214,7 @@ const App = () => {
     let visibleIndex = 0;
     return (
       <div
-        className={`app-container app-container--compact ${breakpoint === 'tablet' ? 'app-container--tablet' : 'app-container--mobile'}`}
+        className={`app-container app-container--compact${backgroundImage ? ' app-container--with-background' : ''} ${breakpoint === 'tablet' ? 'app-container--tablet' : 'app-container--mobile'}`}
         style={appContainerStyle}
       >
         <div className="compact-layout">
@@ -271,7 +277,10 @@ const App = () => {
 
   /** PC 端随机布局 */
   return (
-    <div className="app-container" style={appContainerStyle}>
+    <div
+      className={`app-container${backgroundImage ? ' app-container--with-background' : ''}`}
+      style={appContainerStyle}
+    >
       <div
         className="random-layout-container"
         style={{

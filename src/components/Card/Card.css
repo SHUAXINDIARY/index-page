@@ -49,6 +49,11 @@
     color var(--duration-normal) var(--easing-default);
 }
 
+/* Safari filters a copied background layer because SVG backdrop filters are unavailable. */
+.card-safari-refraction {
+  display: none;
+}
+
 .card-glare {
   position: absolute;
   z-index: 2;
@@ -112,6 +117,45 @@
     -webkit-backdrop-filter: saturate(165%) blur(24px);
     backdrop-filter: saturate(165%) blur(24px);
     background: var(--color-card-hover);
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .app-container--with-background .card {
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--color-card-solid) 24%, transparent),
+        transparent 42%,
+        color-mix(in srgb, var(--color-primary) 4%, transparent)
+      ),
+      color-mix(in srgb, var(--color-card-solid) 46%, transparent);
+    -webkit-backdrop-filter: saturate(140%) blur(26px);
+    backdrop-filter: saturate(140%) blur(26px);
+  }
+
+  .app-container--with-background .card-safari-refraction {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    display: block;
+    overflow: hidden;
+    border-radius: inherit;
+    background: color-mix(in srgb, var(--color-card-solid) 8%, transparent);
+    pointer-events: none;
+  }
+
+  .app-container--with-background .card-safari-refraction::before {
+    position: absolute;
+    inset: -24px;
+    background-image: var(--app-background-image);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-filter: var(--liquid-glass-safari-filter);
+    filter: var(--liquid-glass-safari-filter);
+    content: '';
   }
 }
 
