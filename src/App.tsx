@@ -18,14 +18,17 @@ import {
   lazy,
   Suspense,
   useCallback,
+  useEffect,
   useMemo,
+  useRef,
   useState,
   type CSSProperties,
 } from 'react';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
 /** GitHub 仓库地址 */
 const GITHUB_REPO_URL = 'https://github.com/SHUAXINDIARY/index-page';
+const BACKGROUND_EXIT_DURATION_MS = 380;
 
 /** 卡片尺寸配置 - PC 端 */
 const CARD_SIZES: Record<string, { width: number; height: number }> = {
@@ -92,6 +95,11 @@ const DeferredCardFallback = ({ cardId }: { cardId: DeferredCardId }) => {
 const App = () => {
   const breakpoint = useBreakpoint();
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
+  const [backgroundImageEnabled, setBackgroundImageEnabled] = useState(false);
+  const backgroundClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
+  const prefersReducedMotion = useReducedMotion();
 
   /** 是否使用紧凑布局（移动端 + 平板端） */
   const isCompact = breakpoint !== 'desktop';
@@ -118,25 +126,73 @@ const App = () => {
 
   const { layout, refreshLayout } = useRandomLayout(cardConfigs);
 
-  const handleBackgroundImageChange = useCallback((enabled: boolean) => {
-    if (!enabled || contentConfig.images.length === 0) {
-      setBackgroundImage(null);
-      return;
-    }
+  const handleBackgroundImageChange = useCallback(
+    (enabled: boolean) => {
+      if (backgroundClearTimerRef.current) {
+        clearTimeout(backgroundClearTimerRef.current);
+        backgroundClearTimerRef.current = null;
+      }
 
-    const randomIndex = Math.floor(Math.random() * contentConfig.images.length);
-    setBackgroundImage(contentConfig.images[randomIndex].imageUrl);
-  }, []);
+      if (!enabled || contentConfig.images.length === 0) {
+        setBackgroundImageEnabled(false);
+        backgroundClearTimerRef.current = setTimeout(
+          () => setBackgroundImage(null),
+          prefersReducedMotion ? 0 : BACKGROUND_EXIT_DURATION_MS,
+        );
+        return;
+      }
+
+      const randomIndex = Math.floor(
+        Math.random() * contentConfig.images.length,
+      );
+      setBackgroundImage(contentConfig.images[randomIndex].imageUrl);
+      setBackgroundImageEnabled(true);
+    },
+    [prefersReducedMotion],
+  );
+
+  useEffect(
+    () => () => {
+      if (backgroundClearTimerRef.current) {
+        clearTimeout(backgroundClearTimerRef.current);
+      }
+    },
+    [],
+  );
 
   const appBackgroundImage = backgroundImage
     ? `url("${backgroundImage}")`
     : undefined;
   const appContainerStyle = appBackgroundImage
     ? ({
-        backgroundImage: appBackgroundImage,
         '--app-background-image': appBackgroundImage,
       } as CSSProperties)
     : undefined;
+
+  const backgroundLayer = backgroundImage ? (
+    <motion.div
+      className="app-background-layer"
+      aria-hidden="true"
+      style={{ backgroundImage: appBackgroundImage }}
+      initial={prefersReducedMotion ? false : { opacity: 0, scale: 1.025 }}
+      animate={{
+        opacity: backgroundImageEnabled ? 1 : 0,
+        scale: backgroundImageEnabled ? 1 : 1.015,
+        filter:
+          backgroundImageEnabled || prefersReducedMotion
+            ? 'blur(0px)'
+            : 'blur(8px)',
+      }}
+      transition={{
+        duration: prefersReducedMotion
+          ? 0
+          : backgroundImageEnabled
+            ? 0.48
+            : 0.36,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+    />
+  ) : null;
 
   /** 生成卡片位置目标值 - PC 端随机布局 */
   const getCardMotionProps = (cardId: string) => {
@@ -214,9 +270,10 @@ const App = () => {
     let visibleIndex = 0;
     return (
       <div
-        className={`app-container app-container--compact${backgroundImage ? ' app-container--with-background' : ''} ${breakpoint === 'tablet' ? 'app-container--tablet' : 'app-container--mobile'}`}
+        className={`app-container app-container--compact${backgroundImage ? ' app-container--with-background' : ''}${backgroundImageEnabled ? ' app-container--background-visible' : ''} ${breakpoint === 'tablet' ? 'app-container--tablet' : 'app-container--mobile'}`}
         style={appContainerStyle}
       >
+        {backgroundLayer}
         <div className="compact-layout">
           {COMPACT_CARD_ORDER.map((cardId) => {
             if (cardId === 'worldMap' && !contentConfig.worldMap) return null;
@@ -250,7 +307,7 @@ const App = () => {
         >
           <ThemeToggle
             variant="badge"
-            backgroundImageEnabled={Boolean(backgroundImage)}
+            backgroundImageEnabled={backgroundImageEnabled}
             onBackgroundImageChange={handleBackgroundImageChange}
           />
           <button
@@ -278,9 +335,10 @@ const App = () => {
   /** PC 端随机布局 */
   return (
     <div
-      className={`app-container${backgroundImage ? ' app-container--with-background' : ''}`}
+      className={`app-container${backgroundImage ? ' app-container--with-background' : ''}${backgroundImageEnabled ? ' app-container--background-visible' : ''}`}
       style={appContainerStyle}
     >
+      {backgroundLayer}
       <div
         className="random-layout-container"
         style={{
@@ -367,7 +425,7 @@ const App = () => {
       >
         <ThemeToggle
           variant="badge"
-          backgroundImageEnabled={Boolean(backgroundImage)}
+          backgroundImageEnabled={backgroundImageEnabled}
           onBackgroundImageChange={handleBackgroundImageChange}
         />
         <button

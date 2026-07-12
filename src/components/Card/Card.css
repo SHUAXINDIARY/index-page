@@ -142,7 +142,13 @@
     overflow: hidden;
     border-radius: inherit;
     background: color-mix(in srgb, var(--color-card-solid) 8%, transparent);
+    opacity: 0;
+    transition: opacity 360ms var(--easing-out-quart);
     pointer-events: none;
+  }
+
+  .app-container--background-visible .card-safari-refraction {
+    opacity: 1;
   }
 
   .app-container--with-background .card-safari-refraction::before {

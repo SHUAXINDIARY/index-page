@@ -665,6 +665,8 @@ body {
 }
 
 .app-container {
+  position: relative;
+  isolation: isolate;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -672,16 +674,24 @@ body {
   align-items: center;
   overflow: hidden;
   background-color: var(--color-bg);
+  transition: background-color var(--duration-normal) var(--easing-default);
+}
+
+.app-background-layer {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed;
-  transition: background-color var(--duration-normal) var(--easing-default);
+  pointer-events: none;
+  will-change: opacity, transform, filter;
 }
 
 /* 随机布局容器 */
 .random-layout-container {
   position: relative;
+  z-index: 1;
 }
 
 /* 确保卡片填满容器 */
@@ -824,6 +834,8 @@ body {
 }
 
 .compact-layout {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 16px;
