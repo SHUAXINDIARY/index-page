@@ -645,6 +645,74 @@
   --color-social-icon-text: #2e1a0d;
 }
 
+/* ========================================
+   配色主题 - 高级灰 + 青蓝
+   ======================================== */
+[data-theme-color='slate'] {
+  --color-primary: #14171f;
+  --color-secondary: #6e7684;
+  --color-accent: #2563eb;
+  --color-bg: #f8f9fb;
+  --color-card: rgba(252, 252, 253, 0.72);
+  --color-card-solid: #fcfcfd;
+  --color-border: #e5e7eb;
+  --color-card-hover: rgba(255, 255, 255, 0.92);
+  --color-primary-alpha-005: rgba(20, 23, 31, 0.05);
+  --color-primary-alpha-008: rgba(20, 23, 31, 0.08);
+  --color-primary-alpha-010: rgba(20, 23, 31, 0.1);
+  --color-primary-alpha-020: rgba(20, 23, 31, 0.2);
+  --color-primary-alpha-030: rgba(20, 23, 31, 0.3);
+  --color-primary-alpha-040: rgba(20, 23, 31, 0.4);
+  --color-accent-alpha-008: rgba(37, 99, 235, 0.08);
+  --color-accent-alpha-020: rgba(37, 99, 235, 0.2);
+  --color-shadow-warm: rgba(20, 23, 31, 0.12);
+  --shadow-warm-lg: rgba(20, 23, 31, 0.12) 0px 16px 32px -5px;
+  --shadow-warm-md: rgba(20, 23, 31, 0.1) 0px 12px 20px -5px;
+  --color-modal-bg: #ffffff;
+  --color-modal-header-bg: rgba(248, 249, 251, 0.96);
+  --color-modal-header-border: #e5e7eb;
+  --color-modal-btn-text: #14171f;
+  --color-social-icon-bg: #14171f;
+  --color-social-icon-text: #f8f9fb;
+  --color-recommend-header: #6e7684;
+  --color-recommend-avatar-bg: #f8f9fb;
+  --color-recommend-name: #14171f;
+  --color-recommend-desc: #6e7684;
+}
+
+[data-theme-mode='dark'][data-theme-color='slate'] {
+  --color-primary: #f5f7fa;
+  --color-secondary: #a1a8b5;
+  --color-accent: #60a5fa;
+  --color-bg: #09090b;
+  --color-card: rgba(24, 27, 32, 0.82);
+  --color-card-solid: #181b20;
+  --color-border: #2b313d;
+  --color-card-hover: rgba(43, 49, 61, 0.72);
+  --color-primary-alpha-005: rgba(245, 247, 250, 0.05);
+  --color-primary-alpha-008: rgba(245, 247, 250, 0.08);
+  --color-primary-alpha-010: rgba(245, 247, 250, 0.1);
+  --color-primary-alpha-020: rgba(245, 247, 250, 0.15);
+  --color-primary-alpha-030: rgba(245, 247, 250, 0.2);
+  --color-primary-alpha-040: rgba(245, 247, 250, 0.25);
+  --color-accent-alpha-008: rgba(96, 165, 250, 0.12);
+  --color-accent-alpha-020: rgba(96, 165, 250, 0.25);
+  --color-shadow-warm: rgba(0, 0, 0, 0.42);
+  --shadow-warm-lg: rgba(0, 0, 0, 0.48) 0px 16px 32px -5px;
+  --shadow-warm-md: rgba(0, 0, 0, 0.4) 0px 12px 20px -5px;
+  --color-modal-bg: #181b20;
+  --color-modal-header-bg: rgba(17, 19, 24, 0.96);
+  --color-modal-header-border: #2b313d;
+  --color-modal-btn-text: #f5f7fa;
+  --color-modal-close-text: #a1a8b5;
+  --color-social-icon-bg: #f5f7fa;
+  --color-social-icon-text: #09090b;
+  --color-recommend-header: #a1a8b5;
+  --color-recommend-avatar-bg: #181b20;
+  --color-recommend-name: #f5f7fa;
+  --color-recommend-desc: #a1a8b5;
+}
+
 /* 引入 Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Averia+Gruesa+Libre&display=swap');
 

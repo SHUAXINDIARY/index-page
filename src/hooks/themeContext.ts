@@ -4,7 +4,13 @@ import { createContext, useContext } from 'react';
 export type ThemeMode = 'light' | 'dark' | 'system';
 
 /** 主题配色 */
-export type ThemeColor = 'default' | 'ocean' | 'forest' | 'lavender' | 'sunset';
+export type ThemeColor =
+  | 'default'
+  | 'ocean'
+  | 'forest'
+  | 'lavender'
+  | 'sunset'
+  | 'slate';
 
 /** useTheme 返回值类型 */
 export interface UseThemeReturn {
@@ -63,7 +69,8 @@ export const getSavedColor = (): ThemeColor => {
     saved === 'ocean' ||
     saved === 'forest' ||
     saved === 'lavender' ||
-    saved === 'sunset'
+    saved === 'sunset' ||
+    saved === 'slate'
   ) {
     return saved;
   }
@@ -81,7 +88,10 @@ export const resolveMode = (mode: ThemeMode): 'light' | 'dark' => {
 /**
  * 将主题属性应用到 document.documentElement
  */
-export const applyTheme = (resolved: 'light' | 'dark', color: ThemeColor): void => {
+export const applyTheme = (
+  resolved: 'light' | 'dark',
+  color: ThemeColor,
+): void => {
   const root = document.documentElement;
   root.setAttribute('data-theme-mode', resolved);
   root.setAttribute('data-theme-color', color);

@@ -12,6 +12,7 @@ const COLOR_OPTIONS = [
   { id: 'forest' as const, label: '森林', color: '#27AE60' },
   { id: 'lavender' as const, label: '薰衣草', color: '#8E44AD' },
   { id: 'sunset' as const, label: '日落', color: '#E67E22' },
+  { id: 'slate' as const, label: '高级灰', color: '#2563EB' },
 ] as const;
 
 /** PC 端面板弹出动画配置 */
