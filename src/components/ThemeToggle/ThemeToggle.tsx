@@ -13,6 +13,7 @@ const COLOR_OPTIONS = [
   { id: 'lavender' as const, label: '薰衣草', color: '#8E44AD' },
   { id: 'sunset' as const, label: '日落', color: '#E67E22' },
   { id: 'slate' as const, label: '高级灰', color: '#2563EB' },
+  { id: 'linear' as const, label: 'Linear', color: '#5E6AD2' },
 ] as const;
 
 /** PC 端面板弹出动画配置 */

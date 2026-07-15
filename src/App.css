@@ -713,6 +713,74 @@
   --color-recommend-desc: #a1a8b5;
 }
 
+/* ========================================
+   配色主题 - Linear 紫
+   ======================================== */
+[data-theme-color='linear'] {
+  --color-primary: #18181b;
+  --color-secondary: #71717a;
+  --color-accent: #5e6ad2;
+  --color-bg: #fafafa;
+  --color-card: rgba(255, 255, 255, 0.76);
+  --color-card-solid: #ffffff;
+  --color-border: #e4e4e7;
+  --color-card-hover: rgba(255, 255, 255, 0.94);
+  --color-primary-alpha-005: rgba(24, 24, 27, 0.05);
+  --color-primary-alpha-008: rgba(24, 24, 27, 0.08);
+  --color-primary-alpha-010: rgba(24, 24, 27, 0.1);
+  --color-primary-alpha-020: rgba(24, 24, 27, 0.2);
+  --color-primary-alpha-030: rgba(24, 24, 27, 0.3);
+  --color-primary-alpha-040: rgba(24, 24, 27, 0.4);
+  --color-accent-alpha-008: rgba(94, 106, 210, 0.08);
+  --color-accent-alpha-020: rgba(94, 106, 210, 0.2);
+  --color-shadow-warm: rgba(24, 24, 27, 0.12);
+  --shadow-warm-lg: rgba(24, 24, 27, 0.12) 0px 16px 32px -5px;
+  --shadow-warm-md: rgba(24, 24, 27, 0.1) 0px 12px 20px -5px;
+  --color-modal-bg: #ffffff;
+  --color-modal-header-bg: rgba(250, 250, 250, 0.96);
+  --color-modal-header-border: #e4e4e7;
+  --color-modal-btn-text: #18181b;
+  --color-social-icon-bg: #18181b;
+  --color-social-icon-text: #fafafa;
+  --color-recommend-header: #71717a;
+  --color-recommend-avatar-bg: #fafafa;
+  --color-recommend-name: #18181b;
+  --color-recommend-desc: #71717a;
+}
+
+[data-theme-mode='dark'][data-theme-color='linear'] {
+  --color-primary: #fafafa;
+  --color-secondary: #a1a1aa;
+  --color-accent: #7c8cff;
+  --color-bg: #09090b;
+  --color-card: rgba(24, 24, 27, 0.82);
+  --color-card-solid: #18181b;
+  --color-border: #27272a;
+  --color-card-hover: rgba(39, 39, 42, 0.76);
+  --color-primary-alpha-005: rgba(250, 250, 250, 0.05);
+  --color-primary-alpha-008: rgba(250, 250, 250, 0.08);
+  --color-primary-alpha-010: rgba(250, 250, 250, 0.1);
+  --color-primary-alpha-020: rgba(250, 250, 250, 0.15);
+  --color-primary-alpha-030: rgba(250, 250, 250, 0.2);
+  --color-primary-alpha-040: rgba(250, 250, 250, 0.25);
+  --color-accent-alpha-008: rgba(124, 140, 255, 0.12);
+  --color-accent-alpha-020: rgba(124, 140, 255, 0.25);
+  --color-shadow-warm: rgba(0, 0, 0, 0.44);
+  --shadow-warm-lg: rgba(0, 0, 0, 0.5) 0px 16px 32px -5px;
+  --shadow-warm-md: rgba(0, 0, 0, 0.42) 0px 12px 20px -5px;
+  --color-modal-bg: #18181b;
+  --color-modal-header-bg: rgba(9, 9, 11, 0.96);
+  --color-modal-header-border: #27272a;
+  --color-modal-btn-text: #fafafa;
+  --color-modal-close-text: #a1a1aa;
+  --color-social-icon-bg: #fafafa;
+  --color-social-icon-text: #09090b;
+  --color-recommend-header: #a1a1aa;
+  --color-recommend-avatar-bg: #18181b;
+  --color-recommend-name: #fafafa;
+  --color-recommend-desc: #a1a1aa;
+}
+
 /* 引入 Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Averia+Gruesa+Libre&display=swap');
 

@@ -10,7 +10,8 @@ export type ThemeColor =
   | 'forest'
   | 'lavender'
   | 'sunset'
-  | 'slate';
+  | 'slate'
+  | 'linear';
 
 /** useTheme 返回值类型 */
 export interface UseThemeReturn {
@@ -70,7 +71,8 @@ export const getSavedColor = (): ThemeColor => {
     saved === 'forest' ||
     saved === 'lavender' ||
     saved === 'sunset' ||
-    saved === 'slate'
+    saved === 'slate' ||
+    saved === 'linear'
   ) {
     return saved;
   }
