@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 import {
   ThemeContext,
   DARK_MEDIA_QUERY,
@@ -6,12 +12,15 @@ import {
   STORAGE_KEY_MODE,
   applyTheme,
   getSavedColor,
+  getSavedCustomColors,
   getSavedMode,
   getSystemMode,
   resolveMode,
   type ThemeColor,
   type ThemeMode,
   type UseThemeReturn,
+  type CustomThemeColors,
+  STORAGE_KEY_CUSTOM_COLORS,
 } from '../hooks/themeContext';
 
 /**
@@ -20,6 +29,7 @@ import {
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [mode, setModeState] = useState<ThemeMode>(getSavedMode);
   const [color, setColorState] = useState<ThemeColor>(getSavedColor);
+  const [customColors, setCustomColorsState] = useState(getSavedCustomColors);
   const [resolvedMode, setResolvedMode] = useState<'light' | 'dark'>(() =>
     resolveMode(getSavedMode()),
   );
@@ -37,9 +47,20 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem(STORAGE_KEY_COLOR, newColor);
   }, []);
 
+  const setCustomColors = useCallback(
+    (targetMode: 'light' | 'dark', colors: CustomThemeColors): void => {
+      setCustomColorsState((current) => {
+        const next = { ...current, [targetMode]: colors };
+        localStorage.setItem(STORAGE_KEY_CUSTOM_COLORS, JSON.stringify(next));
+        return next;
+      });
+    },
+    [],
+  );
+
   // 初始化时应用主题
   useEffect((): void => {
-    applyTheme(resolvedMode, color);
+    applyTheme(resolvedMode, color, customColors);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 监听系统主题偏好变化（仅在 system 模式下生效）
@@ -50,19 +71,19 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const handleChange = (): void => {
       const resolved = getSystemMode();
       setResolvedMode(resolved);
-      applyTheme(resolved, color);
+      applyTheme(resolved, color, customColors);
     };
 
     mediaQuery.addEventListener('change', handleChange);
     return (): void => {
       mediaQuery.removeEventListener('change', handleChange);
     };
-  }, [mode, color]);
+  }, [mode, color, customColors]);
 
   // mode / color 变化时同步 DOM
   useEffect((): void => {
-    applyTheme(resolvedMode, color);
-  }, [resolvedMode, color]);
+    applyTheme(resolvedMode, color, customColors);
+  }, [resolvedMode, color, customColors]);
 
   const value = useMemo(
     (): UseThemeReturn => ({
@@ -71,9 +92,21 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       color,
       setMode,
       setColor,
+      customColors,
+      setCustomColors,
     }),
-    [mode, resolvedMode, color, setMode, setColor],
+    [
+      mode,
+      resolvedMode,
+      color,
+      setMode,
+      setColor,
+      customColors,
+      setCustomColors,
+    ],
   );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 };
