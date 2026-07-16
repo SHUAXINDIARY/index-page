@@ -11,7 +11,7 @@ import { SocialLinks } from './components/SocialLinks';
 import { ThemeToggle } from './components/ThemeToggle';
 import type { InfiniteCanvasItem } from './components/InfiniteCanvasView';
 import { contentConfig } from './config/content';
-import { Expand, LocateFixed, Github, Shuffle } from 'lucide-react';
+import { Expand, Github, LocateFixed, Minimize2, Shuffle } from 'lucide-react';
 import blogData from './config/blog-data.json';
 import { useRandomLayout, type CardConfig } from './hooks/useRandomLayout';
 import { useBreakpoint } from './hooks/useBreakpoint';
@@ -73,7 +73,7 @@ const LazyWorldMap = lazy(async () => {
   return { default: module.WorldMap };
 });
 
-/** 仅在用户进入无限画布模式后加载 WebGL 画布运行时 */
+/** 仅在用户进入无限画布模式后加载画布运行时 */
 const LazyInfiniteCanvasView = lazy(async () => {
   const module = await import('./components/InfiniteCanvasView');
   return { default: module.InfiniteCanvasView };
@@ -293,13 +293,12 @@ const App = () => {
   const infiniteCanvasButton = (
     <button
       className={`toolbar-badge canvas-mode-btn${infiniteCanvasEnabled ? ' is-active' : ''}`}
-      onClick={() => setInfiniteCanvasEnabled(true)}
-      title={infiniteCanvasEnabled ? '当前为无限画布模式' : '进入无限画布模式'}
+      onClick={() => setInfiniteCanvasEnabled((enabled) => !enabled)}
+      title={infiniteCanvasEnabled ? '退出无限画布模式' : '进入无限画布模式'}
       aria-pressed={infiniteCanvasEnabled}
-      disabled={infiniteCanvasEnabled}
     >
-      <Expand size={14} />
-      <span>无限画布模式</span>
+      {infiniteCanvasEnabled ? <Minimize2 size={14} /> : <Expand size={14} />}
+      <span>{infiniteCanvasEnabled ? '退出无限画布' : '无限画布模式'}</span>
     </button>
   );
 

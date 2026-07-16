@@ -946,8 +946,10 @@ body {
 .canvas-mode-btn.is-active {
   background: var(--color-primary);
   color: var(--color-bg);
-  cursor: default;
-  opacity: 0.82;
+}
+
+.canvas-mode-btn.is-active:hover {
+  background: color-mix(in srgb, var(--color-primary) 86%, var(--color-bg));
 }
 
 .app-container--infinite-canvas {
