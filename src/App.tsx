@@ -9,8 +9,9 @@ import { OpenSourceCard } from './components/OpenSourceCard';
 import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
 import { ThemeToggle } from './components/ThemeToggle';
+import type { InfiniteCanvasItem } from './components/InfiniteCanvasView';
 import { contentConfig } from './config/content';
-import { LocateFixed, Github, Shuffle } from 'lucide-react';
+import { Expand, LocateFixed, Github, Shuffle } from 'lucide-react';
 import blogData from './config/blog-data.json';
 import { useRandomLayout, type CardConfig } from './hooks/useRandomLayout';
 import { useBreakpoint } from './hooks/useBreakpoint';
@@ -72,6 +73,12 @@ const LazyWorldMap = lazy(async () => {
   return { default: module.WorldMap };
 });
 
+/** 仅在用户进入无限画布模式后加载 WebGL 画布运行时 */
+const LazyInfiniteCanvasView = lazy(async () => {
+  const module = await import('./components/InfiniteCanvasView');
+  return { default: module.InfiniteCanvasView };
+});
+
 /** 延迟组件占位卡片 ID 类型 */
 type DeferredCardId = 'calendar' | 'worldMap';
 
@@ -96,6 +103,7 @@ const App = () => {
   const breakpoint = useBreakpoint();
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
   const [backgroundImageEnabled, setBackgroundImageEnabled] = useState(false);
+  const [infiniteCanvasEnabled, setInfiniteCanvasEnabled] = useState(false);
   const backgroundClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
@@ -264,6 +272,54 @@ const App = () => {
     }
   };
 
+  const infiniteCanvasItems: InfiniteCanvasItem[] = cardConfigs.flatMap(
+    ({ id, size }) => {
+      const position = layout.positions[id];
+      const content = renderCard(id);
+      if (!position || !content) return [];
+      return [
+        {
+          id,
+          x: position.x,
+          y: position.y,
+          width: size.width,
+          height: size.height,
+          content,
+        },
+      ];
+    },
+  );
+
+  const infiniteCanvasButton = (
+    <button
+      className={`toolbar-badge canvas-mode-btn${infiniteCanvasEnabled ? ' is-active' : ''}`}
+      onClick={() => setInfiniteCanvasEnabled(true)}
+      title={infiniteCanvasEnabled ? '当前为无限画布模式' : '进入无限画布模式'}
+      aria-pressed={infiniteCanvasEnabled}
+      disabled={infiniteCanvasEnabled}
+    >
+      <Expand size={14} />
+      <span>无限画布模式</span>
+    </button>
+  );
+
+  if (infiniteCanvasEnabled) {
+    return (
+      <div className="app-container app-container--infinite-canvas">
+        <Suspense fallback={<div className="infinite-canvas-loading" />}>
+          <LazyInfiniteCanvasView items={infiniteCanvasItems} />
+        </Suspense>
+        <motion.div
+          className="fixed-toolbar"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          {infiniteCanvasButton}
+        </motion.div>
+      </div>
+    );
+  }
+
   /** 移动端 & 平板端紧凑布局 */
   if (isCompact) {
     /** 可见卡片索引计数器 */
@@ -310,6 +366,7 @@ const App = () => {
             backgroundImageEnabled={backgroundImageEnabled}
             onBackgroundImageChange={handleBackgroundImageChange}
           />
+          {infiniteCanvasButton}
           <button
             className="toolbar-badge shuffle-btn"
             onClick={refreshLayout}
@@ -428,6 +485,7 @@ const App = () => {
           backgroundImageEnabled={backgroundImageEnabled}
           onBackgroundImageChange={handleBackgroundImageChange}
         />
+        {infiniteCanvasButton}
         <button
           className="toolbar-badge shuffle-btn"
           onClick={refreshLayout}

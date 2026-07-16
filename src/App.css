@@ -943,6 +943,23 @@ body {
     background var(--duration-fast) var(--easing-default);
 }
 
+.canvas-mode-btn.is-active {
+  background: var(--color-primary);
+  color: var(--color-bg);
+  cursor: default;
+  opacity: 0.82;
+}
+
+.app-container--infinite-canvas {
+  display: block;
+}
+
+.infinite-canvas-loading {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg);
+}
+
 .toolbar-badge:hover {
   background: var(--color-card-hover);
   transform: translateY(-2px);

@@ -12,6 +12,7 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@infinite-canvas-tutorial/ecs": "^0.0.9",
     "dayjs": "^1.11.19",
     "ical.js": "^2.2.1",
     "lucide-react": "^0.555.0",

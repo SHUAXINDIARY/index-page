@@ -1,0 +1,71 @@
+.infinite-canvas-shell,
+.infinite-canvas-surface {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.infinite-canvas-shell {
+  z-index: 1;
+  overflow: hidden;
+  background-color: var(--color-bg);
+  background-image: radial-gradient(
+    circle,
+    var(--color-primary-alpha-020) 1px,
+    transparent 1px
+  );
+  background-position: center;
+  background-size: 20px 20px;
+  touch-action: none;
+}
+
+.infinite-canvas-surface {
+  display: block;
+  pointer-events: none;
+}
+
+.infinite-canvas-items {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 1px;
+  height: 1px;
+  transform-origin: top left;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.infinite-canvas-item {
+  position: absolute;
+  display: flex;
+  pointer-events: auto;
+}
+
+.infinite-canvas-item > * {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.infinite-canvas-help {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 4;
+  padding: 8px 12px;
+  border: 1px solid var(--color-primary-alpha-010);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-card-solid) 82%, transparent);
+  color: var(--color-secondary);
+  font-size: 12px;
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .infinite-canvas-help {
+    top: 12px;
+    left: 12px;
+  }
+}

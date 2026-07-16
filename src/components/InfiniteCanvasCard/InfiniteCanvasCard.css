@@ -1,0 +1,204 @@
+.infinite-canvas-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.infinite-canvas-header {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.infinite-canvas-header h3 {
+  margin: 1px 0 0;
+  color: var(--color-primary);
+  font-size: 14px;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.infinite-canvas-kicker {
+  display: block;
+  color: var(--color-secondary);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.infinite-canvas-controls {
+  display: grid;
+  grid-template-columns: 26px 38px 26px 26px;
+  align-items: center;
+  height: 26px;
+  border: 1px solid var(--color-primary-alpha-010);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-card-solid) 74%, transparent);
+  overflow: hidden;
+}
+
+.infinite-canvas-controls button {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--color-secondary);
+  cursor: pointer;
+}
+
+.infinite-canvas-controls button:hover,
+.infinite-canvas-controls button:focus-visible {
+  background: var(--color-primary-alpha-008);
+  color: var(--color-primary);
+  outline: none;
+}
+
+.infinite-canvas-controls output {
+  color: var(--color-secondary);
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.infinite-canvas-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-primary-alpha-010);
+  border-radius: var(--radius-md);
+  background-color: color-mix(
+    in srgb,
+    var(--color-bg) 78%,
+    var(--color-card-solid)
+  );
+  background-image: radial-gradient(
+    circle,
+    var(--color-primary-alpha-020) 0.8px,
+    transparent 0.9px
+  );
+  background-size: 16px 16px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.infinite-canvas-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.infinite-canvas-world {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 480px;
+  height: 280px;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.canvas-placeholder {
+  position: absolute;
+  display: grid;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 14%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-card-solid) 92%, transparent);
+  box-shadow: 0 8px 20px -16px var(--color-primary-alpha-040);
+}
+
+.canvas-placeholder span {
+  width: 20px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-accent);
+}
+
+.canvas-placeholder strong {
+  color: var(--color-primary);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.canvas-placeholder i {
+  width: 78px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-primary-alpha-010);
+}
+
+.canvas-placeholder i:last-child {
+  width: 52px;
+}
+.canvas-placeholder--primary {
+  top: 26px;
+  left: 32px;
+  width: 126px;
+  height: 92px;
+}
+.canvas-placeholder--note {
+  top: 18px;
+  left: 260px;
+  width: 108px;
+  height: 72px;
+}
+.canvas-placeholder--note span {
+  background: color-mix(
+    in srgb,
+    var(--color-accent) 55%,
+    var(--color-secondary)
+  );
+}
+.canvas-placeholder--compact {
+  top: 150px;
+  left: 190px;
+  width: 104px;
+  height: 60px;
+}
+.canvas-placeholder--compact span {
+  width: 34px;
+  background: var(--color-secondary);
+}
+
+.canvas-connector {
+  position: absolute;
+  top: 66px;
+  left: 145px;
+  width: 250px;
+  height: 110px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.canvas-connector path {
+  fill: none;
+  stroke: var(--color-accent-alpha-020);
+  stroke-width: 2;
+  stroke-dasharray: 4 5;
+}
+
+.infinite-canvas-hint {
+  position: absolute;
+  right: 8px;
+  bottom: 7px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--color-card-solid) 86%, transparent);
+  color: var(--color-secondary);
+  font-size: 8px;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infinite-canvas-world {
+    will-change: auto;
+  }
+}
