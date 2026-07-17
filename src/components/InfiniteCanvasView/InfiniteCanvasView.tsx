@@ -9,8 +9,9 @@ import {
 import {
   BrowserAdapter,
   DOMAdapter,
+  Pen,
 } from '@infinite-canvas-tutorial/ecs';
-import { LocateFixed, Minus, Plus } from 'lucide-react';
+import { LocateFixed, Minus, Pencil, Plus } from 'lucide-react';
 import './InfiniteCanvasView.css';
 
 DOMAdapter.set(BrowserAdapter);
@@ -38,9 +39,17 @@ interface InfiniteCanvasViewProps {
   items: InfiniteCanvasItem[];
 }
 
+interface PencilStroke {
+  id: number;
+  points: { x: number; y: number }[];
+}
+
 export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
   const shellRef = useRef<HTMLDivElement>(null);
   const [camera, setCamera] = useState({ x: -80, y: -64, zoom: 0.9 });
+  const [selectedPen, setSelectedPen] = useState<Pen>(Pen.HAND);
+  const [pencilStrokes, setPencilStrokes] = useState<PencilStroke[]>([]);
+  const drawingRef = useRef<number | null>(null);
   const dragRef = useRef<{
     pointerId: number;
     startX: number;
@@ -104,6 +113,19 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
   const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.button !== 0 || isInteractiveTarget(event.target)) return;
     event.currentTarget.setPointerCapture(event.pointerId);
+
+    if (selectedPen === Pen.PENCIL) {
+      const bounds = event.currentTarget.getBoundingClientRect();
+      const id = Date.now();
+      const point = {
+        x: (event.clientX - bounds.left) / camera.zoom + camera.x,
+        y: (event.clientY - bounds.top) / camera.zoom + camera.y,
+      };
+      drawingRef.current = id;
+      setPencilStrokes((strokes) => [...strokes, { id, points: [point] }]);
+      return;
+    }
+
     dragRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
@@ -114,6 +136,23 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
   };
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (drawingRef.current !== null) {
+      const bounds = event.currentTarget.getBoundingClientRect();
+      const point = {
+        x: (event.clientX - bounds.left) / camera.zoom + camera.x,
+        y: (event.clientY - bounds.top) / camera.zoom + camera.y,
+      };
+      const drawingId = drawingRef.current;
+      setPencilStrokes((strokes) =>
+        strokes.map((stroke) =>
+          stroke.id === drawingId
+            ? { ...stroke, points: [...stroke.points, point] }
+            : stroke,
+        ),
+      );
+      return;
+    }
+
     const drag = dragRef.current;
     if (!drag || drag.pointerId !== event.pointerId) return;
     setCamera((current) => ({
@@ -124,6 +163,7 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
   };
 
   const handlePointerEnd = (event: ReactPointerEvent<HTMLDivElement>) => {
+    drawingRef.current = null;
     if (dragRef.current?.pointerId === event.pointerId) dragRef.current = null;
   };
 
@@ -145,7 +185,7 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
   return (
     <div
       ref={shellRef}
-      className="infinite-canvas-shell"
+      className={`infinite-canvas-shell${selectedPen === Pen.PENCIL ? ' is-drawing' : ''}`}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerEnd}
@@ -162,6 +202,18 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
           transform: `scale(${camera.zoom}) translate(${-camera.x}px, ${-camera.y}px)`,
         }}
       >
+        <svg
+          className="infinite-canvas-drawings"
+          viewBox="-5000 -5000 10000 10000"
+          aria-label="画布笔迹"
+        >
+          {pencilStrokes.map((stroke) => (
+            <polyline
+              key={stroke.id}
+              points={stroke.points.map(({ x, y }) => `${x},${y}`).join(' ')}
+            />
+          ))}
+        </svg>
         {items.map((item) => (
           <div
             className="infinite-canvas-item"
@@ -214,6 +266,20 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
           aria-label="重置画布"
         >
           <LocateFixed size={15} />
+        </button>
+        <button
+          type="button"
+          className={selectedPen === Pen.PENCIL ? 'is-active' : undefined}
+          onClick={() =>
+            setSelectedPen((pen) =>
+              pen === Pen.PENCIL ? Pen.HAND : Pen.PENCIL,
+            )
+          }
+          title={selectedPen === Pen.PENCIL ? '退出画笔' : '画笔'}
+          aria-label={selectedPen === Pen.PENCIL ? '退出画笔' : '画笔'}
+          aria-pressed={selectedPen === Pen.PENCIL}
+        >
+          <Pencil size={15} />
         </button>
       </div>
     </div>
