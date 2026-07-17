@@ -180,6 +180,19 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
     };
   }, [initialCamera]);
 
+  useEffect(() => {
+    const imageInput = imageInputRef.current;
+    if (!imageInput) return;
+
+    const handleCancel = () => {
+      apiRef.current?.setAppState({ penbarSelected: Pen.SELECT });
+      setSelectedPen(Pen.SELECT);
+    };
+
+    imageInput.addEventListener('cancel', handleCancel);
+    return () => imageInput.removeEventListener('cancel', handleCancel);
+  }, []);
+
   const selectPen = (pen: Pen) => {
     apiRef.current?.setAppState({ penbarSelected: pen });
     setSelectedPen(pen);
@@ -237,7 +250,6 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
           const file = event.currentTarget.files?.[0];
           if (file) void insertImage(file);
         }}
-        onCancel={() => selectPen(Pen.SELECT)}
         tabIndex={-1}
         aria-hidden="true"
       />
