@@ -63,9 +63,67 @@
   pointer-events: none;
 }
 
+.infinite-canvas-controls {
+  position: fixed;
+  right: 178px;
+  bottom: 20px;
+  z-index: 101;
+  display: grid;
+  grid-template-columns: 38px 54px 38px 38px;
+  height: 38px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-card);
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(12px);
+}
+
+.infinite-canvas-controls button {
+  display: grid;
+  width: 100%;
+  height: 38px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-right: 1px solid var(--color-primary-alpha-010);
+  background: transparent;
+  color: var(--color-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.infinite-canvas-controls button:last-child {
+  border-right: 0;
+}
+
+.infinite-canvas-controls button:hover:not(:disabled),
+.infinite-canvas-controls button:focus-visible {
+  background: var(--color-card-hover);
+  outline: none;
+}
+
+.infinite-canvas-controls button:disabled:not(.infinite-canvas-scale) {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.infinite-canvas-controls .infinite-canvas-scale {
+  color: var(--color-primary);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  cursor: default;
+  opacity: 1;
+}
+
 @media (max-width: 767px) {
   .infinite-canvas-help {
     top: 12px;
     left: 12px;
+  }
+
+  .infinite-canvas-controls {
+    right: 12px;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
   }
 }
