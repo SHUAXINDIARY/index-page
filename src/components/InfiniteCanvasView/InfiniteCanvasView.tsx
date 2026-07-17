@@ -91,6 +91,7 @@ interface CameraState {
 
 export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
   const { mode } = useTheme();
+  const shellRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLElementTagNameMap['ic-spectrum-canvas']>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const apiRef = useRef<ExtendedAPI | null>(null);
@@ -199,6 +200,50 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
   }, []);
 
   useEffect(() => {
+    const shell = shellRef.current;
+    if (!shell) return;
+
+    const handleWheel = (event: WheelEvent) => {
+      if ((event.target as Element).closest('.infinite-canvas-toolbar')) return;
+
+      const api = apiRef.current;
+      if (!api || event.deltaY === 0) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const rect = shell.getBoundingClientRect();
+      const viewportX = event.clientX - rect.left;
+      const viewportY = event.clientY - rect.top;
+      const current = api.getAppState();
+      const delta =
+        event.deltaMode === WheelEvent.DOM_DELTA_LINE
+          ? event.deltaY * 16
+          : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
+            ? event.deltaY * shell.clientHeight
+            : event.deltaY;
+      const zoom = Math.min(
+        MAX_ZOOM,
+        Math.max(MIN_ZOOM, current.cameraZoom * Math.exp(-delta * 0.0015)),
+      );
+      const canvasX = viewportX / current.cameraZoom + current.cameraX;
+      const canvasY = viewportY / current.cameraZoom + current.cameraY;
+
+      api.setAppState({
+        cameraX: canvasX - viewportX / zoom,
+        cameraY: canvasY - viewportY / zoom,
+        cameraZoom: zoom,
+      });
+    };
+
+    shell.addEventListener('wheel', handleWheel, {
+      capture: true,
+      passive: false,
+    });
+    return () => shell.removeEventListener('wheel', handleWheel, true);
+  }, []);
+
+  useEffect(() => {
     if (!isReady) return;
     apiRef.current?.setAppState({ themeMode: canvasThemeMode });
   }, [canvasThemeMode, isReady]);
@@ -237,7 +282,7 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
     PEN_OPTIONS.find(({ pen }) => pen === selectedPen)?.label ?? '画布工具';
 
   return (
-    <div className="infinite-canvas-shell">
+    <div ref={shellRef} className="infinite-canvas-shell">
       <ic-spectrum-canvas
         ref={canvasRef}
         className="infinite-canvas-surface"
