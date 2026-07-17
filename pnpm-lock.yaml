@@ -4,13 +4,24 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@antv/g-device-api@1.6.13':
+    hash: 184d5959009e74ac96143f56fb9a8902b1f6278c675e9e47a020ffabf39bad4a
+    path: patches/@antv__g-device-api@1.6.13.patch
+  '@infinite-canvas-tutorial/ecs@0.0.9':
+    hash: e8e5e9d611845554f5ab10583ba7cc679e8fa4b5fb2e57d4eddc6ccbededaa92
+    path: patches/@infinite-canvas-tutorial__ecs@0.0.9.patch
+
 importers:
 
   .:
     dependencies:
       '@infinite-canvas-tutorial/ecs':
         specifier: ^0.0.9
-        version: 0.0.9
+        version: 0.0.9(patch_hash=e8e5e9d611845554f5ab10583ba7cc679e8fa4b5fb2e57d4eddc6ccbededaa92)
+      '@infinite-canvas-tutorial/webcomponents':
+        specifier: ^0.0.11
+        version: 0.0.11
       dayjs:
         specifier: ^1.11.19
         version: 1.11.19
@@ -216,6 +227,22 @@ packages:
     resolution: {integrity: sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@excalidraw/laser-pointer@1.3.2':
+    resolution: {integrity: sha512-aKhVj3/lLV7TCkZr6q5kn9sBFxzpOQ/yyRwBGm6smsakMdp0o1FVp9HNKOPerEpkKEt34VTURekZLfqa3E1Few==}
+    engines: {browsers: defaults and supports es6-module}
+
+  '@floating-ui/core@1.8.0':
+    resolution: {integrity: sha512-0CIZ5itps/8x7BG8dEIhs53BvCUH2PCoogtakwRTut+Arm58sJooJ0AuZhLw2HJYIR5cMLNPBSS728sPho2khQ==}
+
+  '@floating-ui/dom@1.7.4':
+    resolution: {integrity: sha512-OOchDgh4F2CchOX94cRVqhvy7b3AFb+/rQXyswmzmGakRfkMgoWVjfnLWkRirfLEfuD4ysVW16eXzwt3jHIzKA==}
+
+  '@floating-ui/utils@0.2.10':
+    resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
+
+  '@floating-ui/utils@0.2.12':
+    resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
+
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
     engines: {node: '>=18.18.0'}
@@ -234,6 +261,12 @@ packages:
 
   '@infinite-canvas-tutorial/ecs@0.0.9':
     resolution: {integrity: sha512-smotQ4przn7oZ+rUmgg4zHS3yG+gdTpNd3IP25DHSY7C888v8YwwoqXWhfQL74i31x0cvk4QjD+5qmHp8ks2OA==}
+
+  '@infinite-canvas-tutorial/webcomponents@0.0.11':
+    resolution: {integrity: sha512-Q0Kk0pTt9R5KbQ1I6dE6QfSsJ7O4PjkaTpQbIFH6tyVbwH9lu8nU38fTpf50bu/Azi/yC8S93jXisH3nGJAPYQ==}
+
+  '@internationalized/number@3.6.5':
+    resolution: {integrity: sha512-6hY4Kl4HPBvtfS62asS/R22JzNNy8vi/Ssev7x6EobfCp+9QIB2hKvI2EtbdJ0VSQacxVNtqhE/NmF/NZ0gm6g==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -254,6 +287,24 @@ packages:
   '@lastolivegames/becsy@0.16.0':
     resolution: {integrity: sha512-Co14Gvi2ZIfVmVFOkvJY39oVUuDD0eq+WW7Q7l61TjCgfXjOu9MOMqJxJuZw+bYkWJ34BcT9CGULTrY0NF7dGA==}
     engines: {node: '>=12'}
+
+  '@lit-labs/observers@2.0.2':
+    resolution: {integrity: sha512-eZb5+W9Cb0e/Y5m1DNxBSGTvGB2TAVTGMnTxL/IzFhPQEcZIAHewW1eVBhN8W07A5tirRaAmmF6fGL1V20p3gQ==}
+
+  '@lit-labs/ssr-dom-shim@1.6.0':
+    resolution: {integrity: sha512-VHb0ALPMTlgKjM6yIxxoQNnpKyUKLD04VzeQdsiXkMqkvYlAHxq9glGLmgbb889/1GsohSOAjvQYoiBppXFqrQ==}
+
+  '@lit/context@1.1.6':
+    resolution: {integrity: sha512-M26qDE6UkQbZA2mQ3RjJ3Gzd8TxP+/0obMgE5HfkfLhEEyYE3Bui4A5XHiGPjy0MUGAyxB3QgVuw2ciS0kHn6A==}
+
+  '@lit/localize@0.12.2':
+    resolution: {integrity: sha512-Qv9kvgJKDq/JVSwXOxuWvQnnOBysHA99ti9im9a4fImCmx+fto+XXcUYQbjZHqiueEEc4V20PcRDPO+1g/6seQ==}
+
+  '@lit/reactive-element@2.1.2':
+    resolution: {integrity: sha512-pbCDiVMnne1lYUIaYNN5wrwQXDtHaYtg7YEFPeW+hws6U47WeFvISGUWekPGKWOP1ygrs0ef0o1VJMk1exos5A==}
+
+  '@lit/task@1.0.3':
+    resolution: {integrity: sha512-1gJGJl8WON+2j0y9xfcD+XsS1rvcy3XDgsIhcdUW++yTR8ESjZW6o7dn8M8a4SZM8NnJe6ynS2cKWwsbfLOurg==}
 
   '@loaders.gl/core@4.4.3':
     resolution: {integrity: sha512-D6kXFdpUtYwoqS5OQLLaLELkHlS3qIdcSgzVvsh/MinRteeVIITJojqEc/lmDx1zVR3j6WND7yPGF4i4aOwiOg==}
@@ -395,6 +446,138 @@ packages:
       webpack-hot-middleware:
         optional: true
 
+  '@spectrum-web-components/accordion@1.12.2':
+    resolution: {integrity: sha512-/G9lnpD2TcAgpJObmzQueQYSpXkISFKojwe4ornSNrTTYOuutyERIYTnibGS7osYouSGLdrf/RkMUzOXfmw1dg==}
+
+  '@spectrum-web-components/action-button@1.12.2':
+    resolution: {integrity: sha512-iH9gAJhbRAa4D8oxQSXYq8b9uXu7KIT7ZhpEdFYqk0AwMs+doIqLT0EDy9P90BI9nHRZvDWUnQ0pS+nkzbq+0g==}
+
+  '@spectrum-web-components/action-group@1.12.2':
+    resolution: {integrity: sha512-nI9rMcPZVRRnLunT/Zkca1JKSAAmIHgBPDEh7duA7gfdVyXL2Ni9JxjRBT+KTBdlpNUvNSY4iFt7/f2LE+Xisw==}
+
+  '@spectrum-web-components/action-menu@1.12.2':
+    resolution: {integrity: sha512-co+8op1RVC2OvIiKVrah333c999zoD92bUi/gzqFA/rFlWJoNoShasiglgdiEZ15DvbDpijbzRqGKtpywLg9oA==}
+
+  '@spectrum-web-components/alert-banner@1.12.2':
+    resolution: {integrity: sha512-Ehpy25S5CmUoLelaY73UuMOSSjozPnMWJb2T3hCoecAXRK3VQb/6EU7a+Lx1vWR7f3LbiExJ7SsaIe0NcIKJOQ==}
+
+  '@spectrum-web-components/base@1.12.2':
+    resolution: {integrity: sha512-7vB3182FqJzRevafUWlFRw/bfM4ZjC+Mmh5Fh0mDmVcP/SohUowrmHsQns1fsQPi+/O8iMP8XbtT7sAFp6ejkA==}
+
+  '@spectrum-web-components/button@1.12.2':
+    resolution: {integrity: sha512-THab5wD0gzF4vOzUrQwvrNoHYk5fvtVHXNlY272YmEMaVGCP/mpqS2Kf5Pbd9sSNKhe5uRn9QRCVve+e4TZjCw==}
+
+  '@spectrum-web-components/checkbox@1.12.2':
+    resolution: {integrity: sha512-zXNYRwrdpuzXMBBzZUOkG06uELQQDF2C7xMxLCB1dsuLAswodi4yw2VvydsQ6mOmU46Zo8lmX3okEKzkSDU0/A==}
+
+  '@spectrum-web-components/clear-button@1.12.2':
+    resolution: {integrity: sha512-iTDs+FQJkHelR+f4Iz3JL+i5ltbI5XHpweFYLn6UgP+tO6hjZfIr1iw6bCaDs1MEHLIJez1a4mYl0aR6orKa6Q==}
+
+  '@spectrum-web-components/close-button@1.12.2':
+    resolution: {integrity: sha512-T1owl+MncqZTMapRZvwGI0IRzzYigzDpsGWR4yu4yc8MDD8D9k067KFZeh2Og1o5uzLNMT9jr6qUh795Xk6rtg==}
+
+  '@spectrum-web-components/color-area@1.12.2':
+    resolution: {integrity: sha512-72EvnHOUs30lJwKVNR8xrVRWpYVIJ+yOign7d/ZsDaKIwSkYNbOCX7xgyh/VepQ6tDeFHvBwA9atBBw5j4m9mQ==}
+
+  '@spectrum-web-components/color-field@1.12.2':
+    resolution: {integrity: sha512-OZBRbrixfWPEvE8qXGW3wdhWAT8cmEM7ach7wYEU4pz8Z/zldaR5QRbdw9dU8IhHNJybOSVu2BBmk31fyzvcvQ==}
+
+  '@spectrum-web-components/color-handle@1.12.2':
+    resolution: {integrity: sha512-4Wygb+DPmNCzPyoHLOXpfG0IYwsLPnkcp4JwIAd+ZeKXr9SvltYXqJd5jii4JyafB7eHdbgTPyV94gp/htkshA==}
+
+  '@spectrum-web-components/color-loupe@1.12.2':
+    resolution: {integrity: sha512-gfzaFYT7svkKRo4LJlWAicRNUEOkTXJseQux72GI2DRD4MLefivAGBQCMGT5jeYHggCk+dRU/rHTbNM4HX9C4g==}
+
+  '@spectrum-web-components/color-slider@1.12.2':
+    resolution: {integrity: sha512-EM38+HAOp1Z4JcJTBnhWvZYgYE/wvgrjdsStGJdByaaAP7vRB9aEEdtSFk62RTdOFU42BmTgtot7AXdTSJkxeQ==}
+
+  '@spectrum-web-components/color-wheel@1.12.2':
+    resolution: {integrity: sha512-ZcWn++NrhmEpV8xUwG4D7Rbu3Di9Ej1DPCCMxGPEsAfq8g3SR9SvgSox6LlibEdcpnCS9nXy4nEIBA5qTJV6Ag==}
+
+  '@spectrum-web-components/divider@1.12.2':
+    resolution: {integrity: sha512-SilrSo86s9EqcZGysE+j06QZ2LTDKFZYigiHhfsCsZP/cpcitJVdYg+BZ1S6UpuPvidjlpzTafQO4qu7mQfMnw==}
+
+  '@spectrum-web-components/field-label@1.12.2':
+    resolution: {integrity: sha512-XZ98+MkyQn5ZX8bOOpZ92ehV0ArrqMnY+r0AzlwABBIXkn1OiHkMk50RF3SFN6UYcb0QvMwT+tUgXkYjppVQbw==}
+
+  '@spectrum-web-components/help-text@1.12.2':
+    resolution: {integrity: sha512-r8parJrGwPf/FO7CMjfjCpS6reczRX/RDkGuAs2lYNISE3HUoSUV7OL3CSI4eCKeiwhInHgSACpW93t7RRSCQw==}
+
+  '@spectrum-web-components/icon@1.12.2':
+    resolution: {integrity: sha512-mvnP1wcjdRVQCV73Le0rKJ22EhPi2jb5xAktRaPdYQebH0yjqVV1EvRNB5ZQPLqVzzDz9UzBm2RzOoGDupu+Jg==}
+
+  '@spectrum-web-components/icons-ui@1.12.2':
+    resolution: {integrity: sha512-ibSFBD1gM6NkU+88g7QOPcee8E2JpClwiI/VZ/6EXbvOa/9QvQR23NfcYZIWHu8p3Wh7Lyas4MO+NdKlt6b09g==}
+
+  '@spectrum-web-components/icons-workflow@1.12.2':
+    resolution: {integrity: sha512-r8r5YhaCwlw8D839HIbqZ+G3J1H49/ibbnp4golnfa96u9oY0OTkQIrdpPefrDxgk4eLXAjwovCMQk7hCWtuNw==}
+
+  '@spectrum-web-components/iconset@1.12.2':
+    resolution: {integrity: sha512-s6BsY6VnZQOcTx8LfLixdu16g0QXr54wC4PiY7wKcgqkS+VJzo3Up02y7nUUcga38tDb2XcYHZU3rqKVagz6zQ==}
+
+  '@spectrum-web-components/infield-button@1.12.2':
+    resolution: {integrity: sha512-gotnn3JQya8Ny3KgHX3z3RHeSZ+f7QO8LsgMJrXraljYcc3m1EJXz0iyq9Yu5yGb2NwuIRsQtIr2S66ZvXR8ig==}
+
+  '@spectrum-web-components/menu@1.12.2':
+    resolution: {integrity: sha512-lPdn5TXVfLWXm+O1Y6orhCEEqsiXl2SokRgAFunxFvnUTStp/fgTzwATeSlB71iSd+VN3k8h9NuvCIXkyC7W4A==}
+
+  '@spectrum-web-components/modal@1.12.2':
+    resolution: {integrity: sha512-p5HfcR2V5KtsPuX3JPVOI6h2IHPv/tEN+8mXju551sf/jJDosa4F8Heg7xY39U9xhqg1nLEdP3vPGYo2ynJwzg==}
+
+  '@spectrum-web-components/number-field@1.12.2':
+    resolution: {integrity: sha512-fmldAgpztEsMY4Y+Ocsfyui2fMSpcI3OAGNH2/WT+F9l7GLdL3D1HB9t3XGuynlkEyZitku1HEJapofqkj+aXQ==}
+
+  '@spectrum-web-components/opacity-checkerboard@1.12.2':
+    resolution: {integrity: sha512-oiO/8z8ixJV+iY5VqKsyFAPwYzRoi5s7G/skRC33rldRYa/R/HS3qSB5jGRV+uJFhrSdkKRu+wnQSbKilSqL8A==}
+
+  '@spectrum-web-components/overlay@1.12.2':
+    resolution: {integrity: sha512-yYGo8MtN6NJMDVU5e8fm6w3G4Gc7XZXaCWEtDXwJD3s3Pw9FZnWWraxbGlIRswBwCjR67RJ17pdG320fo0HhVA==}
+
+  '@spectrum-web-components/picker@1.12.2':
+    resolution: {integrity: sha512-WJsf1zBtic6wMNXNjMu6/vEwumrDzvG+qq/Q60T7/8dna9XGmDtwVyRWPzYiKwuzXzOCtF+fjG2R9tbyYxmoFQ==}
+
+  '@spectrum-web-components/popover@1.12.2':
+    resolution: {integrity: sha512-lZ2A/IgL3tOFy8/quDae16M+CIjnY56VnabLPcCl9WjX/F9BWMNk88YH5Hr+q6S4U26IueOAjAYg6vWuvZY1oA==}
+
+  '@spectrum-web-components/progress-circle@1.12.2':
+    resolution: {integrity: sha512-I7gAZM8gza/gDZ+tJuKcWF8lld4030GcJpLcySb1NTzBpJlnIItPuybBolSpSb+QzmFTAnlGJaRWTXPZkC8hwA==}
+
+  '@spectrum-web-components/reactive-controllers@1.12.2':
+    resolution: {integrity: sha512-TD94tuA5XDK8ISUM4pWHxJF9oe/IvSHYoR/4P6aYsAj8oPZgrGerNh1a+vzQZ0PorRpVMV4Rg/UHCbtTwxOgOQ==}
+
+  '@spectrum-web-components/shared@1.12.2':
+    resolution: {integrity: sha512-1vRimMtdKllujoFPbuDoPP0eSHZJfExWld2jeqboMKjzNTDvBfoOIN3ZOz7ClOVyrJOQDJSP2htCVfDBYl72Ug==}
+
+  '@spectrum-web-components/slider@1.12.2':
+    resolution: {integrity: sha512-JyGxw0SJ3UxZ7ftKTm2/jHJwIuij+A9a3hXvfBMnv4wI4BZv5rXGXpbpV0xQTuQgb8eaSZU9Sl59GfGR5gHijg==}
+
+  '@spectrum-web-components/styles@1.12.2':
+    resolution: {integrity: sha512-6vYe/VEbjJ4VDcOSbjxEZaKatwRdxp6yLgEf+qtlo7YOSTAM2016kr6MaqV3EbKXBsVJP8qe9j2hoq29MLGqyA==}
+
+  '@spectrum-web-components/swatch@1.12.2':
+    resolution: {integrity: sha512-yGHY8YpzS9cPYQQwINFeAsLYUI9rbcGocaGYRgpIFCtJUnN07aowaziK2qFH3Kye6Bh6RgVBzXVC5VNdi6SCTg==}
+
+  '@spectrum-web-components/switch@1.12.2':
+    resolution: {integrity: sha512-SDOcY3U+eFGD2Zb1j7Jgig2rbQqYZ1IyilqhvIipcWGseQz36pj8TAhxv/joveX0wTn2/xn4BfP0wxXN/vTA7w==}
+
+  '@spectrum-web-components/textfield@1.12.2':
+    resolution: {integrity: sha512-FGms1SeWy9dNP8tK8+NUJYNK2kopWLVnyxYSB148UQW/SxRqnlgmkmP4Sofn94C3VzyVURW3cLWTLxCKS5HGAQ==}
+
+  '@spectrum-web-components/theme@1.12.2':
+    resolution: {integrity: sha512-JWzjsTybXBevJpFlH3HRD+MbssGu2K3/8hv0THU1Wy7khSxNIvfsCAg1Twjt9qTr7BNgw5gfCdMoMDj0qD7Ilg==}
+
+  '@spectrum-web-components/thumbnail@1.12.2':
+    resolution: {integrity: sha512-z8qtCzUEuXE2F3t7go9+O8XS1rVDF9Kg9efWxQ+xydPv0iQ/emZvpSs2KEm4H+QqDsgXkYa0hFhYtdSgCdPT9w==}
+
+  '@spectrum-web-components/tooltip@1.12.2':
+    resolution: {integrity: sha512-Q0tbH/7SuInvizNf8f5IdnIhhI21tjGysLJP6HeK+nVjNHOoA45wrphverXVpeQmMhbek6nPizHoeI6fxToxEg==}
+
+  '@spectrum-web-components/tray@1.12.2':
+    resolution: {integrity: sha512-SBxSH1yz/b+OnsUPSCfDa9XXjK3Q0cNBxPU5gURwnbIeZXH0VV0nefZkQXTmkJK3d3B9BpLi8zaJk+cj4L0JaA==}
+
+  '@spectrum-web-components/underlay@1.12.2':
+    resolution: {integrity: sha512-YWGXxBkSg/oCBLYD83Rknlf58gCIee2YOtTTGyEpyGJEsK6Rd7P4s/JV+DjELKMpxFL9yG7P4hMoKGoXJvPQZA==}
+
   '@swc/helpers@0.5.17':
     resolution: {integrity: sha512-5IKx/Y13RsYd+sauPb2x+U/xZikHjolzfuDgTAl/Tdf3Q8rslRvC19NKDLgAJQ6wsqADk10ntlv08nPFw/gO/A==}
 
@@ -429,6 +612,9 @@ packages:
 
   '@types/react@18.3.27':
     resolution: {integrity: sha512-cisd7gxkzjBKU2GgdYrTdtQx1SORymWyaAFhaxQPK9bYO9ot3Y5OikQRvY0VYQtvwjeQnizCINJAenh/V7MK2w==}
+
+  '@types/trusted-types@2.0.7':
+    resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
   '@typescript-eslint/eslint-plugin@8.48.1':
     resolution: {integrity: sha512-X63hI1bxl5ohelzr0LY5coufyl0LJNthld+abwxpCoo6Gq+hSqhKwci7MUWkXo67mzgUK6YFByhmaHmUcuBJmA==}
@@ -560,6 +746,9 @@ packages:
   brace-expansion@2.0.2:
     resolution: {integrity: sha512-Jt0vHyM+jmUBqojB7E1NIYadt0vI0Qxjxd2TErW94wDz+E2LAm5vKMXXwg6ZZBTHPuUlDgQHKXvjGBdfcF1ZDQ==}
 
+  browser-fs-access@0.38.0:
+    resolution: {integrity: sha512-JveqW2w6pEZqFEEfMgCszXzYpE89dG+nPsmOdcs741mFFAROeL+iqjGEpR07RI+s0YY0EFr+4KnOoACprJTpOw==}
+
   browserslist@4.28.1:
     resolution: {integrity: sha512-ZC5Bd0LgJXgwGqUknZY/vkUQ04r8NXnJZ3yYi4vDmSiZmC/pdSN0NbNRPxZpbtO4uAfDUAFffO8IZoM3Gj8IkA==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
@@ -600,6 +789,9 @@ packages:
 
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+
+  colorjs.io@0.5.2:
+    resolution: {integrity: sha512-twmVoizEW7ylZSN32OgKdXRmo1qg+wT5/6C3xu5b9QsWzSFAhHLn2xd8ro0diCsKfCj1RdaTP/nrcW+vAoQPIw==}
 
   command-line-args@6.0.2:
     resolution: {integrity: sha512-AIjYVxrV9X752LmPDLbVYv8aMCuHPSLZJXEo2qo/xJfv+NYhaZ4sMSF01rM+gHPaMgvPM0l5D/F+Qx+i2WfSmQ==}
@@ -809,6 +1001,12 @@ packages:
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
 
+  focus-trap@7.6.5:
+    resolution: {integrity: sha512-7Ke1jyybbbPZyZXFxEftUtxFGLMpE2n6A+z//m4CRDlj0hW+o3iYSmh8nFlYMurOiJVDmJRilUQtJr08KfIxlg==}
+
+  focus-visible@5.2.1:
+    resolution: {integrity: sha512-8Bx950VD1bWTQJEH/AM6SpEk+SU55aVnp4Ujhuuxy3eMEBCRwBnTBnVXr9YAPvZL3/CNjCa8u4IWfNmEO53whA==}
+
   fractional-indexing@3.4.0:
     resolution: {integrity: sha512-8J3glhz2rrpKG6KmI7wmJo3zH1VjeOpN+vTJSw1fOyO+Viqq3zX6/5NGh6oaZB2qIAYdOYuu5Dz9xp4faOO0Pg==}
     engines: {node: ^14.13.1 || >=16.0.0}
@@ -936,6 +1134,9 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
+  kdbush@4.1.0:
+    resolution: {integrity: sha512-e9vurzrXJQrFX6ckpHP3bvj5l+9CnYzkxDNnNQ1h2QTqdWsUAJgXiKdGNcOa1EY85dU8KbQ+z/FdQdB7P+9yfQ==}
+
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -948,6 +1149,15 @@ packages:
 
   libtess@1.2.2:
     resolution: {integrity: sha512-Nps8HPeVVcsmJxUvFLKVJcCgcz+1ajPTXDVAVPs6+giOQP4AHV31uZFFkh+CKow/bkB7GbZWKmwmit7myaqDSw==}
+
+  lit-element@4.2.2:
+    resolution: {integrity: sha512-aFKhNToWxoyhkNDmWZwEva2SlQia+jfG0fjIWV//YeTaWrVnOxD89dPKfigCUspXFmjzOEUQpOkejH5Ly6sG0w==}
+
+  lit-html@3.3.3:
+    resolution: {integrity: sha512-el8M6jK2o3RXBnrSHX3ZKrsN8zEV63pSExTO1wYJz7QndGYZ8353e2a5PPX+qHe2aGayfnchQmkAojaWAREOIA==}
+
+  lit@3.3.3:
+    resolution: {integrity: sha512-fycuvZg/hkpozL00lm1pEJH5nN/lr9ZXd6mJI2HSN4+Bzc+LDNdEApJ6HFbPkdFNHLvOplIIuJvxkS4XUxqirw==}
 
   locate-path@6.0.0:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
@@ -1167,6 +1377,9 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
 
+  tabbable@6.5.0:
+    resolution: {integrity: sha512-wieBHXygIm7OyQOu5hQlkk62/WyCFYGlWg7L6/ZCUZwx0o398Zkn4pVmMyfYhfMG8kGrj/Krt8eIk6UKC6VzwA==}
+
   table-layout@4.1.1:
     resolution: {integrity: sha512-iK5/YhZxq5GO5z8wb0bY1317uDF3Zjpha0QFFLA8/trAoiLbQD0HUbMesEaxyzUgDxi2QlcbM8IvqOlEjgoXBA==}
     engines: {node: '>=12.17'}
@@ -1269,7 +1482,7 @@ packages:
 
 snapshots:
 
-  '@antv/g-device-api@1.6.13':
+  '@antv/g-device-api@1.6.13(patch_hash=184d5959009e74ac96143f56fb9a8902b1f6278c675e9e47a020ffabf39bad4a)':
     dependencies:
       '@antv/util': 3.3.11
       '@webgpu/types': 0.1.71
@@ -1487,6 +1700,21 @@ snapshots:
       '@eslint/core': 0.17.0
       levn: 0.4.1
 
+  '@excalidraw/laser-pointer@1.3.2': {}
+
+  '@floating-ui/core@1.8.0':
+    dependencies:
+      '@floating-ui/utils': 0.2.12
+
+  '@floating-ui/dom@1.7.4':
+    dependencies:
+      '@floating-ui/core': 1.8.0
+      '@floating-ui/utils': 0.2.10
+
+  '@floating-ui/utils@0.2.10': {}
+
+  '@floating-ui/utils@0.2.12': {}
+
   '@humanfs/core@0.19.1': {}
 
   '@humanfs/node@0.16.7':
@@ -1498,9 +1726,9 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@infinite-canvas-tutorial/ecs@0.0.9':
+  '@infinite-canvas-tutorial/ecs@0.0.9(patch_hash=e8e5e9d611845554f5ab10583ba7cc679e8fa4b5fb2e57d4eddc6ccbededaa92)':
     dependencies:
-      '@antv/g-device-api': 1.6.13
+      '@antv/g-device-api': 1.6.13(patch_hash=184d5959009e74ac96143f56fb9a8902b1f6278c675e9e47a020ffabf39bad4a)
       '@antv/util': 3.3.11
       '@lastolivegames/becsy': 0.16.0
       '@loaders.gl/core': 4.4.3
@@ -1529,6 +1757,57 @@ snapshots:
     transitivePeerDependencies:
       - '@75lb/nature'
 
+  '@infinite-canvas-tutorial/webcomponents@0.0.11':
+    dependencies:
+      '@antv/util': 3.3.11
+      '@excalidraw/laser-pointer': 1.3.2
+      '@infinite-canvas-tutorial/ecs': 0.0.9(patch_hash=e8e5e9d611845554f5ab10583ba7cc679e8fa4b5fb2e57d4eddc6ccbededaa92)
+      '@lit/context': 1.1.6
+      '@lit/localize': 0.12.2
+      '@lit/task': 1.0.3
+      '@loaders.gl/core': 4.4.3
+      '@loaders.gl/images': 4.4.3(@loaders.gl/core@4.4.3)
+      '@pixi/math': 7.4.3
+      '@spectrum-web-components/accordion': 1.12.2
+      '@spectrum-web-components/action-button': 1.12.2
+      '@spectrum-web-components/action-group': 1.12.2
+      '@spectrum-web-components/action-menu': 1.12.2
+      '@spectrum-web-components/alert-banner': 1.12.2
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/color-area': 1.12.2
+      '@spectrum-web-components/color-field': 1.12.2
+      '@spectrum-web-components/color-slider': 1.12.2
+      '@spectrum-web-components/color-wheel': 1.12.2
+      '@spectrum-web-components/divider': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-workflow': 1.12.2
+      '@spectrum-web-components/menu': 1.12.2
+      '@spectrum-web-components/number-field': 1.12.2
+      '@spectrum-web-components/overlay': 1.12.2
+      '@spectrum-web-components/picker': 1.12.2
+      '@spectrum-web-components/popover': 1.12.2
+      '@spectrum-web-components/progress-circle': 1.12.2
+      '@spectrum-web-components/slider': 1.12.2
+      '@spectrum-web-components/swatch': 1.12.2
+      '@spectrum-web-components/switch': 1.12.2
+      '@spectrum-web-components/textfield': 1.12.2
+      '@spectrum-web-components/theme': 1.12.2
+      '@spectrum-web-components/thumbnail': 1.12.2
+      '@spectrum-web-components/tooltip': 1.12.2
+      browser-fs-access: 0.38.0
+      d3-color: 3.1.0
+      eventemitter3: 5.0.4
+      kdbush: 4.1.0
+      lit: 3.3.3
+      roughjs: 4.6.6
+      uuid: 11.1.1
+    transitivePeerDependencies:
+      - '@75lb/nature'
+
+  '@internationalized/number@3.6.5':
+    dependencies:
+      '@swc/helpers': 0.5.17
+
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
@@ -1549,6 +1828,28 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.5
 
   '@lastolivegames/becsy@0.16.0': {}
+
+  '@lit-labs/observers@2.0.2':
+    dependencies:
+      '@lit/reactive-element': 2.1.2
+
+  '@lit-labs/ssr-dom-shim@1.6.0': {}
+
+  '@lit/context@1.1.6':
+    dependencies:
+      '@lit/reactive-element': 2.1.2
+
+  '@lit/localize@0.12.2':
+    dependencies:
+      lit: 3.3.3
+
+  '@lit/reactive-element@2.1.2':
+    dependencies:
+      '@lit-labs/ssr-dom-shim': 1.6.0
+
+  '@lit/task@1.0.3':
+    dependencies:
+      '@lit/reactive-element': 2.1.2
 
   '@loaders.gl/core@4.4.3':
     dependencies:
@@ -1716,6 +2017,321 @@ snapshots:
       html-entities: 2.6.0
       react-refresh: 0.18.0
 
+  '@spectrum-web-components/accordion@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-ui': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/action-button@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/button': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-ui': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/action-group@1.12.2':
+    dependencies:
+      '@lit-labs/observers': 2.0.2
+      '@spectrum-web-components/action-button': 1.12.2
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/icons-workflow': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+
+  '@spectrum-web-components/action-menu@1.12.2':
+    dependencies:
+      '@spectrum-web-components/action-button': 1.12.2
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/field-label': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-workflow': 1.12.2
+      '@spectrum-web-components/menu': 1.12.2
+      '@spectrum-web-components/overlay': 1.12.2
+      '@spectrum-web-components/picker': 1.12.2
+      '@spectrum-web-components/popover': 1.12.2
+      '@spectrum-web-components/progress-circle': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+      '@spectrum-web-components/tooltip': 1.12.2
+      '@spectrum-web-components/tray': 1.12.2
+
+  '@spectrum-web-components/alert-banner@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/button': 1.12.2
+      '@spectrum-web-components/icons-workflow': 1.12.2
+
+  '@spectrum-web-components/base@1.12.2':
+    dependencies:
+      lit: 3.3.3
+
+  '@spectrum-web-components/button@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/clear-button': 1.12.2
+      '@spectrum-web-components/close-button': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-ui': 1.12.2
+      '@spectrum-web-components/progress-circle': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/checkbox@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-ui': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/clear-button@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+
+  '@spectrum-web-components/close-button@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+
+  '@spectrum-web-components/color-area@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/color-handle': 1.12.2
+      '@spectrum-web-components/opacity-checkerboard': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/color-field@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/color-handle': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/textfield': 1.12.2
+
+  '@spectrum-web-components/color-handle@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/color-loupe': 1.12.2
+      '@spectrum-web-components/opacity-checkerboard': 1.12.2
+
+  '@spectrum-web-components/color-loupe@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/opacity-checkerboard': 1.12.2
+
+  '@spectrum-web-components/color-slider@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/color-handle': 1.12.2
+      '@spectrum-web-components/opacity-checkerboard': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/color-wheel@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/color-handle': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/divider@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+
+  '@spectrum-web-components/field-label@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-ui': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/help-text@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/icons-workflow': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/icon@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/iconset': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+
+  '@spectrum-web-components/icons-ui@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/iconset': 1.12.2
+
+  '@spectrum-web-components/icons-workflow@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+
+  '@spectrum-web-components/iconset@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+
+  '@spectrum-web-components/infield-button@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/button': 1.12.2
+
+  '@spectrum-web-components/menu@1.12.2':
+    dependencies:
+      '@lit-labs/observers': 2.0.2
+      '@spectrum-web-components/action-button': 1.12.2
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/divider': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-ui': 1.12.2
+      '@spectrum-web-components/overlay': 1.12.2
+      '@spectrum-web-components/popover': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/modal@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+
+  '@spectrum-web-components/number-field@1.12.2':
+    dependencies:
+      '@internationalized/number': 3.6.5
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-ui': 1.12.2
+      '@spectrum-web-components/infield-button': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+      '@spectrum-web-components/textfield': 1.12.2
+
+  '@spectrum-web-components/opacity-checkerboard@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+
+  '@spectrum-web-components/overlay@1.12.2':
+    dependencies:
+      '@floating-ui/dom': 1.7.4
+      '@floating-ui/utils': 0.2.10
+      '@spectrum-web-components/action-button': 1.12.2
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+      '@spectrum-web-components/theme': 1.12.2
+      focus-trap: 7.6.5
+
+  '@spectrum-web-components/picker@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/button': 1.12.2
+      '@spectrum-web-components/field-label': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-ui': 1.12.2
+      '@spectrum-web-components/icons-workflow': 1.12.2
+      '@spectrum-web-components/menu': 1.12.2
+      '@spectrum-web-components/overlay': 1.12.2
+      '@spectrum-web-components/popover': 1.12.2
+      '@spectrum-web-components/progress-circle': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+      '@spectrum-web-components/tooltip': 1.12.2
+      '@spectrum-web-components/tray': 1.12.2
+
+  '@spectrum-web-components/popover@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/overlay': 1.12.2
+
+  '@spectrum-web-components/progress-circle@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/reactive-controllers@1.12.2':
+    dependencies:
+      '@spectrum-web-components/progress-circle': 1.12.2
+      colorjs.io: 0.5.2
+      lit: 3.3.3
+
+  '@spectrum-web-components/shared@1.12.2':
+    dependencies:
+      '@lit-labs/observers': 2.0.2
+      '@spectrum-web-components/base': 1.12.2
+      focus-visible: 5.2.1
+
+  '@spectrum-web-components/slider@1.12.2':
+    dependencies:
+      '@internationalized/number': 3.6.5
+      '@lit-labs/observers': 2.0.2
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/field-label': 1.12.2
+      '@spectrum-web-components/number-field': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+      '@spectrum-web-components/theme': 1.12.2
+
+  '@spectrum-web-components/styles@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      lit: 3.3.3
+
+  '@spectrum-web-components/swatch@1.12.2':
+    dependencies:
+      '@lit-labs/observers': 2.0.2
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-ui': 1.12.2
+      '@spectrum-web-components/opacity-checkerboard': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/switch@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/checkbox': 1.12.2
+
+  '@spectrum-web-components/textfield@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/help-text': 1.12.2
+      '@spectrum-web-components/icon': 1.12.2
+      '@spectrum-web-components/icons-ui': 1.12.2
+      '@spectrum-web-components/icons-workflow': 1.12.2
+      '@spectrum-web-components/overlay': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+      '@spectrum-web-components/tooltip': 1.12.2
+
+  '@spectrum-web-components/theme@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/styles': 1.12.2
+
+  '@spectrum-web-components/thumbnail@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/opacity-checkerboard': 1.12.2
+
+  '@spectrum-web-components/tooltip@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/overlay': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+
+  '@spectrum-web-components/tray@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+      '@spectrum-web-components/modal': 1.12.2
+      '@spectrum-web-components/reactive-controllers': 1.12.2
+      '@spectrum-web-components/shared': 1.12.2
+      '@spectrum-web-components/underlay': 1.12.2
+
+  '@spectrum-web-components/underlay@1.12.2':
+    dependencies:
+      '@spectrum-web-components/base': 1.12.2
+
   '@swc/helpers@0.5.17':
     dependencies:
       tslib: 2.8.1
@@ -1749,6 +2365,8 @@ snapshots:
     dependencies:
       '@types/prop-types': 15.7.15
       csstype: 3.2.3
+
+  '@types/trusted-types@2.0.7': {}
 
   '@typescript-eslint/eslint-plugin@8.48.1(@typescript-eslint/parser@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
@@ -1921,6 +2539,8 @@ snapshots:
     dependencies:
       balanced-match: 1.0.2
 
+  browser-fs-access@0.38.0: {}
+
   browserslist@4.28.1:
     dependencies:
       baseline-browser-mapping: 2.9.2
@@ -1987,6 +2607,8 @@ snapshots:
       color-name: 1.1.4
 
   color-name@1.1.4: {}
+
+  colorjs.io@0.5.2: {}
 
   command-line-args@6.0.2:
     dependencies:
@@ -2196,6 +2818,12 @@ snapshots:
 
   flatted@3.3.3: {}
 
+  focus-trap@7.6.5:
+    dependencies:
+      tabbable: 6.5.0
+
+  focus-visible@5.2.1: {}
+
   fractional-indexing@3.4.0: {}
 
   framer-motion@12.29.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
@@ -2285,6 +2913,8 @@ snapshots:
 
   json5@2.2.3: {}
 
+  kdbush@4.1.0: {}
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -2300,6 +2930,22 @@ snapshots:
       type-check: 0.4.0
 
   libtess@1.2.2: {}
+
+  lit-element@4.2.2:
+    dependencies:
+      '@lit-labs/ssr-dom-shim': 1.6.0
+      '@lit/reactive-element': 2.1.2
+      lit-html: 3.3.3
+
+  lit-html@3.3.3:
+    dependencies:
+      '@types/trusted-types': 2.0.7
+
+  lit@3.3.3:
+    dependencies:
+      '@lit/reactive-element': 2.1.2
+      lit-element: 4.2.2
+      lit-html: 3.3.3
 
   locate-path@6.0.0:
     dependencies:
@@ -2488,6 +3134,8 @@ snapshots:
   supports-color@7.2.0:
     dependencies:
       has-flag: 4.0.0
+
+  tabbable@6.5.0: {}
 
   table-layout@4.1.1:
     dependencies:

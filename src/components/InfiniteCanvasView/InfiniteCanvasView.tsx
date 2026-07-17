@@ -1,30 +1,33 @@
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type PointerEvent as ReactPointerEvent,
-  type ReactNode,
-} from 'react';
-import {
-  BrowserAdapter,
-  DOMAdapter,
+  App,
+  CheckboardStyle,
+  DefaultPlugins,
   Pen,
 } from '@infinite-canvas-tutorial/ecs';
+import {
+  Event,
+  UIPlugin,
+  type ExtendedAPI,
+} from '@infinite-canvas-tutorial/webcomponents';
+import '@infinite-canvas-tutorial/webcomponents/spectrum';
 import { LocateFixed, Minus, Pencil, Plus } from 'lucide-react';
 import './InfiniteCanvasView.css';
 
-DOMAdapter.set(BrowserAdapter);
+declare global {
+  var __indexPageInfiniteCanvasApp__: Promise<App> | undefined;
+}
 
 const MIN_ZOOM = 0.35;
 const MAX_ZOOM = 2.2;
 const ZOOM_STEP = 1.12;
 
-const isInteractiveTarget = (target: EventTarget | null) =>
-  target instanceof Element &&
-  Boolean(
-    target.closest('.infinite-canvas-item, .infinite-canvas-controls'),
-  );
+const startInfiniteCanvasApp = () => {
+  globalThis.__indexPageInfiniteCanvasApp__ ??= new App()
+    .addPlugins(...DefaultPlugins, UIPlugin)
+    .run();
+  return globalThis.__indexPageInfiniteCanvasApp__;
+};
 
 export interface InfiniteCanvasItem {
   id: string;
@@ -39,162 +42,119 @@ interface InfiniteCanvasViewProps {
   items: InfiniteCanvasItem[];
 }
 
-interface PencilStroke {
-  id: number;
-  points: { x: number; y: number }[];
+interface CameraState {
+  x: number;
+  y: number;
+  zoom: number;
 }
 
 export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
-  const shellRef = useRef<HTMLDivElement>(null);
-  const [camera, setCamera] = useState({ x: -80, y: -64, zoom: 0.9 });
+  const canvasRef = useRef<HTMLElementTagNameMap['ic-spectrum-canvas']>(null);
+  const apiRef = useRef<ExtendedAPI | null>(null);
+  const initialCamera = useMemo<CameraState>(
+    () => ({ x: -80, y: -64, zoom: window.innerWidth < 768 ? 0.72 : 0.9 }),
+    [],
+  );
+  const [camera, setCamera] = useState(initialCamera);
   const [selectedPen, setSelectedPen] = useState<Pen>(Pen.HAND);
-  const [pencilStrokes, setPencilStrokes] = useState<PencilStroke[]>([]);
-  const drawingRef = useRef<number | null>(null);
-  const dragRef = useRef<{
-    pointerId: number;
-    startX: number;
-    startY: number;
-    cameraX: number;
-    cameraY: number;
-  } | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
-  const getInitialCamera = () => ({
-    x: -80,
-    y: -64,
-    zoom: window.innerWidth < 768 ? 0.72 : 0.9,
-  });
+  const initialAppState = useMemo(
+    () =>
+      JSON.stringify({
+        cameraX: initialCamera.x,
+        cameraY: initialCamera.y,
+        cameraZoom: initialCamera.zoom,
+        cameraZoomFactor: 0.08,
+        checkboardStyle: CheckboardStyle.DOTS,
+        contextBarVisible: false,
+        contextMenuVisible: false,
+        penbarVisible: false,
+        penbarSelected: Pen.HAND,
+        taskbarVisible: false,
+        topbarVisible: false,
+      }),
+    [initialCamera],
+  );
+
+  const updateCamera = (next: CameraState) => {
+    apiRef.current?.setAppState({
+      cameraX: next.x,
+      cameraY: next.y,
+      cameraZoom: next.zoom,
+    });
+  };
 
   const zoomAtCenter = (factor: number) => {
-    const shell = shellRef.current;
-    if (!shell) return;
-    const centerX = shell.clientWidth / 2;
-    const centerY = shell.clientHeight / 2;
-    setCamera((current) => {
-      const zoom = Math.min(
-        MAX_ZOOM,
-        Math.max(MIN_ZOOM, current.zoom * factor),
-      );
-      const canvasX = centerX / current.zoom + current.x;
-      const canvasY = centerY / current.zoom + current.y;
-      return {
-        x: canvasX - centerX / zoom,
-        y: canvasY - centerY / zoom,
-        zoom,
-      };
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const centerX = canvas.clientWidth / 2;
+    const centerY = canvas.clientHeight / 2;
+    const zoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, camera.zoom * factor));
+    const canvasX = centerX / camera.zoom + camera.x;
+    const canvasY = centerY / camera.zoom + camera.y;
+    updateCamera({
+      x: canvasX - centerX / zoom,
+      y: canvasY - centerY / zoom,
+      zoom,
     });
-  };
-
-  const handleWheel = useCallback((event: WheelEvent) => {
-    if (isInteractiveTarget(event.target)) return;
-    const shell = shellRef.current;
-    if (!shell) return;
-    event.preventDefault();
-    const bounds = shell.getBoundingClientRect();
-    const pointerX = event.clientX - bounds.left;
-    const pointerY = event.clientY - bounds.top;
-    setCamera((current) => {
-      const zoom = Math.min(
-        MAX_ZOOM,
-        Math.max(
-          MIN_ZOOM,
-          current.zoom * (event.deltaY > 0 ? 0.92 : 1.08),
-        ),
-      );
-      const canvasX = pointerX / current.zoom + current.x;
-      const canvasY = pointerY / current.zoom + current.y;
-      return {
-        x: canvasX - pointerX / zoom,
-        y: canvasY - pointerY / zoom,
-        zoom,
-      };
-    });
-  }, []);
-
-  const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.button !== 0 || isInteractiveTarget(event.target)) return;
-    event.currentTarget.setPointerCapture(event.pointerId);
-
-    if (selectedPen === Pen.PENCIL) {
-      const bounds = event.currentTarget.getBoundingClientRect();
-      const id = Date.now();
-      const point = {
-        x: (event.clientX - bounds.left) / camera.zoom + camera.x,
-        y: (event.clientY - bounds.top) / camera.zoom + camera.y,
-      };
-      drawingRef.current = id;
-      setPencilStrokes((strokes) => [...strokes, { id, points: [point] }]);
-      return;
-    }
-
-    dragRef.current = {
-      pointerId: event.pointerId,
-      startX: event.clientX,
-      startY: event.clientY,
-      cameraX: camera.x,
-      cameraY: camera.y,
-    };
-  };
-
-  const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (drawingRef.current !== null) {
-      const bounds = event.currentTarget.getBoundingClientRect();
-      const point = {
-        x: (event.clientX - bounds.left) / camera.zoom + camera.x,
-        y: (event.clientY - bounds.top) / camera.zoom + camera.y,
-      };
-      const drawingId = drawingRef.current;
-      setPencilStrokes((strokes) =>
-        strokes.map((stroke) =>
-          stroke.id === drawingId
-            ? { ...stroke, points: [...stroke.points, point] }
-            : stroke,
-        ),
-      );
-      return;
-    }
-
-    const drag = dragRef.current;
-    if (!drag || drag.pointerId !== event.pointerId) return;
-    setCamera((current) => ({
-      ...current,
-      x: drag.cameraX - (event.clientX - drag.startX) / current.zoom,
-      y: drag.cameraY - (event.clientY - drag.startY) / current.zoom,
-    }));
-  };
-
-  const handlePointerEnd = (event: ReactPointerEvent<HTMLDivElement>) => {
-    drawingRef.current = null;
-    if (dragRef.current?.pointerId === event.pointerId) dragRef.current = null;
   };
 
   useEffect(() => {
-    const environment = DOMAdapter.get();
-    const shell = shellRef.current;
-    const frame = environment.requestAnimationFrame(() => {
-      const initialZoom = environment.getWindow().innerWidth < 768 ? 0.72 : 0.9;
-      setCamera({ x: -80, y: -64, zoom: initialZoom });
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const handleReady = (event: HTMLElementEventMap[typeof Event.READY]) => {
+      apiRef.current = event.detail;
+      setIsReady(true);
+      setCamera({ ...initialCamera });
+    };
+    const handlePosition = (
+      event: HTMLElementEventMap[typeof Event.CAMERA_POSITION_CHANGED],
+    ) => setCamera((current) => ({ ...current, ...event.detail }));
+    const handleZoom = (
+      event: HTMLElementEventMap[typeof Event.CAMERA_ZOOM_CHANGED],
+    ) => setCamera((current) => ({ ...current, zoom: event.detail.zoom }));
+    const handlePencilDrawn = () => setSelectedPen(Pen.SELECT);
+
+    canvas.addEventListener(Event.READY, handleReady);
+    canvas.addEventListener(Event.CAMERA_POSITION_CHANGED, handlePosition);
+    canvas.addEventListener(Event.CAMERA_ZOOM_CHANGED, handleZoom);
+    canvas.addEventListener(Event.PENCIL_DRAWN, handlePencilDrawn);
+    void startInfiniteCanvasApp().catch((error: unknown) => {
+      console.error('Failed to start the WebGL infinite canvas.', error);
     });
-    shell?.addEventListener('wheel', handleWheel, { passive: false });
 
     return () => {
-      environment.cancelAnimationFrame(frame);
-      shell?.removeEventListener('wheel', handleWheel);
+      apiRef.current = null;
+      setIsReady(false);
+      canvas.removeEventListener(Event.READY, handleReady);
+      canvas.removeEventListener(Event.CAMERA_POSITION_CHANGED, handlePosition);
+      canvas.removeEventListener(Event.CAMERA_ZOOM_CHANGED, handleZoom);
+      canvas.removeEventListener(Event.PENCIL_DRAWN, handlePencilDrawn);
     };
-  }, [handleWheel]);
+  }, [initialCamera]);
+
+  const togglePencil = () => {
+    const pen = selectedPen === Pen.PENCIL ? Pen.HAND : Pen.PENCIL;
+    apiRef.current?.setAppState({ penbarSelected: pen });
+    setSelectedPen(pen);
+  };
 
   return (
-    <div
-      ref={shellRef}
-      className={`infinite-canvas-shell${selectedPen === Pen.PENCIL ? ' is-drawing' : ''}`}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerEnd}
-      onPointerCancel={handlePointerEnd}
-    >
-      <div
+    <div className="infinite-canvas-shell">
+      <ic-spectrum-canvas
+        ref={canvasRef}
         className="infinite-canvas-surface"
-        role="application"
-        aria-label="无限画布，可拖拽平移并使用滚轮缩放"
+        renderer="webgl"
+        app-state={initialAppState}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+        }}
+        aria-label="WebGL 无限画布，可拖拽平移并使用滚轮缩放"
       />
       <div
         className="infinite-canvas-items"
@@ -202,18 +162,6 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
           transform: `scale(${camera.zoom}) translate(${-camera.x}px, ${-camera.y}px)`,
         }}
       >
-        <svg
-          className="infinite-canvas-drawings"
-          viewBox="-5000 -5000 10000 10000"
-          aria-label="画布笔迹"
-        >
-          {pencilStrokes.map((stroke) => (
-            <polyline
-              key={stroke.id}
-              points={stroke.points.map(({ x, y }) => `${x},${y}`).join(' ')}
-            />
-          ))}
-        </svg>
         {items.map((item) => (
           <div
             className="infinite-canvas-item"
@@ -230,13 +178,13 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
         ))}
       </div>
       <div className="infinite-canvas-help" aria-hidden="true">
-        拖拽移动 · 滚轮缩放
+        {selectedPen === Pen.PENCIL ? '拖拽绘制 · 点击画笔退出' : '拖拽移动 · 滚轮缩放'}
       </div>
-      <div className="infinite-canvas-controls" aria-label="画布缩放控制">
+      <div className="infinite-canvas-controls" aria-label="画布控制">
         <button
           type="button"
           onClick={() => zoomAtCenter(1 / ZOOM_STEP)}
-          disabled={camera.zoom <= MIN_ZOOM}
+          disabled={!isReady || camera.zoom <= MIN_ZOOM}
           title="缩小画布"
           aria-label="缩小画布"
         >
@@ -253,7 +201,7 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
         <button
           type="button"
           onClick={() => zoomAtCenter(ZOOM_STEP)}
-          disabled={camera.zoom >= MAX_ZOOM}
+          disabled={!isReady || camera.zoom >= MAX_ZOOM}
           title="放大画布"
           aria-label="放大画布"
         >
@@ -261,7 +209,8 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
         </button>
         <button
           type="button"
-          onClick={() => setCamera(getInitialCamera())}
+          onClick={() => updateCamera(initialCamera)}
+          disabled={!isReady}
           title="重置画布"
           aria-label="重置画布"
         >
@@ -270,11 +219,8 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
         <button
           type="button"
           className={selectedPen === Pen.PENCIL ? 'is-active' : undefined}
-          onClick={() =>
-            setSelectedPen((pen) =>
-              pen === Pen.PENCIL ? Pen.HAND : Pen.PENCIL,
-            )
-          }
+          onClick={togglePencil}
+          disabled={!isReady}
           title={selectedPen === Pen.PENCIL ? '退出画笔' : '画笔'}
           aria-label={selectedPen === Pen.PENCIL ? '退出画笔' : '画笔'}
           aria-pressed={selectedPen === Pen.PENCIL}

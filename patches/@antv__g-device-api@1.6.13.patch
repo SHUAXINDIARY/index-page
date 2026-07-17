@@ -1,0 +1,32 @@
+diff --git a/es/index.js b/es/index.js
+--- a/es/index.js
++++ b/es/index.js
+@@ -5337,8 +5337,10 @@
+                 var colorResolveTo = this.currentColorResolveTos[i];
+                 var didBindRead = false;
+                 if (colorResolveTo !== null) {
+-                    assert(colorResolveFrom.width === colorResolveTo.width &&
+-                        colorResolveFrom.height === colorResolveTo.height);
++                    if (!skipBlit) {
++                        assert(colorResolveFrom.width === colorResolveTo.width &&
++                            colorResolveFrom.height === colorResolveTo.height);
++                    }
+                     // assert(colorResolveFrom.format === colorResolveTo.format);
+                     this.setScissorRectEnabled(false);
+                     if (!skipBlit) {
+diff --git a/lib/index.js b/lib/index.js
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -5339,8 +5339,10 @@
+                 var colorResolveTo = this.currentColorResolveTos[i];
+                 var didBindRead = false;
+                 if (colorResolveTo !== null) {
+-                    assert(colorResolveFrom.width === colorResolveTo.width &&
+-                        colorResolveFrom.height === colorResolveTo.height);
++                    if (!skipBlit) {
++                        assert(colorResolveFrom.width === colorResolveTo.width &&
++                            colorResolveFrom.height === colorResolveTo.height);
++                    }
+                     // assert(colorResolveFrom.format === colorResolveTo.format);
+                     this.setScissorRectEnabled(false);
+                     if (!skipBlit) {

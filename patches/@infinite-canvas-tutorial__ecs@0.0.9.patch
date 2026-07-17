@@ -1,0 +1,42 @@
+diff --git a/esm/systems/DrawPencil.js b/esm/systems/DrawPencil.js
+--- a/esm/systems/DrawPencil.js
++++ b/esm/systems/DrawPencil.js
+@@ -77,13 +77,13 @@
+             }
+             if (input.pointerUpTrigger) {
+                 const { brush } = this.selections.get(camera.__id);
++                // Just click on the canvas, do nothing
++                if (!brush || ((_a = brush.points) === null || _a === void 0 ? void 0 : _a.length) === 0) {
++                    return;
++                }
+                 if (isBrowser &&
+                     brush.visibility === 'hidden') {
+                     return;
+                 }
+-                // Just click on the canvas, do nothing
+-                if (!brush || ((_a = brush.points) === null || _a === void 0 ? void 0 : _a.length) === 0) {
+-                    return;
+-                }
+                 api.runAtNextTick(() => {
+                     api.updateNode(brush, { visibility: 'hidden' }, false);
+diff --git a/lib/systems/DrawPencil.js b/lib/systems/DrawPencil.js
+--- a/lib/systems/DrawPencil.js
++++ b/lib/systems/DrawPencil.js
+@@ -83,13 +83,13 @@
+             }
+             if (input.pointerUpTrigger) {
+                 const { brush } = this.selections.get(camera.__id);
++                // Just click on the canvas, do nothing
++                if (!brush || ((_a = brush.points) === null || _a === void 0 ? void 0 : _a.length) === 0) {
++                    return;
++                }
+                 if (utils_1.isBrowser &&
+                     brush.visibility === 'hidden') {
+                     return;
+                 }
+-                // Just click on the canvas, do nothing
+-                if (!brush || ((_a = brush.points) === null || _a === void 0 ? void 0 : _a.length) === 0) {
+-                    return;
+-                }
+                 api.runAtNextTick(() => {
+                     api.updateNode(brush, { visibility: 'hidden' }, false);

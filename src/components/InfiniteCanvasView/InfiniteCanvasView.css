@@ -10,23 +10,15 @@
   z-index: 1;
   overflow: hidden;
   background-color: var(--color-bg);
-  background-image: radial-gradient(
-    circle,
-    var(--color-primary-alpha-020) 1px,
-    transparent 1px
-  );
-  background-position: center;
-  background-size: 20px 20px;
   touch-action: none;
-}
-
-.infinite-canvas-shell.is-drawing {
-  cursor: crosshair;
 }
 
 .infinite-canvas-surface {
   display: block;
-  pointer-events: none;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .infinite-canvas-items {
@@ -45,24 +37,6 @@
   position: absolute;
   display: flex;
   pointer-events: auto;
-}
-
-.infinite-canvas-drawings {
-  position: absolute;
-  top: -5000px;
-  left: -5000px;
-  width: 10000px;
-  height: 10000px;
-  overflow: visible;
-  pointer-events: none;
-}
-
-.infinite-canvas-drawings polyline {
-  fill: none;
-  stroke: var(--color-accent);
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
 .infinite-canvas-item > * {
