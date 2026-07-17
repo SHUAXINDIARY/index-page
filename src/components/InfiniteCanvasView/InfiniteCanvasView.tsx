@@ -14,11 +14,13 @@ import {
 import '@infinite-canvas-tutorial/webcomponents/spectrum';
 import {
   ArrowUpRight,
+  Bold,
   Circle,
   CircleDashed,
   Eraser,
   Hand,
   Image,
+  Italic,
   LocateFixed,
   Minus,
   MousePointer2,
@@ -40,6 +42,30 @@ declare global {
 const MIN_ZOOM = 0.35;
 const MAX_ZOOM = 2.2;
 const ZOOM_STEP = 1.12;
+
+const toColorInputValue = (value: unknown, fallback: string) => {
+  if (typeof value !== 'string') return fallback;
+  if (/^#[\da-f]{6}$/i.test(value)) return value;
+  const shorthand = value.match(/^#([\da-f])([\da-f])([\da-f])$/i);
+  return shorthand
+    ? `#${shorthand[1]}${shorthand[1]}${shorthand[2]}${shorthand[2]}${shorthand[3]}${shorthand[3]}`
+    : fallback;
+};
+
+interface TextPenSettings {
+  fontFamily: string;
+  fontSize: number;
+  fontStyle: 'normal' | 'italic';
+  fontWeight: number;
+  fill: string;
+}
+
+interface PencilPenSettings {
+  stroke: string;
+  strokeWidth: number;
+  strokeOpacity: number;
+  freehand: boolean;
+}
 
 interface PenOption {
   pen: Pen;
@@ -102,6 +128,19 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
   const [camera, setCamera] = useState(initialCamera);
   const [selectedPen, setSelectedPen] = useState<Pen>(Pen.HAND);
   const [isReady, setIsReady] = useState(false);
+  const [textSettings, setTextSettings] = useState<TextPenSettings>({
+    fontFamily: 'system-ui',
+    fontSize: 16,
+    fontStyle: 'normal',
+    fontWeight: 400,
+    fill: '#000000',
+  });
+  const [pencilSettings, setPencilSettings] = useState<PencilPenSettings>({
+    stroke: '#000000',
+    strokeWidth: 1,
+    strokeOpacity: 1,
+    freehand: false,
+  });
   const canvasThemeMode =
     mode === 'dark' ? CanvasThemeMode.DARK : CanvasThemeMode.LIGHT;
 
@@ -153,6 +192,27 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
 
     const handleReady = (event: HTMLElementEventMap[typeof Event.READY]) => {
       apiRef.current = event.detail;
+      const appState = event.detail.getAppState();
+      setTextSettings((current) => ({
+        fontFamily: appState.penbarText.fontFamily ?? current.fontFamily,
+        fontSize: Number(appState.penbarText.fontSize ?? current.fontSize),
+        fontStyle:
+          appState.penbarText.fontStyle === 'italic' ? 'italic' : 'normal',
+        fontWeight: Number(
+          appState.penbarText.fontWeight ?? current.fontWeight,
+        ),
+        fill: toColorInputValue(appState.penbarText.fill, current.fill),
+      }));
+      setPencilSettings((current) => ({
+        stroke: toColorInputValue(appState.penbarPencil.stroke, current.stroke),
+        strokeWidth: Number(
+          appState.penbarPencil.strokeWidth ?? current.strokeWidth,
+        ),
+        strokeOpacity: Number(
+          appState.penbarPencil.strokeOpacity ?? current.strokeOpacity,
+        ),
+        freehand: appState.penbarPencil.freehand ?? current.freehand,
+      }));
       setIsReady(true);
       setCamera({ ...initialCamera });
     };
@@ -204,7 +264,12 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
     if (!shell) return;
 
     const handleWheel = (event: WheelEvent) => {
-      if ((event.target as Element).closest('.infinite-canvas-toolbar')) return;
+      if (
+        (event.target as Element).closest(
+          '.infinite-canvas-toolbar, .infinite-canvas-style-controls',
+        )
+      )
+        return;
 
       const api = apiRef.current;
       if (!api || event.deltaY === 0) return;
@@ -255,6 +320,24 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
     if (pen === Pen.IMAGE) {
       imageInputRef.current?.click();
     }
+  };
+
+  const updateTextSettings = (patch: Partial<TextPenSettings>) => {
+    setTextSettings((current) => ({ ...current, ...patch }));
+    const api = apiRef.current;
+    if (!api) return;
+    api.setAppState({
+      penbarText: { ...api.getAppState().penbarText, ...patch },
+    });
+  };
+
+  const updatePencilSettings = (patch: Partial<PencilPenSettings>) => {
+    setPencilSettings((current) => ({ ...current, ...patch }));
+    const api = apiRef.current;
+    if (!api) return;
+    api.setAppState({
+      penbarPencil: { ...api.getAppState().penbarPencil, ...patch },
+    });
   };
 
   const insertImage = async (file: File) => {
@@ -334,6 +417,141 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
           ? '拖拽移动 · 滚轮缩放'
           : `当前工具：${selectedPenLabel}`}
       </div>
+      {selectedPen === Pen.TEXT && (
+        <div className="infinite-canvas-style-controls" aria-label="文本样式">
+          <label className="infinite-canvas-select-control">
+            <span>字体</span>
+            <select
+              value={textSettings.fontFamily}
+              onChange={(event) =>
+                updateTextSettings({ fontFamily: event.target.value })
+              }
+              aria-label="字体"
+            >
+              <option value="system-ui">系统</option>
+              <option value="serif">衬线</option>
+              <option value="monospace">等宽</option>
+            </select>
+          </label>
+          <label className="infinite-canvas-range-control">
+            <span>字号</span>
+            <input
+              type="range"
+              min="8"
+              max="96"
+              step="1"
+              value={textSettings.fontSize}
+              onChange={(event) =>
+                updateTextSettings({ fontSize: Number(event.target.value) })
+              }
+            />
+            <output>{textSettings.fontSize}</output>
+          </label>
+          <div className="infinite-canvas-style-toggles">
+            <button
+              type="button"
+              className={
+                textSettings.fontWeight >= 700 ? 'is-active' : undefined
+              }
+              onClick={() =>
+                updateTextSettings({
+                  fontWeight: textSettings.fontWeight >= 700 ? 400 : 700,
+                })
+              }
+              title="粗体"
+              aria-label="粗体"
+              aria-pressed={textSettings.fontWeight >= 700}
+            >
+              <Bold size={14} />
+            </button>
+            <button
+              type="button"
+              className={
+                textSettings.fontStyle === 'italic' ? 'is-active' : undefined
+              }
+              onClick={() =>
+                updateTextSettings({
+                  fontStyle:
+                    textSettings.fontStyle === 'italic' ? 'normal' : 'italic',
+                })
+              }
+              title="斜体"
+              aria-label="斜体"
+              aria-pressed={textSettings.fontStyle === 'italic'}
+            >
+              <Italic size={14} />
+            </button>
+          </div>
+          <label className="infinite-canvas-color-control" title="文本颜色">
+            <span>颜色</span>
+            <input
+              type="color"
+              value={textSettings.fill}
+              onChange={(event) =>
+                updateTextSettings({ fill: event.target.value })
+              }
+              aria-label="文本颜色"
+            />
+          </label>
+        </div>
+      )}
+      {selectedPen === Pen.PENCIL && (
+        <div className="infinite-canvas-style-controls" aria-label="画笔样式">
+          <label className="infinite-canvas-color-control" title="画笔颜色">
+            <span>颜色</span>
+            <input
+              type="color"
+              value={pencilSettings.stroke}
+              onChange={(event) =>
+                updatePencilSettings({ stroke: event.target.value })
+              }
+              aria-label="画笔颜色"
+            />
+          </label>
+          <label className="infinite-canvas-range-control">
+            <span>粗细</span>
+            <input
+              type="range"
+              min="1"
+              max="48"
+              step="1"
+              value={pencilSettings.strokeWidth}
+              onChange={(event) =>
+                updatePencilSettings({
+                  strokeWidth: Number(event.target.value),
+                })
+              }
+            />
+            <output>{pencilSettings.strokeWidth}px</output>
+          </label>
+          <label className="infinite-canvas-range-control">
+            <span>透明度</span>
+            <input
+              type="range"
+              min="0.1"
+              max="1"
+              step="0.1"
+              value={pencilSettings.strokeOpacity}
+              onChange={(event) =>
+                updatePencilSettings({
+                  strokeOpacity: Number(event.target.value),
+                })
+              }
+            />
+            <output>{Math.round(pencilSettings.strokeOpacity * 100)}%</output>
+          </label>
+          <label className="infinite-canvas-switch-control">
+            <input
+              type="checkbox"
+              checked={pencilSettings.freehand}
+              onChange={(event) =>
+                updatePencilSettings({ freehand: event.target.checked })
+              }
+            />
+            <span>自由笔触</span>
+          </label>
+        </div>
+      )}
       <div className="infinite-canvas-toolbar" aria-label="画布控制">
         <div className="infinite-canvas-view-controls" aria-label="视图控制">
           <button

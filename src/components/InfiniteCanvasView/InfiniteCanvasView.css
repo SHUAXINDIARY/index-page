@@ -149,6 +149,115 @@
   font-variant-numeric: tabular-nums;
 }
 
+.infinite-canvas-style-controls {
+  position: fixed;
+  right: 176px;
+  bottom: 66px;
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  max-width: calc(100vw - 196px);
+  min-height: 40px;
+  overflow-x: auto;
+  padding: 4px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-card);
+  box-shadow: var(--shadow-glass);
+  color: var(--color-primary);
+  font-size: 11px;
+  backdrop-filter: blur(12px);
+  scrollbar-width: none;
+}
+
+.infinite-canvas-style-controls::-webkit-scrollbar {
+  display: none;
+}
+
+.infinite-canvas-style-controls label,
+.infinite-canvas-style-toggles {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 8px;
+  border-right: 1px solid var(--color-primary-alpha-010);
+}
+
+.infinite-canvas-style-controls label:first-child {
+  padding-left: 2px;
+}
+
+.infinite-canvas-style-controls label:last-child,
+.infinite-canvas-style-toggles:last-child {
+  border-right: 0;
+}
+
+.infinite-canvas-style-controls select {
+  height: 26px;
+  padding: 0 24px 0 8px;
+  border: 1px solid var(--color-primary-alpha-020);
+  border-radius: 4px;
+  background: var(--color-card-solid);
+  color: var(--color-primary);
+  font: inherit;
+}
+
+.infinite-canvas-range-control input[type='range'] {
+  width: 90px;
+  accent-color: var(--color-primary);
+}
+
+.infinite-canvas-range-control output {
+  min-width: 34px;
+  color: var(--color-secondary);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.infinite-canvas-style-toggles {
+  gap: 2px;
+}
+
+.infinite-canvas-style-toggles button {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.infinite-canvas-style-toggles button:hover,
+.infinite-canvas-style-toggles button:focus-visible {
+  background: var(--color-card-hover);
+  outline: none;
+}
+
+.infinite-canvas-style-toggles button.is-active {
+  background: var(--color-primary);
+  color: var(--color-bg);
+}
+
+.infinite-canvas-color-control input[type='color'] {
+  width: 26px;
+  height: 26px;
+  padding: 2px;
+  border: 1px solid var(--color-primary-alpha-020);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.infinite-canvas-switch-control input {
+  accent-color: var(--color-primary);
+}
+
 @media (max-width: 767px) {
   .infinite-canvas-help {
     top: 12px;
@@ -159,6 +268,13 @@
     left: 12px;
     right: 12px;
     bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    max-width: none;
+  }
+
+  .infinite-canvas-style-controls {
+    right: 12px;
+    bottom: calc(118px + env(safe-area-inset-bottom, 0px));
+    left: 12px;
     max-width: none;
   }
 
