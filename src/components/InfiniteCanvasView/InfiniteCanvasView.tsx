@@ -4,6 +4,7 @@ import {
   CheckboardStyle,
   DefaultPlugins,
   Pen,
+  ThemeMode as CanvasThemeMode,
 } from '@infinite-canvas-tutorial/ecs';
 import {
   Event,
@@ -29,6 +30,7 @@ import {
   Type,
   type LucideIcon,
 } from 'lucide-react';
+import { useTheme } from '../../hooks/themeContext';
 import './InfiniteCanvasView.css';
 
 declare global {
@@ -88,6 +90,7 @@ interface CameraState {
 }
 
 export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
+  const { mode } = useTheme();
   const canvasRef = useRef<HTMLElementTagNameMap['ic-spectrum-canvas']>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const apiRef = useRef<ExtendedAPI | null>(null);
@@ -98,6 +101,8 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
   const [camera, setCamera] = useState(initialCamera);
   const [selectedPen, setSelectedPen] = useState<Pen>(Pen.HAND);
   const [isReady, setIsReady] = useState(false);
+  const canvasThemeMode =
+    mode === 'dark' ? CanvasThemeMode.DARK : CanvasThemeMode.LIGHT;
 
   const initialAppState = useMemo(
     () =>
@@ -109,12 +114,13 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
         checkboardStyle: CheckboardStyle.DOTS,
         contextBarVisible: false,
         contextMenuVisible: false,
+        themeMode: canvasThemeMode,
         penbarVisible: false,
         penbarSelected: Pen.HAND,
         taskbarVisible: false,
         topbarVisible: false,
       }),
-    [initialCamera],
+    [canvasThemeMode, initialCamera],
   );
 
   const updateCamera = (next: CameraState) => {
@@ -191,6 +197,11 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
     imageInput.addEventListener('cancel', handleCancel);
     return () => imageInput.removeEventListener('cancel', handleCancel);
   }, []);
+
+  useEffect(() => {
+    if (!isReady) return;
+    apiRef.current?.setAppState({ themeMode: canvasThemeMode });
+  }, [canvasThemeMode, isReady]);
 
   const selectPen = (pen: Pen) => {
     apiRef.current?.setAppState({ penbarSelected: pen });
