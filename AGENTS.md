@@ -1,24 +1,10 @@
-# AGENTS.md
+# 项目基础规则
 
-You are an expert in JavaScript, Rsbuild, and web application development. You write maintainable, performant, and accessible code.
+> 本项目的完整开发规范统一维护在 Cursor rules，`AGENTS.md` 仅作为入口引用，避免重复维护两份规则。
 
-## Commands
+## 规则来源
 
-- `pnpm run dev` - Start the dev server
-- `pnpm run build` - Build the app for production
-- `pnpm run preview` - Preview the production build locally
-
-## Docs
-
-- Rsbuild: https://rsbuild.rs/llms.txt
-- Rspack: https://rspack.rs/llms.txt
-
-## Tools
-
-### ESLint
-
-- Run `pnpm run lint` to lint your code
-
-### Prettier
-
-- Run `pnpm run format` to format your code
+- 开始任何开发、维护、审查或交付任务前，必须完整阅读并遵循 `.cursor/rules/project-base-rules.mdc`，它是唯一权威规则来源。
+- 该文件覆盖：使用范围、项目结构与已用 SDK、Agent 执行流程、技术栈与命令、工作区与文件边界、安全与隐私、TypeScript 规范、异步与数据流、函数/常量/注释、React 实现约定、数据文件与运行时容错、前端验收清单、Git 与工作区保护、质量验证与交付。
+- 规则内容需要更新时，只修改 `.cursor/rules/project-base-rules.mdc`，不要在本文件重复维护规则正文。
+- 项目结构快照与 `package.json` 识别到的通用 SDK/库同样维护在该规则文件中；若与仓库实际情况不一致，以仓库实际为准并同步更新该文件。
