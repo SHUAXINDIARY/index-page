@@ -44,6 +44,10 @@
   height: 100% !important;
 }
 
+.infinite-canvas-file-input {
+  display: none;
+}
+
 .infinite-canvas-help {
   position: fixed;
   top: 20px;
@@ -59,13 +63,21 @@
   pointer-events: none;
 }
 
-.infinite-canvas-controls {
+.infinite-canvas-toolbar {
   position: fixed;
-  right: 178px;
+  right: 176px;
   bottom: 20px;
   z-index: 101;
-  display: grid;
-  grid-template-columns: 38px 54px 38px 38px 38px;
+  display: flex;
+  max-width: calc(100vw - 196px);
+  height: 38px;
+  gap: 8px;
+}
+
+.infinite-canvas-view-controls,
+.infinite-canvas-pen-controls {
+  display: flex;
+  min-width: 0;
   height: 38px;
   overflow: hidden;
   border: 1px solid var(--color-border);
@@ -75,9 +87,24 @@
   backdrop-filter: blur(12px);
 }
 
-.infinite-canvas-controls button {
+.infinite-canvas-view-controls {
+  flex: 0 0 168px;
+}
+
+.infinite-canvas-pen-controls {
+  flex: 0 1 auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.infinite-canvas-pen-controls::-webkit-scrollbar {
+  display: none;
+}
+
+.infinite-canvas-toolbar button {
   display: grid;
-  width: 100%;
+  flex: 0 0 38px;
+  width: 38px;
   height: 38px;
   place-items: center;
   padding: 0;
@@ -89,32 +116,37 @@
   cursor: pointer;
 }
 
-.infinite-canvas-controls button:last-child {
+.infinite-canvas-view-controls button:last-child,
+.infinite-canvas-pen-controls button:last-child {
   border-right: 0;
 }
 
-.infinite-canvas-controls button:hover:not(:disabled),
-.infinite-canvas-controls button:focus-visible {
+.infinite-canvas-toolbar button:hover:not(:disabled),
+.infinite-canvas-toolbar button:focus-visible {
   background: var(--color-card-hover);
   outline: none;
 }
 
-.infinite-canvas-controls button.is-active {
+.infinite-canvas-toolbar button.is-active {
   background: var(--color-primary);
   color: var(--color-bg);
 }
 
-.infinite-canvas-controls button:disabled:not(.infinite-canvas-scale) {
+.infinite-canvas-toolbar button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.infinite-canvas-controls .infinite-canvas-scale {
+.infinite-canvas-scale {
+  display: grid;
+  flex: 0 0 54px;
+  width: 54px;
+  height: 38px;
+  place-items: center;
+  border-right: 1px solid var(--color-primary-alpha-010);
   color: var(--color-primary);
   font-size: 11px;
   font-variant-numeric: tabular-nums;
-  cursor: default;
-  opacity: 1;
 }
 
 @media (max-width: 767px) {
@@ -123,8 +155,14 @@
     left: 12px;
   }
 
-  .infinite-canvas-controls {
+  .infinite-canvas-toolbar {
+    left: 12px;
     right: 12px;
     bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    max-width: none;
+  }
+
+  .infinite-canvas-pen-controls {
+    flex: 1 1 auto;
   }
 }
