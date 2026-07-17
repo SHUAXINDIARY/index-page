@@ -19,7 +19,6 @@ import {
   Hand,
   Image,
   LocateFixed,
-  MessageCircle,
   Minus,
   MousePointer2,
   Pencil,
@@ -59,7 +58,7 @@ const PEN_OPTIONS: PenOption[] = [
   { pen: Pen.TEXT, label: '文本', icon: Type },
   { pen: Pen.PENCIL, label: '画笔', icon: Pencil },
   { pen: Pen.ERASER, label: '橡皮擦', icon: Eraser },
-  { pen: Pen.COMMENT, label: '评论', icon: MessageCircle },
+  // { pen: Pen.COMMENT, label: '评论', icon: MessageCircle },
 ];
 
 const startInfiniteCanvasApp = () => {
