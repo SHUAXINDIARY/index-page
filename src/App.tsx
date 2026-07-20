@@ -365,7 +365,6 @@ const App = () => {
             backgroundImageEnabled={backgroundImageEnabled}
             onBackgroundImageChange={handleBackgroundImageChange}
           />
-          {infiniteCanvasButton}
           <button
             className="toolbar-badge shuffle-btn"
             onClick={refreshLayout}
