@@ -9,7 +9,7 @@ patchedDependencies:
     hash: 184d5959009e74ac96143f56fb9a8902b1f6278c675e9e47a020ffabf39bad4a
     path: patches/@antv__g-device-api@1.6.13.patch
   '@infinite-canvas-tutorial/ecs@0.0.9':
-    hash: e8e5e9d611845554f5ab10583ba7cc679e8fa4b5fb2e57d4eddc6ccbededaa92
+    hash: 2a6c35c8b1972eee89c593ca4404ad8194845c0436cd40d5436bc8bdc6f41c64
     path: patches/@infinite-canvas-tutorial__ecs@0.0.9.patch
 
 importers:
@@ -18,7 +18,7 @@ importers:
     dependencies:
       '@infinite-canvas-tutorial/ecs':
         specifier: ^0.0.9
-        version: 0.0.9(patch_hash=e8e5e9d611845554f5ab10583ba7cc679e8fa4b5fb2e57d4eddc6ccbededaa92)
+        version: 0.0.9(patch_hash=2a6c35c8b1972eee89c593ca4404ad8194845c0436cd40d5436bc8bdc6f41c64)
       '@infinite-canvas-tutorial/webcomponents':
         specifier: ^0.0.11
         version: 0.0.11
@@ -1726,7 +1726,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@infinite-canvas-tutorial/ecs@0.0.9(patch_hash=e8e5e9d611845554f5ab10583ba7cc679e8fa4b5fb2e57d4eddc6ccbededaa92)':
+  '@infinite-canvas-tutorial/ecs@0.0.9(patch_hash=2a6c35c8b1972eee89c593ca4404ad8194845c0436cd40d5436bc8bdc6f41c64)':
     dependencies:
       '@antv/g-device-api': 1.6.13(patch_hash=184d5959009e74ac96143f56fb9a8902b1f6278c675e9e47a020ffabf39bad4a)
       '@antv/util': 3.3.11
@@ -1761,7 +1761,7 @@ snapshots:
     dependencies:
       '@antv/util': 3.3.11
       '@excalidraw/laser-pointer': 1.3.2
-      '@infinite-canvas-tutorial/ecs': 0.0.9(patch_hash=e8e5e9d611845554f5ab10583ba7cc679e8fa4b5fb2e57d4eddc6ccbededaa92)
+      '@infinite-canvas-tutorial/ecs': 0.0.9(patch_hash=2a6c35c8b1972eee89c593ca4404ad8194845c0436cd40d5436bc8bdc6f41c64)
       '@lit/context': 1.1.6
       '@lit/localize': 0.12.2
       '@lit/task': 1.0.3

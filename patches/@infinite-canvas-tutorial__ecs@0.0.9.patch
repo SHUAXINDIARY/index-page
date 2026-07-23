@@ -40,3 +40,27 @@ diff --git a/lib/systems/DrawPencil.js b/lib/systems/DrawPencil.js
 -                }
                  api.runAtNextTick(() => {
                      api.updateNode(brush, { visibility: 'hidden' }, false);
+diff --git a/esm/App.js b/esm/App.js
+--- a/esm/App.js
++++ b/esm/App.js
+@@ -157,6 +157,8 @@
+             this.world = yield World.create({
+                 // Multithreading is not supported yet.
+                 threads: 1,
++                maxEntities: 100000,
++                maxLimboComponents: 100000,
+             });
+             const tick = () => __awaiter(this, void 0, void 0, function* () {
+                 yield this.world.execute();
+diff --git a/lib/App.js b/lib/App.js
+--- a/lib/App.js
++++ b/lib/App.js
+@@ -162,6 +162,8 @@
+             this.world = yield becsy_1.World.create({
+                 // Multithreading is not supported yet.
+                 threads: 1,
++                maxEntities: 100000,
++                maxLimboComponents: 100000,
+             });
+             const tick = () => __awaiter(this, void 0, void 0, function* () {
+                 yield this.world.execute();
