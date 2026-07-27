@@ -221,6 +221,17 @@ export const contentConfig: ContentConfig = {
         featured: true,
       },
       {
+        name: 'liquidComponent',
+        description:
+          '用于收集和研究液态质感 Web UI 的原生前端组件集合，展示折射、流动与弹性运动效果。',
+        repoUrl: 'https://github.com/SHUAXINDIARY/liquidComponent',
+        homepageUrl: 'https://liquidcomponent.pages.dev/',
+        language: 'HTML / CSS / JavaScript',
+        tags: ['Liquid Glass', 'Web UI', 'Interaction'],
+        status: 'active',
+        role: '作者与维护者',
+      },
+      {
         name: 'plane-list',
         description:
           '航司机型资料库底图与数据方案，支持旅行足迹和航线展示能力。',
