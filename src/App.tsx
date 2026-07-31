@@ -22,6 +22,7 @@ import {
 import blogData from './config/blog-data.json';
 import { useRandomLayout, type CardConfig } from './hooks/useRandomLayout';
 import { useBreakpoint } from './hooks/useBreakpoint';
+import { HtmlInCanvasContext } from './hooks/htmlInCanvasContext';
 import {
   lazy,
   Suspense,
@@ -361,7 +362,9 @@ const App = () => {
           passthrough={0.08}
           scramble={0.08}
         >
-          {content}
+          <HtmlInCanvasContext.Provider value>
+            {content}
+          </HtmlInCanvasContext.Provider>
         </LazyDecryptReveal>
       </Suspense>
     );

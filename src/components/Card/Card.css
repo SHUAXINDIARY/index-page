@@ -11,6 +11,15 @@
   pointer-events: none;
 }
 
+.card-canvas-glass-object {
+  position: absolute !important;
+  z-index: -1;
+  inset: -12px;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
 .card {
   --card-glare-x: 50%;
   --card-glare-y: 50%;
@@ -47,6 +56,30 @@
     background var(--duration-normal) var(--easing-default),
     border-color var(--duration-normal) var(--easing-default),
     color var(--duration-normal) var(--easing-default);
+}
+
+.card.card--canvas-glass {
+  background: color-mix(in srgb, var(--color-card) 18%, transparent);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-color: color-mix(in srgb, var(--color-card-solid) 48%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--color-card-solid) 48%, transparent) inset,
+    0 20px 52px -30px
+      color-mix(in srgb, var(--color-shadow-outer) 88%, transparent);
+}
+
+.card.card--canvas-glass::before {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--color-card-solid) 18%, transparent),
+    transparent 42%,
+    color-mix(in srgb, var(--color-primary) 5%, transparent)
+  );
+}
+
+.card.card--canvas-glass:hover {
+  background: color-mix(in srgb, var(--color-card-hover) 24%, transparent);
 }
 
 /* Safari filters a copied background layer because SVG backdrop filters are unavailable. */
