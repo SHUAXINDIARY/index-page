@@ -952,6 +952,31 @@ body {
   background: color-mix(in srgb, var(--color-primary) 86%, var(--color-bg));
 }
 
+.html-in-canvas-btn.is-active {
+  background: var(--color-primary);
+  color: var(--color-bg);
+}
+
+.html-in-canvas-btn.is-active:hover {
+  background: color-mix(in srgb, var(--color-primary) 86%, var(--color-bg));
+}
+
+.html-in-canvas-mode {
+  position: fixed !important;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.html-in-canvas-loading {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg);
+}
+
 .app-container--infinite-canvas {
   display: block;
 }

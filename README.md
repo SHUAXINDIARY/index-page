@@ -15,6 +15,7 @@
 - 🔗 **社交链接** - 快速访问各个社交平台
 - 🖼️ **图片展示** - 可自定义的图片卡片
 - 🗺️ **世界地图** - Canvas 绘制的 Natural Earth 风格底图，支持标记旅行/居住/机场等
+- 🔐 **HTMLInCanvas 模式** - 使用 Canvas UI Decrypt Reveal 将整页渲染为可随指针解密的 ASCII Canvas；需要浏览器启用实验性 HTMLInCanvas API
 - ⚙️ **自定义插件** - 构建时自动抓取博客文章、生成音乐列表
 - 📱 **全面响应式** - 三档断点适配（移动端/平板端/桌面端），平板两列网格布局，横屏自适应，触控目标 ≥ 44px，安全区域适配
 
@@ -27,6 +28,7 @@
 - **日期处理**: Day.js
 - **日历解析**: ical.js（ICS 文件解析）
 - **地图渲染**: Canvas + SVG 底图（[plane-list/map](https://github.com/SHUAXINDIARY/plane-list/tree/main/src/components/map)）
+- **整页 Canvas 特效**: [Canvas UI Decrypt Reveal](https://canvasui.dev/docs/components/decrypt-reveal)
 - **HTML 解析**: Cheerio（构建时）
 
 ## 🚀 快速开始

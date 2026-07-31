@@ -11,7 +11,14 @@ import { SocialLinks } from './components/SocialLinks';
 import { ThemeToggle } from './components/ThemeToggle';
 import type { InfiniteCanvasItem } from './components/InfiniteCanvasView';
 import { contentConfig } from './config/content';
-import { Expand, Github, LocateFixed, Minimize2, Shuffle } from 'lucide-react';
+import {
+  Expand,
+  Github,
+  LocateFixed,
+  Minimize2,
+  ScanLine,
+  Shuffle,
+} from 'lucide-react';
 import blogData from './config/blog-data.json';
 import { useRandomLayout, type CardConfig } from './hooks/useRandomLayout';
 import { useBreakpoint } from './hooks/useBreakpoint';
@@ -24,6 +31,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type ReactNode,
 } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 
@@ -79,6 +87,12 @@ const LazyInfiniteCanvasView = lazy(async () => {
   return { default: module.InfiniteCanvasView };
 });
 
+/** 仅在用户进入 HTMLInCanvas 模式后加载 CanvasUI 运行时 */
+const LazyDecryptReveal = lazy(async () => {
+  const module = await import('./components/DecryptReveal');
+  return { default: module.DecryptReveal };
+});
+
 /** 延迟组件占位卡片 ID 类型 */
 type DeferredCardId = 'calendar' | 'worldMap';
 
@@ -104,6 +118,9 @@ const App = () => {
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
   const [backgroundImageEnabled, setBackgroundImageEnabled] = useState(false);
   const [infiniteCanvasEnabled, setInfiniteCanvasEnabled] = useState(false);
+  const [htmlInCanvasEnabled, setHtmlInCanvasEnabled] = useState(false);
+  const [htmlInCanvasBackground, setHtmlInCanvasBackground] =
+    useState('#eeeeee');
   const backgroundClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
@@ -293,7 +310,10 @@ const App = () => {
   const infiniteCanvasButton = (
     <button
       className={`toolbar-badge canvas-mode-btn${infiniteCanvasEnabled ? ' is-active' : ''}`}
-      onClick={() => setInfiniteCanvasEnabled((enabled) => !enabled)}
+      onClick={() => {
+        setHtmlInCanvasEnabled(false);
+        setInfiniteCanvasEnabled((enabled) => !enabled);
+      }}
       title={infiniteCanvasEnabled ? '退出无限画布模式' : '进入无限画布模式'}
       aria-pressed={infiniteCanvasEnabled}
     >
@@ -301,6 +321,51 @@ const App = () => {
       <span>{infiniteCanvasEnabled ? '退出无限画布' : '无限画布模式'}</span>
     </button>
   );
+
+  const htmlInCanvasButton = (
+    <button
+      className={`toolbar-badge html-in-canvas-btn${htmlInCanvasEnabled ? ' is-active' : ''}`}
+      onClick={() => {
+        if (!htmlInCanvasEnabled) {
+          const background = getComputedStyle(document.documentElement)
+            .getPropertyValue('--color-bg')
+            .trim();
+          if (background) setHtmlInCanvasBackground(background);
+        }
+        setInfiniteCanvasEnabled(false);
+        setHtmlInCanvasEnabled((enabled) => !enabled);
+      }}
+      title={
+        htmlInCanvasEnabled
+          ? '退出 htmlincanvas 模式'
+          : '进入 htmlincanvas 模式'
+      }
+      aria-pressed={htmlInCanvasEnabled}
+    >
+      <ScanLine size={14} />
+      <span>htmlincanvas模式</span>
+    </button>
+  );
+
+  const renderHtmlInCanvas = (content: ReactNode) => {
+    if (!htmlInCanvasEnabled) return content;
+    return (
+      <Suspense fallback={<div className="html-in-canvas-loading" />}>
+        <LazyDecryptReveal
+          className="html-in-canvas-mode"
+          background={htmlInCanvasBackground}
+          radius={420}
+          softness={0.48}
+          cell={10}
+          colored={0.9}
+          passthrough={0.08}
+          scramble={0.08}
+        >
+          {content}
+        </LazyDecryptReveal>
+      </Suspense>
+    );
+  };
 
   if (infiniteCanvasEnabled) {
     return (
@@ -323,7 +388,7 @@ const App = () => {
   if (isCompact) {
     /** 可见卡片索引计数器 */
     let visibleIndex = 0;
-    return (
+    return renderHtmlInCanvas(
       <div
         className={`app-container app-container--compact${backgroundImage ? ' app-container--with-background' : ''}${backgroundImageEnabled ? ' app-container--background-visible' : ''} ${breakpoint === 'tablet' ? 'app-container--tablet' : 'app-container--mobile'}`}
         style={appContainerStyle}
@@ -365,6 +430,7 @@ const App = () => {
             backgroundImageEnabled={backgroundImageEnabled}
             onBackgroundImageChange={handleBackgroundImageChange}
           />
+          {htmlInCanvasButton}
           <button
             className="toolbar-badge shuffle-btn"
             onClick={refreshLayout}
@@ -383,12 +449,12 @@ const App = () => {
             <span>使用同款</span>
           </a>
         </motion.div>
-      </div>
+      </div>,
     );
   }
 
   /** PC 端随机布局 */
-  return (
+  return renderHtmlInCanvas(
     <div
       className={`app-container${backgroundImage ? ' app-container--with-background' : ''}${backgroundImageEnabled ? ' app-container--background-visible' : ''}`}
       style={appContainerStyle}
@@ -484,6 +550,7 @@ const App = () => {
           onBackgroundImageChange={handleBackgroundImageChange}
         />
         {infiniteCanvasButton}
+        {htmlInCanvasButton}
         <button
           className="toolbar-badge shuffle-btn"
           onClick={refreshLayout}
@@ -502,7 +569,7 @@ const App = () => {
           <span>使用同款</span>
         </a>
       </motion.div>
-    </div>
+    </div>,
   );
 };
 

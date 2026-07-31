@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-07-31
+
+### 🔐 HTMLInCanvas 页面模式
+
+- ✅ 底部工具栏新增 `htmlincanvas模式` 按钮，支持进入和退出状态
+- ✅ 使用 Canvas UI Decrypt Reveal 将当前完整页面渲染为 ASCII Canvas，并在指针附近还原清晰 UI
+- ✅ 与原无限画布模式互斥，运行时代码仅在首次进入模式时加载
+- ✅ 浏览器未启用实验性 HTMLInCanvas API 时按 Canvas UI 官方策略回退为原始 HTML，避免空白页
+
 ## 2026-05-20
 
 ### 🗺️ 世界地图：MapLibre → Canvas 底图
