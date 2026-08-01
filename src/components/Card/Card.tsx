@@ -1,5 +1,5 @@
 import type { CSSProperties, PointerEvent, ReactNode } from 'react';
-import { lazy, Suspense, useEffect, useId, useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import {
   motion,
   useMotionValue,
@@ -7,18 +7,8 @@ import {
   useSpring,
 } from 'motion/react';
 import { useHtmlInCanvasMode } from '../../hooks/htmlInCanvasContext';
+import { HtmlInCanvasCard } from '../HtmlInCanvasCard';
 import './Card.css';
-
-const LazyGlassObject = lazy(async () => {
-  const module = await import('../canvasui/GlassObject');
-  return { default: module.GlassObject };
-});
-
-const createGlassShapeSource = (width: number, height: number) => {
-  const radius = Math.min(28, width / 5, height / 5);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"><rect x="2" y="2" width="${Math.max(1, width - 4)}" height="${Math.max(1, height - 4)}" rx="${radius}" fill="white"/></svg>`;
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-};
 
 /** 随机延迟范围（秒） */
 const RANDOM_DELAY_MIN = 0;
@@ -74,7 +64,6 @@ export const Card = ({
   const [animationParams] = useState(createAnimationParams);
   const cardRef = useRef<HTMLDivElement>(null);
   const htmlInCanvasMode = useHtmlInCanvasMode();
-  const [glassShapeSource, setGlassShapeSource] = useState('');
   const prefersReducedMotion = useReducedMotion();
   const rotateX = useSpring(useMotionValue(0), TILT_SPRING);
   const rotateY = useSpring(useMotionValue(0), TILT_SPRING);
@@ -86,30 +75,6 @@ export const Card = ({
     '--liquid-glass-filter': `url(#${filterId})`,
     '--liquid-glass-safari-filter': `url(#${safariFilterId})`,
   } as CSSProperties;
-
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!htmlInCanvasMode || !card) {
-      setGlassShapeSource('');
-      return;
-    }
-
-    let previousWidth = 0;
-    let previousHeight = 0;
-    const updateShape = () => {
-      const width = Math.max(1, Math.round(card.clientWidth));
-      const height = Math.max(1, Math.round(card.clientHeight));
-      if (width === previousWidth && height === previousHeight) return;
-      previousWidth = width;
-      previousHeight = height;
-      setGlassShapeSource(createGlassShapeSource(width, height));
-    };
-
-    updateShape();
-    const observer = new ResizeObserver(updateShape);
-    observer.observe(card);
-    return () => observer.disconnect();
-  }, [htmlInCanvasMode]);
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
     if (prefersReducedMotion || event.pointerType !== 'mouse') return;
@@ -137,6 +102,45 @@ export const Card = ({
     cardRef.current?.style.setProperty('--card-shadow-x', '0px');
     cardRef.current?.style.setProperty('--card-shadow-y', '34px');
   };
+
+  const motionCardStyle = {
+    ...cardStyle,
+    transformPerspective: 720,
+    rotateX,
+    rotateY,
+  };
+
+  const cardContent = htmlInCanvasMode ? (
+    <HtmlInCanvasCard
+      cardRef={cardRef}
+      className={className}
+      style={motionCardStyle}
+      reduceMotion={Boolean(prefersReducedMotion)}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={resetTilt}
+      onPointerCancel={resetTilt}
+      onClick={onClick}
+    >
+      {children}
+    </HtmlInCanvasCard>
+  ) : (
+    <motion.div
+      ref={cardRef}
+      className={`card ${className}`}
+      style={motionCardStyle}
+      whileHover={prefersReducedMotion ? undefined : { y: -10, scale: 1.035 }}
+      whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
+      transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={resetTilt}
+      onPointerCancel={resetTilt}
+      onClick={onClick}
+    >
+      <span className="card-safari-refraction" aria-hidden="true" />
+      <span className="card-glare" aria-hidden="true" />
+      {children}
+    </motion.div>
+  );
 
   return (
     <motion.div
@@ -213,48 +217,7 @@ export const Card = ({
           </filter>
         </defs>
       </svg>
-      <motion.div
-        ref={cardRef}
-        className={`card${htmlInCanvasMode ? ' card--canvas-glass' : ''} ${className}`}
-        style={{ ...cardStyle, transformPerspective: 720, rotateX, rotateY }}
-        whileHover={prefersReducedMotion ? undefined : { y: -10, scale: 1.035 }}
-        whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
-        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-        onPointerMove={handlePointerMove}
-        onPointerLeave={resetTilt}
-        onPointerCancel={resetTilt}
-        onClick={onClick}
-      >
-        {htmlInCanvasMode && glassShapeSource ? (
-          <Suspense fallback={null}>
-            <LazyGlassObject
-              className="card-canvas-glass-object"
-              src={glassShapeSource}
-              ior={1.72}
-              thickness={2.8}
-              roughness={0.18}
-              dispersion={0.65}
-              clearcoat={0.82}
-              depth={0.06}
-              bevel={0.9}
-              highlight="#6ca8ff"
-              environmentIntensity={0.85}
-              scale={3.45}
-              floatIntensity={0.08}
-              rotationIntensity={0.04}
-              orbit={false}
-              zoom={false}
-            />
-          </Suspense>
-        ) : null}
-        {!htmlInCanvasMode ? (
-          <>
-            <span className="card-safari-refraction" aria-hidden="true" />
-            <span className="card-glare" aria-hidden="true" />
-          </>
-        ) : null}
-        {children}
-      </motion.div>
+      {cardContent}
     </motion.div>
   );
 };

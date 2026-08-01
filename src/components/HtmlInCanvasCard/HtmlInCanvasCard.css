@@ -1,0 +1,24 @@
+.html-in-canvas-card {
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-card-solid) 86%, transparent);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-color: color-mix(in srgb, var(--color-primary) 18%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--color-primary) 16%, transparent) inset,
+    0 20px 52px -30px
+      color-mix(in srgb, var(--color-shadow-outer) 88%, transparent);
+}
+
+.html-in-canvas-card::before {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--color-primary) 9%, transparent),
+    transparent 38%,
+    color-mix(in srgb, var(--color-primary) 3%, transparent)
+  );
+}
+
+.html-in-canvas-card:hover {
+  background: color-mix(in srgb, var(--color-card-solid) 92%, transparent);
+}
