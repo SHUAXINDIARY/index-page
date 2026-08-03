@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     "useDefineForClassFields": true,
     "types": ["node"],
-
+    "ignoreDeprecations": "6.0",
     /* modules */
     "module": "ESNext",
     "moduleDetection": "force",
