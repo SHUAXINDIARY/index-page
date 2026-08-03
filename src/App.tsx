@@ -40,6 +40,18 @@ import { motion, useReducedMotion } from 'motion/react';
 const GITHUB_REPO_URL = 'https://github.com/SHUAXINDIARY/index-page';
 const BACKGROUND_EXIT_DURATION_MS = 380;
 
+/** HTMLInCanvas 实验性 API 当前仅向桌面版 Chrome 提供入口。 */
+const isDesktopChromeBrowser = (): boolean => {
+  if (typeof navigator === 'undefined') return false;
+
+  const { userAgent } = navigator;
+  return (
+    /Chrome\/\d+/.test(userAgent) &&
+    !/Edg\/|OPR\/|SamsungBrowser\/|YaBrowser\//.test(userAgent) &&
+    !/Mobi|Android|iPhone|iPad|iPod/.test(userAgent)
+  );
+};
+
 /** 卡片尺寸配置 - PC 端 */
 const CARD_SIZES: Record<string, { width: number; height: number }> = {
   user: { width: 280, height: 314 },
@@ -129,6 +141,14 @@ const App = () => {
 
   /** 是否使用紧凑布局（移动端 + 平板端） */
   const isCompact = breakpoint !== 'desktop';
+  const canUseHtmlInCanvasMode =
+    breakpoint === 'desktop' && isDesktopChromeBrowser();
+
+  useEffect(() => {
+    if (!canUseHtmlInCanvasMode && htmlInCanvasEnabled) {
+      setHtmlInCanvasEnabled(false);
+    }
+  }, [canUseHtmlInCanvasMode, htmlInCanvasEnabled]);
 
   /** 卡片配置列表 */
   const cardConfigs: CardConfig[] = useMemo(
@@ -349,7 +369,7 @@ const App = () => {
   );
 
   const renderHtmlInCanvas = (content: ReactNode) => {
-    if (!htmlInCanvasEnabled) return content;
+    if (!canUseHtmlInCanvasMode || !htmlInCanvasEnabled) return content;
     return (
       <Suspense fallback={<div className="html-in-canvas-loading" />}>
         <LazyDecryptReveal
@@ -433,7 +453,7 @@ const App = () => {
             backgroundImageEnabled={backgroundImageEnabled}
             onBackgroundImageChange={handleBackgroundImageChange}
           />
-          {htmlInCanvasButton}
+          {canUseHtmlInCanvasMode && htmlInCanvasButton}
           <button
             className="toolbar-badge shuffle-btn"
             onClick={refreshLayout}
@@ -553,7 +573,7 @@ const App = () => {
           onBackgroundImageChange={handleBackgroundImageChange}
         />
         {infiniteCanvasButton}
-        {htmlInCanvasButton}
+        {canUseHtmlInCanvasMode && htmlInCanvasButton}
         <button
           className="toolbar-badge shuffle-btn"
           onClick={refreshLayout}
