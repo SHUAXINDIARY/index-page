@@ -1,0 +1,29 @@
+{
+  "images": [
+    {
+      "imageUrl": "/cardImg/350.jpeg",
+      "alt": "350"
+    },
+    {
+      "imageUrl": "/cardImg/380.jpg",
+      "alt": "380"
+    },
+    {
+      "imageUrl": "/cardImg/747.jpeg",
+      "alt": "747"
+    },
+    {
+      "imageUrl": "/cardImg/777.jpg",
+      "alt": "777"
+    },
+    {
+      "imageUrl": "/cardImg/an124.jpeg",
+      "alt": "an124"
+    },
+    {
+      "imageUrl": "/cardImg/an225.jpg",
+      "alt": "an225"
+    }
+  ],
+  "generatedAt": "2026-09-10T02:42:02.204Z"
+}

@@ -95,7 +95,7 @@ export const contentConfigExample: ContentConfig = {
         },
     ],
 
-    // 图片卡片示例
+    // 图片卡片示例（正式配置由 public/cardImg 自动生成）
     images: [
         {
             imageUrl: 'https://api.dicebear.com/7.x/icons/svg?seed=coding',

@@ -90,12 +90,16 @@ socialLinks: Array<{
 
 ### 7. 图片卡片 (`images`)
 
+图片列表由 `CardImgListPlugin` 扫描 `public/cardImg` 自动生成，无需在 `content.ts` 中手写：
+
 ```typescript
 images: Array<{
-  imageUrl: string; // 图片 URL
-  alt: string;      // 图片描述
+  imageUrl: string; // 图片 URL（如 /cardImg/xxx.jpeg）
+  alt: string;      // 图片描述（默认取文件名）
 }>
 ```
+
+往 `public/cardImg` 放入图片后，重新执行 `pnpm dev` / `pnpm build` 即可更新。
 
 ### 8. 世界地图 (`worldMap`)
 

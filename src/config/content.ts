@@ -4,6 +4,7 @@
  */
 
 import bgmData from './bgm-data.json';
+import cardImgData from './card-img-data.json';
 
 export interface UserInfo {
   name: string;
@@ -371,21 +372,8 @@ export const contentConfig: ContentConfig = {
     },
   ],
 
-  // 图片卡片
-  images: [
-    {
-      imageUrl: '/cardImg/G82qa1paIAAht99_副本.jpeg',
-      alt: 'cute cat',
-    },
-    {
-      imageUrl: '/cardImg/G6_0XmEaUAABt6e_副本.jpeg',
-      alt: 'image',
-    },
-    {
-      imageUrl: '/cardImg/G825oGEaQAAUIf5.jpeg',
-      alt: 'image',
-    },
-  ],
+  // 图片卡片（images 从 public/cardImg 目录自动生成）
+  images: cardImgData.images,
 
   // 世界地图配置（Canvas 底图，见 src/components/WorldMap）
   worldMap: {

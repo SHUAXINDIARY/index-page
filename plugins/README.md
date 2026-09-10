@@ -1,6 +1,6 @@
 # 自定义 Rsbuild 插件
 
-本项目包含两个自定义 Rsbuild 插件，用于在构建时自动生成配置数据。
+本项目包含三个自定义 Rsbuild 插件，用于在构建时自动生成配置数据。
 
 ## 📦 插件概览
 
@@ -8,8 +8,9 @@
 |------|------|----------|
 | **FetchBlogPlugin** | 抓取博客最新文章 | `src/config/blog-data.json` |
 | **BgmListPlugin** | 扫描 BGM 目录生成音乐列表 | `src/config/bgm-data.json` |
+| **CardImgListPlugin** | 扫描 cardImg 目录生成图片列表 | `src/config/card-img-data.json` |
 
-这两个插件都在构建时自动执行，无需手动操作，生成的数据可以直接在应用中使用。
+这三个插件都在构建时自动执行，无需手动操作，生成的数据可以直接在应用中使用。
 
 ---
 
@@ -200,5 +201,92 @@ music: {
 - 如果目录不存在或扫描失败，会返回空数组
 - 确保音频文件放在 `public/bgm` 目录下（或配置的目录）
 - 支持的音频格式可以通过 `extensions` 选项自定义
+- 文件路径会转换为相对于 `public` 目录的路径，确保部署后可以正确访问
+
+---
+
+## CardImgListPlugin
+
+一个用于在构建时自动扫描 `public/cardImg` 目录并生成图片列表的 Rsbuild 插件。
+
+### 功能
+
+- 在构建 / 开发服务器启动前自动扫描 `public/cardImg` 目录下的图片文件
+- 提取文件名（去掉扩展名）作为 `alt`
+- 生成相对于 `public` 目录的 URL 路径
+- 将数据保存到 JSON 文件中供应用使用
+
+### 使用方法
+
+在 `rsbuild.config.ts` 中引入并使用：
+
+```typescript
+import { cardImgListPlugin } from './plugins/card-img-list-plugin';
+
+export default defineConfig({
+  plugins: [
+    pluginReact(),
+    cardImgListPlugin({
+      cardImgDir: 'public/cardImg',
+      outputPath: './src/config/card-img-data.json',
+      extensions: ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif', '.svg'],
+    }),
+  ],
+});
+```
+
+### 配置选项
+
+| 选项 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `cardImgDir` | `string` | `'public/cardImg'` | 图片文件所在目录，相对于项目根目录 |
+| `outputPath` | `string` | `'./src/config/card-img-data.json'` | 输出 JSON 文件路径 |
+| `extensions` | `string[]` | `['.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif', '.svg']` | 支持的图片文件扩展名 |
+
+### 输出格式
+
+插件会生成一个 JSON 文件，格式如下：
+
+```json
+{
+  "images": [
+    {
+      "imageUrl": "/cardImg/example.jpeg",
+      "alt": "example"
+    }
+  ],
+  "generatedAt": "2026-09-10T02:33:00.000Z"
+}
+```
+
+**说明：**
+- `imageUrl`：相对于 `public` 目录的路径，部署后可直接访问
+- `alt`：文件名（去掉扩展名）
+- `generatedAt`：生成时间戳
+
+### 在应用中使用
+
+```typescript
+import cardImgData from './config/card-img-data.json';
+
+// 在配置中使用
+images: cardImgData.images,
+```
+
+### 工作原理
+
+1. 插件在构建开始前（`onBeforeBuild`）与开发服务器启动前（`onBeforeStartDevServer`）执行
+2. 扫描指定的 `cardImgDir` 目录
+3. 过滤出支持的图片文件格式
+4. 提取文件名（去掉扩展名）作为 `alt`
+5. 生成相对于 `public` 目录的 URL 路径
+6. 将数据写入 JSON 文件
+7. 应用可以在运行时读取这个 JSON 文件
+
+### 注意事项
+
+- 往 `public/cardImg` 放入图片后，重新执行 `pnpm dev` / `pnpm build` 即可自动更新列表
+- 如果目录不存在或扫描失败，会返回空数组
+- 支持的图片格式可以通过 `extensions` 选项自定义
 - 文件路径会转换为相对于 `public` 目录的路径，确保部署后可以正确访问
 

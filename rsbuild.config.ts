@@ -3,6 +3,7 @@ import { pluginReact } from '@rsbuild/plugin-react';
 import { contentConfig } from './src/config/content';
 import { fetchBlogPlugin } from './plugins/fetch-blog-plugin';
 import { bgmListPlugin } from './plugins/bgm-list-plugin';
+import { cardImgListPlugin } from './plugins/card-img-list-plugin';
 import { codeInspectorPlugin } from 'code-inspector-plugin';
 
 
@@ -28,6 +29,11 @@ export default defineConfig({
     bgmListPlugin({
       bgmDir: 'public/bgm',
       outputPath: './src/config/bgm-data.json',
+    }),
+    // 自定义插件：扫描 public/cardImg 目录生成图片列表
+    cardImgListPlugin({
+      cardImgDir: 'public/cardImg',
+      outputPath: './src/config/card-img-data.json',
     }),
   ],
   html: {
