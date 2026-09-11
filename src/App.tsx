@@ -35,22 +35,12 @@ import {
   type ReactNode,
 } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
+import { isDesktopChromeBrowser } from './utils';
 
 /** GitHub 仓库地址 */
 const GITHUB_REPO_URL = 'https://github.com/SHUAXINDIARY/index-page';
 const BACKGROUND_EXIT_DURATION_MS = 380;
 
-/** HTMLInCanvas 实验性 API 当前仅向桌面版 Chrome 提供入口。 */
-const isDesktopChromeBrowser = (): boolean => {
-  if (typeof navigator === 'undefined') return false;
-
-  const { userAgent } = navigator;
-  return (
-    /Chrome\/\d+/.test(userAgent) &&
-    !/Edg\/|OPR\/|SamsungBrowser\/|YaBrowser\//.test(userAgent) &&
-    !/Mobi|Android|iPhone|iPad|iPod/.test(userAgent)
-  );
-};
 
 /** 卡片尺寸配置 - PC 端 */
 const CARD_SIZES: Record<string, { width: number; height: number }> = {
