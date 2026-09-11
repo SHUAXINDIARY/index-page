@@ -144,11 +144,10 @@ const App = () => {
   const canUseHtmlInCanvasMode =
     breakpoint === 'desktop' && isDesktopChromeBrowser();
 
-  useEffect(() => {
-    if (!canUseHtmlInCanvasMode && htmlInCanvasEnabled) {
-      setHtmlInCanvasEnabled(false);
-    }
-  }, [canUseHtmlInCanvasMode, htmlInCanvasEnabled]);
+  // 条件变化时在渲染期校正，避免 effect 内同步 setState 触发级联渲染
+  if (!canUseHtmlInCanvasMode && htmlInCanvasEnabled) {
+    setHtmlInCanvasEnabled(false);
+  }
 
   /** 卡片配置列表 */
   const cardConfigs: CardConfig[] = useMemo(
