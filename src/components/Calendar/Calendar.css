@@ -1,4 +1,10 @@
 .calendar-card {
+  --calendar-solar: #6578d8;
+  --calendar-solar-soft: color-mix(in srgb, var(--calendar-solar) 11%, transparent);
+  --calendar-solar-border: color-mix(in srgb, var(--calendar-solar) 28%, transparent);
+  --calendar-holiday: #d8684f;
+  --calendar-holiday-soft: color-mix(in srgb, var(--calendar-holiday) 11%, transparent);
+  --calendar-holiday-border: color-mix(in srgb, var(--calendar-holiday) 28%, transparent);
   width: 100%;
   max-width: 300px;
   padding: var(--spacing-xl);
@@ -23,6 +29,36 @@
 .calendar-weekday {
   font-size: 12px;
   color: var(--color-secondary);
+}
+
+.calendar-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin: -2px 0 var(--spacing-md);
+  color: var(--color-secondary);
+  font-size: 10px;
+}
+
+.calendar-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.calendar-legend-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: var(--radius-full);
+}
+
+.calendar-legend-dot--solar {
+  background: var(--calendar-solar);
+}
+
+.calendar-legend-dot--holiday {
+  background: var(--calendar-holiday);
 }
 
 .calendar-weekdays {
@@ -75,8 +111,22 @@
 }
 
 .calendar-day.has-event {
-  background: var(--color-accent-alpha-008);
-  border: 1px solid var(--color-accent-alpha-020);
+  border: 1px solid transparent;
+}
+
+.calendar-day.has-solar-term {
+  background: var(--calendar-solar-soft);
+  border-color: var(--calendar-solar-border);
+}
+
+.calendar-day.has-holiday {
+  background: var(--calendar-holiday-soft);
+  border-color: var(--calendar-holiday-border);
+}
+
+.calendar-day.has-solar-term.has-holiday {
+  background: linear-gradient(135deg, var(--calendar-solar-soft) 0 50%, var(--calendar-holiday-soft) 50% 100%);
+  border-color: color-mix(in srgb, var(--calendar-solar-border) 50%, var(--calendar-holiday-border) 50%);
 }
 
 .calendar-day.has-event.today {
@@ -84,16 +134,23 @@
   border: 2px solid var(--color-card-solid);
 }
 
-.event-dot {
+.event-dots {
   position: absolute;
   bottom: 4px;
+  display: flex;
+  gap: 2px;
+}
+
+.event-dot {
   width: 4px;
   height: 4px;
-  background: var(--color-accent);
   border-radius: var(--radius-full);
 }
 
-.calendar-day.today .event-dot {
-  background: var(--color-text-on-dark);
+.event-dot--solar {
+  background: var(--calendar-solar);
 }
 
+.event-dot--holiday {
+  background: var(--calendar-holiday);
+}
