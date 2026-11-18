@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-11-18
+
+### 移除整页 Canvas 模式
+
+- 移除 `htmlincanvas模式` 按钮、模式状态、专用卡片、DecryptReveal 运行时及 shader、浏览器检测和相关样式。
+- 清理 README 中的功能说明；保留无限画布模式。
+
 ## 2026-07-31
 
 ### 🔐 HTMLInCanvas 页面模式

@@ -6,8 +6,6 @@ import {
   useReducedMotion,
   useSpring,
 } from 'motion/react';
-import { useHtmlInCanvasMode } from '../../hooks/htmlInCanvasContext';
-import { HtmlInCanvasCard } from '../HtmlInCanvasCard';
 import './Card.css';
 
 /** 随机延迟范围（秒） */
@@ -63,7 +61,6 @@ export const Card = ({
   /** 随机动画参数，使用惰性初始化确保只在首次渲染时生成 */
   const [animationParams] = useState(createAnimationParams);
   const cardRef = useRef<HTMLDivElement>(null);
-  const htmlInCanvasMode = useHtmlInCanvasMode();
   const prefersReducedMotion = useReducedMotion();
   const rotateX = useSpring(useMotionValue(0), TILT_SPRING);
   const rotateY = useSpring(useMotionValue(0), TILT_SPRING);
@@ -110,20 +107,7 @@ export const Card = ({
     rotateY,
   };
 
-  const cardContent = htmlInCanvasMode ? (
-    <HtmlInCanvasCard
-      cardRef={cardRef}
-      className={className}
-      style={motionCardStyle}
-      reduceMotion={Boolean(prefersReducedMotion)}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={resetTilt}
-      onPointerCancel={resetTilt}
-      onClick={onClick}
-    >
-      {children}
-    </HtmlInCanvasCard>
-  ) : (
+  const cardContent = (
     <motion.div
       ref={cardRef}
       className={`card ${className}`}
