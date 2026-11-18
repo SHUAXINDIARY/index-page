@@ -9,7 +9,10 @@ if (rootEl) {
   root.render(
     <React.StrictMode>
       <ThemeProvider>
-        <App />
+        <main aria-label="个人主页">
+          <h1 className="visually-hidden">刷新的个人主页</h1>
+          <App />
+        </main>
       </ThemeProvider>
     </React.StrictMode>,
   );

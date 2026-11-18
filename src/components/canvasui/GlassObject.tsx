@@ -1212,14 +1212,20 @@ export function createGlassObject(
   };
 }
 
+/** 三维预览组件属性 */
 export interface GlassObjectProps extends GlassObjectOptions {
+  /** 容器样式类名 */
   className?: string;
+  /** 容器内联样式 */
   style?: React.CSSProperties;
+  /** 三维内容的文本替代说明 */
+  ariaLabel?: string;
 }
 
 export function GlassObject({
   className,
   style,
+  ariaLabel = '三维玻璃物体预览',
   ...options
 }: GlassObjectProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -1244,6 +1250,8 @@ export function GlassObject({
     <div className={className} style={{ position: 'relative', ...style }}>
       <canvas
         ref={canvasRef}
+        role="img"
+        aria-label={ariaLabel}
         style={{
           position: 'absolute',
           inset: 0,

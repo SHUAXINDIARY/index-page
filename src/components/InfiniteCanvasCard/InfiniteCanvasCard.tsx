@@ -90,9 +90,9 @@ export const InfiniteCanvasCard = () => {
       <header className="infinite-canvas-header">
         <div>
           <span className="infinite-canvas-kicker">Canvas</span>
-          <h3>无限画布</h3>
+          <h3 aria-level={2}>无限画布</h3>
         </div>
-        <div className="infinite-canvas-controls" aria-label="画布缩放控制">
+        <div className="infinite-canvas-controls" role="group" aria-label="画布缩放控制">
           <button
             onClick={() => zoomBy(-SCALE_STEP)}
             title="缩小"
@@ -127,8 +127,22 @@ export const InfiniteCanvasCard = () => {
         onPointerMove={handlePointerMove}
         onPointerUp={stopDragging}
         onPointerCancel={stopDragging}
-        role="application"
-        aria-label="无限画布，占位内容，可拖拽平移并使用滚轮缩放"
+        role="group"
+        tabIndex={0}
+        aria-label="无限画布，占位内容；方向键平移，加减键缩放，Home 复位"
+        onKeyDown={(event) => {
+          if (event.key.startsWith('Arrow')) {
+            event.preventDefault();
+            setViewport((current) => ({
+              ...current,
+              x: current.x + (event.key === 'ArrowLeft' ? 32 : event.key === 'ArrowRight' ? -32 : 0),
+              y: current.y + (event.key === 'ArrowUp' ? 32 : event.key === 'ArrowDown' ? -32 : 0),
+            }));
+          }
+          if (event.key === '+' || event.key === '=') { event.preventDefault(); zoomBy(SCALE_STEP); }
+          if (event.key === '-') { event.preventDefault(); zoomBy(-SCALE_STEP); }
+          if (event.key === 'Home') { event.preventDefault(); setViewport(INITIAL_VIEWPORT); }
+        }}
       >
         <div
           className="infinite-canvas-world"

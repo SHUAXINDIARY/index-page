@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, useId, type ReactNode } from 'react';
 import {
   App,
   CheckboardStyle,
@@ -116,6 +116,7 @@ interface CameraState {
 }
 
 export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
+  const controlId = useId();
   const { mode } = useTheme();
   const shellRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLElementTagNameMap['ic-spectrum-canvas']>(null);
@@ -377,7 +378,24 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
           width: '100%',
           height: '100%',
         }}
-        aria-label="WebGL 无限画布，可拖拽平移并使用滚轮缩放"
+        aria-label="WebGL 无限画布，方向键平移，加减键缩放，Home 复位"
+        role="group"
+        tabIndex={0}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget || !isReady) return;
+          const directions: Record<string, { x: number; y: number }> = {
+            ArrowLeft: { x: -40, y: 0 }, ArrowRight: { x: 40, y: 0 },
+            ArrowUp: { x: 0, y: -40 }, ArrowDown: { x: 0, y: 40 },
+          };
+          const direction = directions[event.key];
+          if (direction) {
+            event.preventDefault();
+            updateCamera({ ...camera, x: camera.x + direction.x / camera.zoom, y: camera.y + direction.y / camera.zoom });
+          }
+          if (event.key === '+' || event.key === '=') { event.preventDefault(); zoomAtCenter(ZOOM_STEP); }
+          if (event.key === '-') { event.preventDefault(); zoomAtCenter(1 / ZOOM_STEP); }
+          if (event.key === 'Home') { event.preventDefault(); updateCamera(initialCamera); }
+        }}
       />
       <input
         ref={imageInputRef}
@@ -389,7 +407,7 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
           if (file) void insertImage(file);
         }}
         tabIndex={-1}
-        aria-hidden="true"
+        aria-label="选择画布图片"
       />
       <div
         className="infinite-canvas-items"
@@ -418,10 +436,11 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
           : `当前工具：${selectedPenLabel}`}
       </div>
       {selectedPen === Pen.TEXT && (
-        <div className="infinite-canvas-style-controls" aria-label="文本样式">
-          <label className="infinite-canvas-select-control">
+        <div className="infinite-canvas-style-controls" role="group" aria-label="文本样式">
+          <label className="infinite-canvas-select-control" htmlFor={`${controlId}-font`}>
             <span>字体</span>
             <select
+              id={`${controlId}-font`}
               value={textSettings.fontFamily}
               onChange={(event) =>
                 updateTextSettings({ fontFamily: event.target.value })
@@ -433,10 +452,12 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
               <option value="monospace">等宽</option>
             </select>
           </label>
-          <label className="infinite-canvas-range-control">
+          <label className="infinite-canvas-range-control" htmlFor={`${controlId}-size`}>
             <span>字号</span>
             <input
               type="range"
+              id={`${controlId}-size`}
+              aria-valuetext={`${textSettings.fontSize} 像素`}
               min="8"
               max="96"
               step="1"
@@ -482,10 +503,11 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
               <Italic size={14} />
             </button>
           </div>
-          <label className="infinite-canvas-color-control" title="文本颜色">
+          <label className="infinite-canvas-color-control" title="文本颜色" htmlFor={`${controlId}-text-color`}>
             <span>颜色</span>
             <input
               type="color"
+              id={`${controlId}-text-color`}
               value={textSettings.fill}
               onChange={(event) =>
                 updateTextSettings({ fill: event.target.value })
@@ -496,11 +518,12 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
         </div>
       )}
       {selectedPen === Pen.PENCIL && (
-        <div className="infinite-canvas-style-controls" aria-label="画笔样式">
-          <label className="infinite-canvas-color-control" title="画笔颜色">
+        <div className="infinite-canvas-style-controls" role="group" aria-label="画笔样式">
+          <label className="infinite-canvas-color-control" title="画笔颜色" htmlFor={`${controlId}-pen-color`}>
             <span>颜色</span>
             <input
               type="color"
+              id={`${controlId}-pen-color`}
               value={pencilSettings.stroke}
               onChange={(event) =>
                 updatePencilSettings({ stroke: event.target.value })
@@ -508,10 +531,12 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
               aria-label="画笔颜色"
             />
           </label>
-          <label className="infinite-canvas-range-control">
+          <label className="infinite-canvas-range-control" htmlFor={`${controlId}-width`}>
             <span>粗细</span>
             <input
               type="range"
+              id={`${controlId}-width`}
+              aria-valuetext={`${pencilSettings.strokeWidth} 像素`}
               min="1"
               max="48"
               step="1"
@@ -524,10 +549,12 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
             />
             <output>{pencilSettings.strokeWidth}px</output>
           </label>
-          <label className="infinite-canvas-range-control">
+          <label className="infinite-canvas-range-control" htmlFor={`${controlId}-opacity`}>
             <span>透明度</span>
             <input
               type="range"
+              id={`${controlId}-opacity`}
+              aria-valuetext={`${Math.round(pencilSettings.strokeOpacity * 100)}%`}
               min="0.1"
               max="1"
               step="0.1"
@@ -540,9 +567,10 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
             />
             <output>{Math.round(pencilSettings.strokeOpacity * 100)}%</output>
           </label>
-          <label className="infinite-canvas-switch-control">
+          <label className="infinite-canvas-switch-control" htmlFor={`${controlId}-freehand`}>
             <input
               type="checkbox"
+              id={`${controlId}-freehand`}
               checked={pencilSettings.freehand}
               onChange={(event) =>
                 updatePencilSettings({ freehand: event.target.checked })
@@ -552,8 +580,8 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
           </label>
         </div>
       )}
-      <div className="infinite-canvas-toolbar" aria-label="画布控制">
-        <div className="infinite-canvas-view-controls" aria-label="视图控制">
+      <div className="infinite-canvas-toolbar" role="group" aria-label="画布控制">
+        <div className="infinite-canvas-view-controls" role="group" aria-label="视图控制">
           <button
             type="button"
             onClick={() => zoomAtCenter(1 / ZOOM_STEP)}
@@ -588,7 +616,7 @@ export const InfiniteCanvasView = ({ items }: InfiniteCanvasViewProps) => {
             <LocateFixed size={15} />
           </button>
         </div>
-        <div className="infinite-canvas-pen-controls" aria-label="绘图工具">
+        <div className="infinite-canvas-pen-controls" role="group" aria-label="绘图工具">
           {PEN_OPTIONS.map(({ pen, label, icon: Icon }) => (
             <button
               type="button"

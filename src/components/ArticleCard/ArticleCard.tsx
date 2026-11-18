@@ -257,16 +257,19 @@ export const ArticleCard = ({ config }: ArticleCardProps) => {
   }, [config]);
 
   return (
-    <Card
-      className="article-card"
-      onClick={() => {
-        if (!articleData.link) return;
-        window.open(articleData.link, '_blank', 'noopener,noreferrer');
-      }}
-    >
+    <Card className="article-card">
+      {articleData.link && (
+        <a
+          className="article-card-link"
+          href={articleData.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`阅读文章：${articleData.title}（新窗口）`}
+        />
+      )}
       <div className="article-tag">{articleData.tag}</div>
-      <div className="article-icon">{articleData.icon}</div>
-      <h4 className="article-title">{articleData.title}</h4>
+      <div className="article-icon" aria-hidden="true">{articleData.icon}</div>
+      <h4 className="article-title" aria-level={2}>{articleData.title}</h4>
       {isLoading ? (
         <p className="article-category">正在加载最新文章...</p>
       ) : articleData.category ? (

@@ -4,7 +4,9 @@ import React, {
   useCallback,
   useState,
   useMemo,
+  useId,
 } from 'react';
+import { useModalAccessibility } from '../../hooks/useModalAccessibility';
 import { AnimatePresence, motion } from 'motion/react';
 import { Sun, Moon, Monitor, Image, Palette, RotateCcw } from 'lucide-react';
 import {
@@ -143,6 +145,28 @@ export const ThemeToggle = ({
 
   /** 组件容器 ref，用于检测外部点击 */
   const containerRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelId = useId();
+  const customId = useId();
+  const backgroundId = useId();
+  const fieldId = useId();
+  useModalAccessibility({ active: isOpen && isTouchFirst, containerRef });
+
+  useEffect(() => {
+    if (!isOpen) return;
+    panelRef.current?.querySelector<HTMLElement>('button')?.focus({ preventScroll: true });
+    const handleEscape = (event: KeyboardEvent): void => {
+      if (event.key === 'Escape') {
+        event.stopPropagation();
+        setIsOpen(false);
+        triggerRef.current?.focus({ preventScroll: true });
+      }
+    };
+    const container = containerRef.current;
+    container?.addEventListener('keydown', handleEscape);
+    return () => container?.removeEventListener('keydown', handleEscape);
+  }, [isOpen]);
 
   /** 根据设备选择动画配置 */
   const panelAnimation = isTouchFirst
@@ -183,7 +207,14 @@ export const ThemeToggle = ({
   }, []);
 
   return (
-    <div className="theme-toggle-container" ref={containerRef}>
+    <div
+      className="theme-toggle-container"
+      ref={containerRef}
+      role={isOpen && isTouchFirst ? 'dialog' : undefined}
+      aria-modal={isOpen && isTouchFirst ? true : undefined}
+      aria-label={isOpen && isTouchFirst ? '主题设置' : undefined}
+      tabIndex={isOpen && isTouchFirst ? -1 : undefined}
+    >
       <AnimatePresence>
         {isOpen && (
           <>
@@ -199,6 +230,10 @@ export const ThemeToggle = ({
               />
             )}
             <motion.div
+              id={panelId}
+              ref={panelRef}
+              role="group"
+              aria-label="主题设置选项"
               className="theme-panel"
               style={panelColors}
               {...panelAnimation}
@@ -210,6 +245,7 @@ export const ThemeToggle = ({
                     className={`theme-mode-btn ${mode === 'light' ? 'active' : ''}`}
                     onClick={() => setMode('light')}
                     title="浅色模式"
+                    aria-pressed={mode === 'light'}
                   >
                     <Sun size={14} />
                     <span>浅色</span>
@@ -218,6 +254,7 @@ export const ThemeToggle = ({
                     className={`theme-mode-btn ${mode === 'dark' ? 'active' : ''}`}
                     onClick={() => setMode('dark')}
                     title="深色模式"
+                    aria-pressed={mode === 'dark'}
                   >
                     <Moon size={14} />
                     <span>深色</span>
@@ -227,6 +264,7 @@ export const ThemeToggle = ({
                   className={`theme-system-btn ${mode === 'system' ? 'active' : ''}`}
                   onClick={() => setMode('system')}
                   title="跟随系统"
+                  aria-pressed={mode === 'system'}
                 >
                   <Monitor size={14} />
                   <span>跟随系统</span>
@@ -240,9 +278,10 @@ export const ThemeToggle = ({
               <div className="theme-panel-section">
                 <div className="theme-panel-label-row">
                   <div className="theme-panel-label">配色</div>
-                  <label className="theme-background-toggle">
+                  <label className="theme-background-toggle" htmlFor={backgroundId}>
                     <input
                       type="checkbox"
+                      id={backgroundId}
                       checked={backgroundImageEnabled}
                       onChange={(event) =>
                         onBackgroundImageChange?.(event.target.checked)
@@ -262,13 +301,16 @@ export const ThemeToggle = ({
                       }
                       onClick={() => setColor(option.id)}
                       title={option.label}
+                      aria-label={option.label}
+                      aria-pressed={color === option.id}
                     />
                   ))}
                 </div>
                 <button
                   className={`theme-custom-trigger ${color === 'custom' ? 'active' : ''}`}
                   onClick={openCustom}
-                  aria-expanded={customOpen}
+                  aria-expanded={customOpen && color === 'custom'}
+                  aria-controls={customOpen && color === 'custom' ? customId : undefined}
                 >
                   <Palette size={15} />
                   <span>自定义</span>
@@ -278,7 +320,7 @@ export const ThemeToggle = ({
                   />
                 </button>
                 {customOpen && color === 'custom' && (
-                  <div className="theme-custom-editor">
+                  <div className="theme-custom-editor" id={customId}>
                     <div className="theme-custom-header">
                       <span>
                         {resolvedMode === 'dark'
@@ -301,9 +343,10 @@ export const ThemeToggle = ({
                     </div>
                     <div className="theme-custom-grid">
                       {customFields.map((field) => (
-                        <label className="theme-color-field" key={field.key}>
+                        <label className="theme-color-field" key={field.key} htmlFor={`${fieldId}-${field.key}`}>
                           <input
                             type="color"
+                            id={`${fieldId}-${field.key}`}
                             value={customColors[resolvedMode][field.key]}
                             onChange={(event) =>
                               updateCustomColor(field.key, event.target.value)
@@ -331,6 +374,9 @@ export const ThemeToggle = ({
       {variant === 'badge' ? (
         <button
           className="toolbar-badge theme-toggle-badge"
+          ref={triggerRef}
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? panelId : undefined}
           onClick={togglePanel}
           title="切换主题"
         >
@@ -340,6 +386,10 @@ export const ThemeToggle = ({
       ) : (
         <button
           className="decorative-icon theme-toggle-btn"
+          ref={triggerRef}
+          aria-label="切换主题"
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? panelId : undefined}
           onClick={togglePanel}
           title="切换主题"
         >

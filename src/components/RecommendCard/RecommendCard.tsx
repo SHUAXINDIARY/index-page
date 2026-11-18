@@ -15,7 +15,7 @@ export const RecommendCard = ({ config }: RecommendCardProps) => {
           <img src={config.avatar} alt={config.name} />
         </div>
         <div className="recommend-info">
-          <h4 className="recommend-name">{config.name}</h4>
+          <h4 className="recommend-name" aria-level={2}>{config.name}</h4>
           <p className="recommend-description">{config.description}</p>
         </div>
       </div>

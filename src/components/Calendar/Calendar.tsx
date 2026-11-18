@@ -157,14 +157,14 @@ export const Calendar = () => {
 
   return (
     <>
-      <Card className="calendar-card">
+      <Card className="calendar-card" ariaLabel={today.format('YYYY年M月日历')}>
         <div className="calendar-header">
           <span className="calendar-date">{today.format('YYYY/MM/DD')}</span>
           <span className="calendar-weekday">
             周{weekDays[today.day() === 0 ? 6 : today.day() - 1]}
           </span>
         </div>
-        <div className="calendar-legend" aria-label="日历标记说明">
+        <div className="calendar-legend" role="group" aria-label="日历标记说明">
           <span className="calendar-legend-item">
             <span
               className="calendar-legend-dot calendar-legend-dot--solar"
@@ -204,11 +204,13 @@ export const Calendar = () => {
 
             const dayElement = (
               <div
+                role="img"
+                aria-current={isToday ? 'date' : undefined}
                 className={`calendar-day ${isToday ? 'today' : ''} ${!isCurrentMonth ? 'other-month' : ''} ${dayEvents.length ? 'has-event' : ''} ${hasSolarTerm ? 'has-solar-term' : ''} ${hasHoliday ? 'has-holiday' : ''}`}
                 aria-label={
                   eventSummary
-                    ? `${day.format('M月D日')}，${eventSummary}`
-                    : day.format('M月D日')
+                    ? `${day.format('YYYY年M月D日')}，${eventSummary}`
+                    : day.format('YYYY年M月D日')
                 }
               >
                 <span className="calendar-day-number">{day.date()}</span>

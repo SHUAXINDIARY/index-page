@@ -61,6 +61,11 @@
 }
 
 .world-map-legend-item {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);

@@ -29,7 +29,7 @@ export const ImageCard = ({ images, interval = 3000 }: ImageCardProps) => {
         content: (
           <img
             src={image.imageUrl}
-            alt={image.alt || 'image'}
+            alt={image.alt || '展示图片'}
             className="image-card-img"
             loading={index === 0 ? 'eager' : 'lazy'}
             decoding="async"
@@ -39,7 +39,7 @@ export const ImageCard = ({ images, interval = 3000 }: ImageCardProps) => {
         fullscreenContent: (
           <img
             src={image.imageUrl}
-            alt={image.alt || 'image'}
+            alt={image.alt || '展示图片'}
             className="image-card-fullscreen-img"
             loading="lazy"
             decoding="async"

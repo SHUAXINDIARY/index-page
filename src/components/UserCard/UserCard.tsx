@@ -48,7 +48,7 @@ export const UserCard = ({ config }: UserCardProps) => {
             />
           </div>
           <div className="user-info">
-            <h3>{config.name}</h3>
+            <h3 aria-level={2}>{config.name}</h3>
             {/* <span className="user-tag">{config.tag}</span> */}
           </div>
         </div>
@@ -59,11 +59,12 @@ export const UserCard = ({ config }: UserCardProps) => {
             return (
               <button
                 type="button"
+                aria-haspopup={item.url && !item.onClick ? 'dialog' : undefined}
                 key={index}
                 className="menu-item"
                 onClick={item.onClick || (() => handleMenuClick(item.url || ''))}
               >
-                <span className="menu-icon">
+                <span className="menu-icon" aria-hidden="true">
                   {IconComponent && <IconComponent size={18} />}
                 </span>
                 <span className="menu-label">{item.label}</span>

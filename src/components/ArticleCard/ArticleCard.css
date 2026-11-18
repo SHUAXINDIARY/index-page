@@ -50,3 +50,10 @@
   margin: 0;
 }
 
+.article-card-link {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 1;
+}
+

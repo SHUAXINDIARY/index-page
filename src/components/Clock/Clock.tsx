@@ -44,9 +44,9 @@ export const Clock = () => {
 
   return (
     <Card className="clock-card">
-      <div className="clock-time">
-        <span className="clock-hm">{hm}</span>
-        <span className="clock-seconds">
+      <div className="clock-time" role="timer" aria-label={`当前时间 ${time.format('HH:mm:ss')}`} aria-live="off">
+        <span className="clock-hm" aria-hidden="true">{hm}</span>
+        <span className="clock-seconds" aria-hidden="true">
           :
           <FlipDigit value={ss[0]} />
           <FlipDigit value={ss[1]} />

@@ -653,6 +653,28 @@ export const AnnotatedWorldMap = ({
   };
 
   const handleCanvasKeyDown = (event: KeyboardEvent): void => {
+    // 复用原有视口约束，为滚轮缩放和拖动补充键盘等价操作。
+    if (['+', '=', '-', 'Home'].includes(event.key) || (event.shiftKey && event.key.startsWith('Arrow'))) {
+      event.preventDefault();
+      updateViewport((current) => {
+        if (event.key === 'Home') return { scale: MIN_MAP_SCALE, x: 0, y: 0 };
+        const nextScale = clampNumber(
+          current.scale * (event.key === '-' ? 1 / MAP_ZOOM_STEP : ['+', '='].includes(event.key) ? MAP_ZOOM_STEP : 1),
+          MIN_MAP_SCALE,
+          MAX_MAP_SCALE,
+        );
+        const ratio = nextScale / current.scale;
+        const step = 32;
+        return constrainViewportTransform({
+          scale: nextScale,
+          x: containerSize.width / 2 - (containerSize.width / 2 - current.x) * ratio
+            + (event.key === 'ArrowLeft' ? step : event.key === 'ArrowRight' ? -step : 0),
+          y: containerSize.height / 2 - (containerSize.height / 2 - current.y) * ratio
+            + (event.key === 'ArrowUp' ? step : event.key === 'ArrowDown' ? -step : 0),
+        }, containerSize.width, containerSize.height);
+      });
+      return;
+    }
     if (markers.length === 0) {
       return;
     }
@@ -679,7 +701,7 @@ export const AnnotatedWorldMap = ({
 
   const mapCanvasLabel =
     activeMarker === null
-      ? `${ariaLabel}。滚轮可缩放地图，放大后可拖拽查看局部；方向键可依次聚焦标记点。`
+      ? `${ariaLabel}。滚轮或加减键缩放，Home 复位，Shift 加方向键平移；方向键可依次聚焦标记点。`
       : `${ariaLabel}。当前标记：${activeMarker.description ? `${activeMarker.name}，${activeMarker.description}` : activeMarker.name}`;
 
   return (
@@ -691,18 +713,21 @@ export const AnnotatedWorldMap = ({
       onPointerUp={stopMapDrag}
       onPointerCancel={stopMapDrag}
       onPointerLeave={handleCanvasPointerLeave}
+      onBlur={(event) => {
+        if (!(event.relatedTarget instanceof Node) || !event.currentTarget.contains(event.relatedTarget)) {
+          setFocusedMarkerIndex(null);
+          setHoveredMarker(null);
+        }
+      }}
     >
       <canvas
         ref={mapCanvasRef}
         className="annotated-world-map__canvas"
-        role="img"
+        role="group"
+        aria-roledescription="交互地图"
         aria-label={mapCanvasLabel}
         tabIndex={0}
         onKeyDown={handleCanvasKeyDown}
-        onBlur={(): void => {
-          setFocusedMarkerIndex(null);
-          setHoveredMarker(null);
-        }}
       />
       {tooltipMarker && markerTooltipStyle ? (
         <div
@@ -721,6 +746,7 @@ export const AnnotatedWorldMap = ({
               href={tooltipMarker.imgUrl}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`查看照片：${tooltipMarker.name}（新窗口）`}
             >
               查看照片
             </a>

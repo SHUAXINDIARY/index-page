@@ -39,6 +39,8 @@ const createAnimationParams = () => ({
 
 /** Card 组件属性 */
 interface CardProps {
+  /** 需要独立读取的卡片区域名称，不影响现有布局和视觉标题 */
+  ariaLabel?: string;
   /** 子元素 */
   children: ReactNode;
   /** 自定义类名 */
@@ -57,6 +59,7 @@ export const Card = ({
   style,
   onClick,
   delay = 0,
+  ariaLabel,
 }: CardProps) => {
   /** 随机动画参数，使用惰性初始化确保只在首次渲染时生成 */
   const [animationParams] = useState(createAnimationParams);
@@ -110,6 +113,8 @@ export const Card = ({
   const cardContent = (
     <motion.div
       ref={cardRef}
+      role={ariaLabel ? 'group' : undefined}
+      aria-label={ariaLabel}
       className={`card ${className}`}
       style={motionCardStyle}
       whileHover={prefersReducedMotion ? undefined : { y: -10, scale: 1.035 }}

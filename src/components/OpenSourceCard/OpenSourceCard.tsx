@@ -232,7 +232,7 @@ export const OpenSourceCard = ({ config }: OpenSourceCardProps) => {
           type="button"
           onClick={handleOpenModal}
           aria-haspopup="dialog"
-          aria-label="查看全部开源项目"
+          aria-label={`${config.title}，${config.ctaLabel}`}
         >
           <span className="open-source-card-header">
             <span className="open-source-card-title-row">
@@ -254,7 +254,7 @@ export const OpenSourceCard = ({ config }: OpenSourceCardProps) => {
             {config.description}
           </span>
 
-          <span className="open-source-card-preview" aria-label="重点开源项目">
+          <span className="open-source-card-preview">
             {previewProjects.map((project) => (
               <span key={project.name} className="open-source-card-project">
                 <strong>{project.name}</strong>

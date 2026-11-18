@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState, memo } from 'react';
+import { useCallback, useEffect, useMemo, useState, useRef, memo } from 'react';
+import { useModalAccessibility } from '../../hooks/useModalAccessibility';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { useTheme } from '../../hooks/themeContext';
@@ -20,10 +21,15 @@ import './WorldMap.css';
 const fullscreenButtonIcon = <Maximize2 size={18} />;
 const closeButtonIcon = <X size={24} />;
 
+/** 地图图例切换项的显示数据和回调 */
 interface LegendItemProps {
+  /** 标记类型 */
   type: string;
+  /** 显示名称 */
   label: string;
+  /** 当前类型是否显示 */
   isVisible: boolean;
+  /** 切换指定类型可见性 */
   onClick: (type: string) => void;
 }
 
@@ -32,26 +38,20 @@ const LegendItem = memo(function LegendItem({ type, label, isVisible, onClick }:
   const dotClassName = MARKER_LEGEND_TOKEN_CLASS[type] ?? 'world-map-legend-dot--travel';
 
   return (
-    <div
+    <button
+      type="button"
+      aria-pressed={isVisible}
       className={`world-map-legend-item ${isVisible ? 'active' : 'inactive'}`}
       onClick={handleClick}
-      onKeyDown={(e): void => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleClick();
-        }
-      }}
-      role="button"
-      tabIndex={0}
     >
-      <div
+      <span
         className={`world-map-legend-dot ${dotClassName}`}
         style={{ opacity: isVisible ? 1 : 0.3 }}
       />
       <span className="world-map-legend-label" style={{ opacity: isVisible ? 1 : 0.5 }}>
         {label}
       </span>
-    </div>
+    </button>
   );
 });
 
@@ -69,6 +69,8 @@ export const WorldMap = memo(function WorldMap({ config }: WorldMapProps) {
     config.legend?.forEach((item) => types.add(item.type));
     return types;
   });
+  const fullscreenRef = useRef<HTMLDivElement>(null);
+  useModalAccessibility({ active: isFullscreen, containerRef: fullscreenRef });
 
   const [viewportTransform, setViewportTransform] = useState<ViewportTransform>({
     scale: MIN_MAP_SCALE,
@@ -194,6 +196,11 @@ export const WorldMap = memo(function WorldMap({ config }: WorldMapProps) {
         <AnimatePresence>
           {isFullscreen && (
             <motion.div
+              ref={fullscreenRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="全屏世界地图"
+              tabIndex={-1}
               className="world-map-fullscreen"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

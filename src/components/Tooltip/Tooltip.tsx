@@ -34,7 +34,7 @@ export const Tooltip = ({ children, content, delay = 300, disabled = false }: To
   const tooltipTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // 处理鼠标悬停
-  const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLElement>) => {
+  const handleMouseEnter = useCallback((e: React.SyntheticEvent<HTMLElement>) => {
     if (disabled || !content) return;
 
     // 清除之前的定时器
@@ -83,6 +83,11 @@ export const Tooltip = ({ children, content, delay = 300, disabled = false }: To
       <span
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onFocus={handleMouseEnter}
+        onBlur={handleMouseLeave}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') handleMouseLeave();
+        }}
         style={{ display: 'inline-block' }}
       >
         {children}
@@ -92,6 +97,8 @@ export const Tooltip = ({ children, content, delay = 300, disabled = false }: To
       {tooltip.visible && !disabled && content && createPortal(
         <div
           className="tooltip"
+          role="tooltip"
+          aria-hidden="true"
           style={{
             left: `${tooltip.x}px`,
             top: `${tooltip.y}px`,

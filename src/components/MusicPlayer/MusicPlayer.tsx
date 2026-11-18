@@ -153,10 +153,18 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
     <Card className="music-player">
       <div className="music-info">
         <span className="music-label">{config.label}</span>
-        <h4 className="music-title">
+        <h4 className="music-title" aria-level={2}>
           {currentTrack ? currentTrack.name : config.title}
         </h4>
-        <div className="music-progress">
+        <div
+          className="music-progress"
+          role="progressbar"
+          aria-label="音乐播放进度"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={currentTrack ? Math.round(progress) : 0}
+          aria-valuetext={currentTrack ? `${Math.round(progress)}%` : '尚未播放音乐'}
+        >
           <div 
             className={`music-progress-bar${isPlaying ? ' music-progress-bar--playing' : ''}`}
             style={{ width: `${isPlaying ? progress : config.progress}%` }}

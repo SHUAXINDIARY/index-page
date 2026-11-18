@@ -1,7 +1,8 @@
 import type { MouseEvent, PointerEvent, ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { useModalAccessibility } from '../../hooks/useModalAccessibility';
 import { X } from 'lucide-react';
 import './Carousel.css';
 
@@ -86,6 +87,10 @@ export const Carousel = ({
   const [isHovered, setIsHovered] = useState(false);
   /** 是否全屏显示 */
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const fullscreenRef = useRef<HTMLDivElement>(null);
+  useModalAccessibility({ active: isFullscreen, containerRef: fullscreenRef });
 
   /** 拖拽状态 ref */
   const dragState = useRef({
@@ -118,7 +123,7 @@ export const Carousel = ({
     : position;
 
   /** 是否应该暂停自动轮播 */
-  const shouldPause = paused || isDragging || isFullscreen || (pauseOnHover && isHovered);
+  const shouldPause = paused || isDragging || isFullscreen || isFocused || prefersReducedMotion || (pauseOnHover && isHovered);
 
   // 自动轮播
   useEffect(() => {
@@ -365,11 +370,34 @@ export const Carousel = ({
     <>
       <div
         className="carousel"
+        role="region"
+        aria-roledescription="轮播图"
+        aria-label="图片轮播"
+        onFocus={(event) => {
+          // 只为键盘导航暂停，保留鼠标点击指示器后的原有自动轮播行为。
+          setIsFocused(event.target instanceof HTMLElement && event.target.matches(':focus-visible'));
+        }}
+        onBlur={(event) => {
+          if (!(event.relatedTarget instanceof Node) || !event.currentTarget.contains(event.relatedTarget)) setIsFocused(false);
+        }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         <div
           className="carousel-slider"
+          role={enableFullscreen ? 'button' : 'group'}
+          tabIndex={enableFullscreen ? 0 : undefined}
+          aria-label={enableFullscreen ? '全屏查看当前图片' : '当前轮播内容'}
+          aria-haspopup={enableFullscreen ? 'dialog' : undefined}
+          onKeyDown={(event) => {
+            if (event.key === 'ArrowRight') { event.preventDefault(); moveNext(); }
+            if (event.key === 'ArrowLeft') { event.preventDefault(); movePrev(); }
+            if (enableFullscreen && event.key === 'Enter') { event.preventDefault(); setIsFullscreen(true); }
+            if (enableFullscreen && event.key === ' ') event.preventDefault();
+          }}
+          onKeyUp={(event) => {
+            if (enableFullscreen && event.key === ' ') { event.preventDefault(); setIsFullscreen(true); }
+          }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerEnd}
@@ -382,6 +410,8 @@ export const Carousel = ({
           >
             {slides.map((slide, index) => (
               <div
+                aria-hidden={index !== position}
+                ref={(element) => { if (element) element.inert = index !== position; }}
                 className={`carousel-slide ${slideClassName} ${enableFullscreen ? 'carousel-slide--clickable' : ''}`}
                 key={`${slide.key}-${index}`}
               >
@@ -400,6 +430,15 @@ export const Carousel = ({
           {isFullscreen && (
             <motion.div
               className="carousel-fullscreen"
+              ref={fullscreenRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="全屏图片查看器"
+              tabIndex={-1}
+              onKeyDown={(event) => {
+                if (event.key === 'ArrowRight') { event.preventDefault(); moveNext(); }
+                if (event.key === 'ArrowLeft') { event.preventDefault(); movePrev(); }
+              }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -434,6 +473,8 @@ export const Carousel = ({
                 >
                   {slides.map((slide, index) => (
                     <div
+                      aria-hidden={index !== position}
+                      ref={(element) => { if (element) element.inert = index !== position; }}
                       className={`carousel-slide carousel-slide--fullscreen ${fullscreenSlideClassName}`}
                       key={`fullscreen-${slide.key}-${index}`}
                     >
