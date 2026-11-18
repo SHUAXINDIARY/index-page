@@ -1,6 +1,4 @@
 import './App.css';
-import H5 from './H5';
-import PC from './PC';
 import { UserCard } from './components/UserCard';
 import { ImageCard } from './components/ImageCard';
 import { WelcomeCard } from './components/WelcomeCard';
@@ -35,6 +33,17 @@ import {
   BACKGROUND_EXIT_DURATION_MS,
   CARD_SIZES,
 } from './constant';
+
+/** 按当前视口加载对应布局，避免两端布局同时进入首页初始包 */
+const H5 = lazy(() => import('./H5'));
+const PC = lazy(() => import('./PC'));
+
+/** 布局模块加载期间保留页面容器，并提供可访问的加载提示 */
+const layoutFallback = (
+  <div className="app-container" role="status">
+    页面加载中…
+  </div>
+);
 
 /** 延迟加载日历组件，避免阻塞首屏渲染 */
 const LazyCalendar = lazy(async () => {
@@ -275,33 +284,37 @@ const App = () => {
   /** 移动端 & 平板端紧凑布局 */
   if (isCompact) {
     return (
-      <H5
-        breakpoint={breakpoint}
-        hasBackgroundImage={Boolean(backgroundImage)}
-        backgroundImageEnabled={backgroundImageEnabled}
-        containerStyle={appContainerStyle}
-        backgroundLayer={backgroundLayer}
-        renderCard={renderCard}
-        onBackgroundImageChange={handleBackgroundImageChange}
-        onRefreshLayout={refreshLayout}
-      />
+      <Suspense fallback={layoutFallback}>
+        <H5
+          breakpoint={breakpoint}
+          hasBackgroundImage={Boolean(backgroundImage)}
+          backgroundImageEnabled={backgroundImageEnabled}
+          containerStyle={appContainerStyle}
+          backgroundLayer={backgroundLayer}
+          renderCard={renderCard}
+          onBackgroundImageChange={handleBackgroundImageChange}
+          onRefreshLayout={refreshLayout}
+        />
+      </Suspense>
     );
   }
 
   /** PC 端随机布局 */
   return (
-    <PC
-      cards={cardConfigs}
-      layout={layout}
-      hasBackgroundImage={Boolean(backgroundImage)}
-      backgroundImageEnabled={backgroundImageEnabled}
-      containerStyle={appContainerStyle}
-      backgroundLayer={backgroundLayer}
-      infiniteCanvasButton={infiniteCanvasButton}
-      renderCard={renderCard}
-      onBackgroundImageChange={handleBackgroundImageChange}
-      onRefreshLayout={refreshLayout}
-    />
+    <Suspense fallback={layoutFallback}>
+      <PC
+        cards={cardConfigs}
+        layout={layout}
+        hasBackgroundImage={Boolean(backgroundImage)}
+        backgroundImageEnabled={backgroundImageEnabled}
+        containerStyle={appContainerStyle}
+        backgroundLayer={backgroundLayer}
+        infiniteCanvasButton={infiniteCanvasButton}
+        renderCard={renderCard}
+        onBackgroundImageChange={handleBackgroundImageChange}
+        onRefreshLayout={refreshLayout}
+      />
+    </Suspense>
   );
 };
 
