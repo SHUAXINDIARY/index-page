@@ -1,4 +1,5 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { useModalAccessibility } from '../../hooks/useModalAccessibility';
 import { createPortal } from 'react-dom';
 import { motion } from 'motion/react';
 import { X, ExternalLink } from 'lucide-react';
@@ -15,6 +16,8 @@ export interface IframeModalProps {
 }
 
 export const IframeModal = ({ url, onClose, title = 'External Content' }: IframeModalProps) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  useModalAccessibility({ active: true, containerRef: modalRef });
   /** 在新标签页打开 */
   const handleOpenInNewTab = useCallback(() => {
     window.open(url, '_blank');
@@ -47,6 +50,11 @@ export const IframeModal = ({ url, onClose, title = 'External Content' }: Iframe
       transition={{ duration: 0.2 }}
     >
       <motion.div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        tabIndex={-1}
         className="iframe-modal"
         onClick={(e) => e.stopPropagation()}
         initial={{ opacity: 0, scale: 0.95, y: 20 }}

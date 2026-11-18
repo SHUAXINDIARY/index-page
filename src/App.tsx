@@ -1,12 +1,9 @@
 import './App.css';
 import { UserCard } from './components/UserCard';
-import { ImageCard } from './components/ImageCard';
 import { WelcomeCard } from './components/WelcomeCard';
 import { Clock } from './components/Clock';
 import { ActionButton } from './components/ActionButton';
-import { ArticleCard } from './components/ArticleCard';
-import { OpenSourceCard } from './components/OpenSourceCard';
-import { MusicPlayer } from './components/MusicPlayer';
+import { DeferredCard } from './components/DeferredCard';
 import { SocialLinks } from './components/SocialLinks';
 import type { InfiniteCanvasItem } from './components/InfiniteCanvasView';
 import { contentConfig } from './config/content';
@@ -38,6 +35,30 @@ import {
 const H5 = lazy(() => import('./H5'));
 const PC = lazy(() => import('./PC'));
 
+/** 次要卡片独立拆包，由可见性边界决定何时开始下载 */
+const ImageCard = lazy(async () => {
+  const module = await import('./components/ImageCard');
+  return { default: module.ImageCard };
+});
+const ArticleCard = lazy(async () => {
+  const module = await import('./components/ArticleCard');
+  return { default: module.ArticleCard };
+});
+const OpenSourceCard = lazy(async () => {
+  const module = await import('./components/OpenSourceCard');
+  return { default: module.OpenSourceCard };
+});
+const MusicPlayer = lazy(async () => {
+  const module = await import('./components/MusicPlayer');
+  return { default: module.MusicPlayer };
+});
+
+/** 构建期文章数据保持稳定引用，避免背景等状态变化重复触发文章请求 */
+const articleConfig = {
+  ...contentConfig.article,
+  ...(blogData.latestPost || {}),
+};
+
 /** 布局模块加载期间保留页面容器，并提供可访问的加载提示 */
 const layoutFallback = (
   <div className="app-container" role="status">
@@ -62,26 +83,6 @@ const LazyInfiniteCanvasView = lazy(async () => {
   const module = await import('./components/InfiniteCanvasView');
   return { default: module.InfiniteCanvasView };
 });
-
-/** 延迟组件占位卡片 ID 类型 */
-type DeferredCardId = 'calendar' | 'worldMap';
-
-/** 延迟加载期间的轻量占位，保持布局稳定 */
-const DeferredCardFallback = ({ cardId }: { cardId: DeferredCardId }) => {
-  const cardSize = CARD_SIZES[cardId];
-  return (
-    <div
-      aria-hidden="true"
-      style={{
-        width: '100%',
-        height: '100%',
-        minHeight: cardSize.height,
-        borderRadius: 16,
-        background: 'var(--card-bg-color, rgba(127, 127, 127, 0.12))',
-      }}
-    />
-  );
-};
 
 const App = () => {
   const breakpoint = useBreakpoint();
@@ -115,7 +116,10 @@ const App = () => {
     [],
   );
 
-  const { layout, refreshLayout } = useRandomLayout(cardConfigs);
+  const { layout, refreshLayout } = useRandomLayout(
+    cardConfigs,
+    !isCompact || infiniteCanvasEnabled,
+  );
 
   const handleBackgroundImageChange = useCallback(
     (enabled: boolean) => {
@@ -192,26 +196,31 @@ const App = () => {
         return <UserCard config={contentConfig.user} />;
       case 'article':
         return (
-          <ArticleCard
-            config={{
-              ...contentConfig.article,
-              ...(blogData.latestPost || {}),
-            }}
-          />
+          <DeferredCard cardId="article">
+            <ArticleCard config={articleConfig} />
+          </DeferredCard>
         );
       case 'openSource':
-        return <OpenSourceCard config={contentConfig.openSource} />;
+        return (
+          <DeferredCard cardId="openSource">
+            <OpenSourceCard config={contentConfig.openSource} />
+          </DeferredCard>
+        );
       case 'social':
         return <SocialLinks links={contentConfig.socialLinks} />;
       case 'image':
-        return <ImageCard images={contentConfig.images} />;
+        return contentConfig.images.length > 0 ? (
+          <DeferredCard cardId="image">
+            <ImageCard images={contentConfig.images} />
+          </DeferredCard>
+        ) : null;
       case 'welcome':
         return <WelcomeCard config={contentConfig.welcome} />;
       case 'worldMap':
         return contentConfig.worldMap ? (
-          <Suspense fallback={<DeferredCardFallback cardId="worldMap" />}>
+          <DeferredCard cardId="worldMap">
             <LazyWorldMap config={contentConfig.worldMap} />
-          </Suspense>
+          </DeferredCard>
         ) : null;
       case 'location':
         return (
@@ -221,34 +230,38 @@ const App = () => {
         return <Clock />;
       case 'calendar':
         return (
-          <Suspense fallback={<DeferredCardFallback cardId="calendar" />}>
+          <DeferredCard cardId="calendar">
             <LazyCalendar />
-          </Suspense>
+          </DeferredCard>
         );
       case 'music':
-        return <MusicPlayer config={contentConfig.music} />;
+        return (
+          <DeferredCard cardId="music">
+            <MusicPlayer config={contentConfig.music} />
+          </DeferredCard>
+        );
       default:
         return null;
     }
   };
 
-  const infiniteCanvasItems: InfiniteCanvasItem[] = cardConfigs.flatMap(
-    ({ id, size }) => {
-      const position = layout.positions[id];
-      const content = renderCard(id);
-      if (!position || !content) return [];
-      return [
-        {
-          id,
-          x: position.x,
-          y: position.y,
-          width: size.width,
-          height: size.height,
-          content,
-        },
-      ];
-    },
-  );
+  const infiniteCanvasItems: InfiniteCanvasItem[] = infiniteCanvasEnabled
+    ? cardConfigs.flatMap(({ id, size }) => {
+        const position = layout.positions[id];
+        const content = renderCard(id);
+        if (!position || !content) return [];
+        return [
+          {
+            id,
+            x: position.x,
+            y: position.y,
+            width: size.width,
+            height: size.height,
+            content,
+          },
+        ];
+      })
+    : [];
 
   const infiniteCanvasButton = (
     <button

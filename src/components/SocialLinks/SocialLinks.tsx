@@ -53,8 +53,9 @@ export const SocialLinks = ({ links }: SocialLinksProps) => {
               className="social-link"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`${link.label}（新窗口）`}
             >
-              <div className="social-icon">{renderIcon(link.icon)}</div>
+              <div className="social-icon" aria-hidden="true">{renderIcon(link.icon)}</div>
             </a>
           </motion.div>
         </Tooltip>

@@ -472,9 +472,10 @@ const calculateScale = (
 /**
  * 随机布局 Hook
  * @param cards 卡片配置列表
+ * @param enabled 紧凑布局不使用随机坐标时关闭计算
  * @returns 布局结果和刷新方法
  */
-export const useRandomLayout = (cards: CardConfig[]) => {
+export const useRandomLayout = (cards: CardConfig[], enabled = true) => {
   const [layoutKey, setLayoutKey] = useState(0);
 
   /** 订阅视口尺寸变化 */
@@ -484,21 +485,25 @@ export const useRandomLayout = (cards: CardConfig[]) => {
     getServerSnapshot
   );
 
-  const layout = useMemo(() => {
-    const baseLayout = calculateAestheticLayout(cards);
-    const scale = calculateScale(
-      baseLayout.totalWidth,
-      baseLayout.totalHeight,
-      viewport.width,
-      viewport.height
-    );
-
-    return {
-      ...baseLayout,
-      scale,
-    };
+  // 视口变化仅更新缩放，避免每次 resize 都重新搜索随机摆放位置。
+  const baseLayout = useMemo<BaseLayoutResult>(() => {
+    if (!enabled) return { positions: {}, totalWidth: 0, totalHeight: 0 };
+    return calculateAestheticLayout(cards);
+    // layoutKey 仅用于用户主动重新布局。
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cards, layoutKey, viewport.width, viewport.height]);
+  }, [cards, enabled, layoutKey]);
+
+  const layout: LayoutResult = {
+    ...baseLayout,
+    scale: enabled
+      ? calculateScale(
+          baseLayout.totalWidth,
+          baseLayout.totalHeight,
+          viewport.width,
+          viewport.height
+        )
+      : 1,
+  };
 
   const refreshLayout = useCallback(() => {
     setLayoutKey((prev) => prev + 1);

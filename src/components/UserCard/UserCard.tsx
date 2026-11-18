@@ -39,7 +39,13 @@ export const UserCard = ({ config }: UserCardProps) => {
       <Card className="user-card">
         <div className="user-header">
           <div className="user-avatar">
-            <img src={config.avatar} alt="avatar" />
+            <img
+              src={config.avatar}
+              alt={`${config.name}的头像`}
+              width={48}
+              height={48}
+              decoding="async"
+            />
           </div>
           <div className="user-info">
             <h3>{config.name}</h3>
@@ -51,7 +57,8 @@ export const UserCard = ({ config }: UserCardProps) => {
           {config.menuItems.map((item, index) => {
             const IconComponent = iconMap[item.icon];
             return (
-              <div
+              <button
+                type="button"
                 key={index}
                 className="menu-item"
                 onClick={item.onClick || (() => handleMenuClick(item.url || ''))}
@@ -60,7 +67,7 @@ export const UserCard = ({ config }: UserCardProps) => {
                   {IconComponent && <IconComponent size={18} />}
                 </span>
                 <span className="menu-label">{item.label}</span>
-              </div>
+              </button>
             );
           })}
         </div>
@@ -72,6 +79,7 @@ export const UserCard = ({ config }: UserCardProps) => {
           <IframeModal
             key="iframe-modal"
             url={modalUrl}
+            title={config.menuItems.find((item) => item.url === modalUrl)?.label || '外部内容'}
             onClose={handleCloseModal}
           />
         )}

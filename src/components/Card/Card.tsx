@@ -129,11 +129,14 @@ export const Card = ({
   return (
     <motion.div
       className="card-animation-wrapper"
-      initial={{ opacity: 0, y: animationParams.y, scale: 0.95 }}
+      // 不以透明状态隐藏首屏内容；保留位移和缩放来表达入场。
+      initial={
+        prefersReducedMotion ? false : { y: animationParams.y, scale: 0.95 }
+      }
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{
-        duration: animationParams.duration,
-        delay: delay + animationParams.randomDelay,
+        duration: prefersReducedMotion ? 0 : animationParams.duration,
+        delay: prefersReducedMotion ? 0 : delay + animationParams.randomDelay,
         ease: [0.25, 0.1, 0.25, 1],
       }}
     >

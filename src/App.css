@@ -840,6 +840,45 @@ body {
   height: 100% !important;
 }
 
+/* 延迟卡片在下载前后使用相同的尺寸下限，避免后续内容突然上移。 */
+.deferred-card {
+  --deferred-card-height: var(--deferred-card-base-height);
+  width: 100%;
+  height: 100%;
+  min-height: var(--deferred-card-height);
+  display: flex;
+  justify-content: center;
+}
+
+.deferred-card .card {
+  flex: 1;
+  width: 100%;
+}
+
+.deferred-card-placeholder,
+.deferred-card-message {
+  width: 100%;
+  min-height: var(--deferred-card-height);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+}
+
+.deferred-card-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  color: var(--color-primary);
+}
+
+/* 地图在窄屏样式中为 400px，占位同步预留，不能沿用桌面的 200px。 */
+@media (max-width: 768px) {
+  .deferred-card--worldMap {
+    --deferred-card-height: 400px;
+  }
+}
+
 /* 保留旧的网格布局样式（用于兼容或回退） */
 .content-grid {
   display: grid;
@@ -1046,6 +1085,11 @@ body {
 
 .compact-card--social > * {
   min-height: auto;
+}
+
+/* 占位与加载完成后共用尺寸下限，覆盖紧凑布局的通用最小高度。 */
+.compact-card > .deferred-card {
+  min-height: var(--deferred-card-height);
 }
 
 /* 小型卡片行内布局 */

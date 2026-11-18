@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Github, Shuffle } from 'lucide-react';
 import { ThemeToggle } from './components/ThemeToggle';
 import { COMPACT_CARD_ORDER, GITHUB_REPO_URL } from './constant';
@@ -28,6 +28,7 @@ const H5 = ({
   onBackgroundImageChange,
   onRefreshLayout,
 }: H5Props) => {
+  const prefersReducedMotion = useReducedMotion();
   /** 可见卡片索引计数器 */
   let visibleIndex = 0;
 
@@ -46,11 +47,12 @@ const H5 = ({
             <motion.div
               key={cardId}
               className={`compact-card compact-card--${cardId}`}
-              initial={{ opacity: 0, y: 24 }}
+              // 保持首帧内容可见，避免淡入延迟首屏文字和头像的绘制。
+              initial={prefersReducedMotion ? false : { y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
-                duration: 0.5,
-                delay: staggerIndex * 0.06,
+                duration: prefersReducedMotion ? 0 : 0.5,
+                delay: prefersReducedMotion ? 0 : staggerIndex * 0.06,
                 ease: [0.25, 1, 0.5, 1],
               }}
             >

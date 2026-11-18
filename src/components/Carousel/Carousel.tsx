@@ -385,7 +385,8 @@ export const Carousel = ({
                 className={`carousel-slide ${slideClassName} ${enableFullscreen ? 'carousel-slide--clickable' : ''}`}
                 key={`${slide.key}-${index}`}
               >
-                {slide.content}
+                {/* 仅挂载当前项及相邻项，保留轨道尺寸和首尾克隆切换。 */}
+                {Math.abs(index - position) <= 1 ? slide.content : null}
               </div>
             ))}
           </div>
@@ -436,7 +437,9 @@ export const Carousel = ({
                       className={`carousel-slide carousel-slide--fullscreen ${fullscreenSlideClassName}`}
                       key={`fullscreen-${slide.key}-${index}`}
                     >
-                      {slide.fullscreenContent ?? slide.content}
+                      {Math.abs(index - position) <= 1
+                        ? (slide.fullscreenContent ?? slide.content)
+                        : null}
                     </div>
                   ))}
                 </div>

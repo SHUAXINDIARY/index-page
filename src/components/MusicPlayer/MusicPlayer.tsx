@@ -165,6 +165,10 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
       </div>
       <div className="music-controls">
         <motion.button
+          type="button"
+          aria-label={isLoading ? '正在加载音乐' : isPlaying ? '暂停音乐' : '播放音乐'}
+          aria-pressed={isPlaying}
+          aria-busy={isLoading}
           className="music-play-button"
           onClick={togglePlay}
           disabled={isLoading}
@@ -209,6 +213,8 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
           </AnimatePresence>
         </motion.button>
         <motion.button
+          type="button"
+          aria-label="下一首音乐"
           className="music-next-button"
           onClick={playNext}
           disabled={isLoading || !config.urlList || config.urlList.length === 0}

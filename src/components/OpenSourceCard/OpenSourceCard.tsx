@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, useRef, useId } from 'react';
+import { useModalAccessibility } from '../../hooks/useModalAccessibility';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import {
@@ -19,9 +20,6 @@ import type {
 
 /** 卡片预览中展示的项目数量 */
 const CARD_PREVIEW_LIMIT = 2;
-
-/** 开源项目弹窗标题 ID */
-const MODAL_TITLE_ID = 'open-source-modal-title';
 
 /** 开源项目状态标签映射 */
 const statusLabelMap: Record<OpenSourceProjectStatus, string> = {
@@ -83,6 +81,7 @@ const OpenSourceProjectRow = ({ project }: OpenSourceProjectRowProps) => {
 
         <div
           className="open-source-project-tags"
+          role="group"
           aria-label={`${project.name} 项目标签`}
         >
           {project.tags.map((tag) => (
@@ -100,7 +99,7 @@ const OpenSourceProjectRow = ({ project }: OpenSourceProjectRowProps) => {
       </div>
 
       <div className="open-source-project-actions">
-        <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+        <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" aria-label={`${repoHost}：${project.name} 源码（新窗口）`}>
           <Github size={15} strokeWidth={1.9} aria-hidden="true" />
           {repoHost}
         </a>
@@ -109,6 +108,7 @@ const OpenSourceProjectRow = ({ project }: OpenSourceProjectRowProps) => {
             href={project.homepageUrl}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`线上预览：${project.name}（新窗口）`}
           >
             <ExternalLink size={15} strokeWidth={1.9} aria-hidden="true" />
             线上预览
@@ -121,6 +121,9 @@ const OpenSourceProjectRow = ({ project }: OpenSourceProjectRowProps) => {
 
 /** 开源项目详情弹窗 */
 const OpenSourceModal = ({ config, onClose }: OpenSourceModalProps) => {
+  const modalRef = useRef<HTMLElement>(null);
+  const titleId = useId();
+  useModalAccessibility({ active: true, containerRef: modalRef });
   useEffect(() => {
     /** 进入弹窗前的 body 滚动状态 */
     const previousOverflow = document.body.style.overflow;
@@ -152,10 +155,12 @@ const OpenSourceModal = ({ config, onClose }: OpenSourceModalProps) => {
       transition={{ duration: 0.18, ease: [0.25, 1, 0.5, 1] }}
     >
       <motion.section
+        ref={modalRef}
+        tabIndex={-1}
         className="open-source-modal"
         role="dialog"
         aria-modal="true"
-        aria-labelledby={MODAL_TITLE_ID}
+        aria-labelledby={titleId}
         onClick={(event) => event.stopPropagation()}
         initial={{ opacity: 0, y: 18, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -165,7 +170,7 @@ const OpenSourceModal = ({ config, onClose }: OpenSourceModalProps) => {
         <header className="open-source-modal-header">
           <div>
             <span className="open-source-modal-kicker">{config.tag}</span>
-            <h2 id={MODAL_TITLE_ID}>{config.title}</h2>
+            <h2 id={titleId}>{config.title}</h2>
             <p>{config.description}</p>
           </div>
           <button
@@ -178,7 +183,7 @@ const OpenSourceModal = ({ config, onClose }: OpenSourceModalProps) => {
           </button>
         </header>
 
-        <div className="open-source-modal-summary" aria-label="开源项目概览">
+        <div className="open-source-modal-summary" role="group" aria-label="开源项目概览">
           <span>{config.projects.length} 个项目</span>
           <span>React / Rsbuild / Canvas / Vue / Node</span>
           <span>个人工具与内容索引</span>

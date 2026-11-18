@@ -24,13 +24,15 @@ export const ImageCard = ({ images, interval = 3000 }: ImageCardProps) => {
   /** 将图片数据转换为轮播项 */
   const carouselItems: CarouselItem[] = useMemo(
     () =>
-      images.map((image) => ({
+      images.map((image, index) => ({
         key: image.imageUrl,
         content: (
           <img
             src={image.imageUrl}
             alt={image.alt || 'image'}
             className="image-card-img"
+            loading={index === 0 ? 'eager' : 'lazy'}
+            decoding="async"
             draggable={false}
           />
         ),
@@ -39,6 +41,8 @@ export const ImageCard = ({ images, interval = 3000 }: ImageCardProps) => {
             src={image.imageUrl}
             alt={image.alt || 'image'}
             className="image-card-fullscreen-img"
+            loading="lazy"
+            decoding="async"
             draggable={false}
           />
         ),

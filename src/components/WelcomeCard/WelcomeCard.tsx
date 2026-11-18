@@ -17,10 +17,16 @@ export const WelcomeCard = ({ config }: WelcomeCardProps) => {
   return (
     <Card className="welcome-card">
       <div className="welcome-avatar">
-        <img src={config.avatar} alt="character" />
+        <img
+          src={config.avatar}
+          alt=""
+          width={100}
+          height={100}
+          fetchPriority="high"
+        />
       </div>
-      <h2 className="welcome-greeting">{getGreeting()}</h2>
-      <p className="welcome-text">About Me</p>
+      <h2 className="welcome-greeting" lang="en">{getGreeting()}</h2>
+      <p className="welcome-text" lang="en">About Me</p>
       <p >
         {user?.tag || ''}
       </p>
