@@ -49,7 +49,8 @@ export const useModalAccessibility = ({
       for (const sibling of branch.parentElement.children) {
         if (sibling !== branch && sibling instanceof HTMLElement) {
           isolated.push({ element: sibling, inert: sibling.inert });
-          sibling.inert = true;
+          // inert 是布尔属性，通过 DOM API 同步背景状态，避免对 Ref 派生对象直接赋值。
+          sibling.toggleAttribute('inert', true);
         }
       }
       if (branch.parentElement === document.body) break;
@@ -95,7 +96,9 @@ export const useModalAccessibility = ({
       document.removeEventListener('keydown', handleKeyDown);
       const index = modalStack.lastIndexOf(container);
       if (index >= 0) modalStack.splice(index, 1);
-      for (const { element, inert } of isolated) element.inert = inert;
+      for (const { element, inert } of isolated) {
+        element.toggleAttribute('inert', inert);
+      }
       if (previousFocus instanceof HTMLElement && previousFocus.isConnected && !previousFocus.closest('[inert]')) {
         previousFocus.focus({ preventScroll: true });
       }
