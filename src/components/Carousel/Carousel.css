@@ -42,38 +42,50 @@
 
 .carousel-indicators {
   position: absolute;
-  bottom: 12px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: calc(100% - 16px);
   gap: 6px;
   z-index: 10;
 }
 
 .carousel-indicator {
-  width: 8px;
-  height: 8px;
+  /* 按钮本体提供独立热区；48px 在桌面布局最小 0.5 倍缩放后仍有 24px。 */
+  min-inline-size: 48px;
+  min-block-size: 48px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.5);
+  background: transparent;
   cursor: pointer;
   padding: 0;
-  transition: background-color 0.2s ease;
   position: relative;
 }
 
-/* 扩大触控热区到 44px */
+/* 伪元素只绘制圆点，避免向外扩大的热区覆盖相邻按钮。 */
 .carousel-indicator::before {
   content: '';
-  position: absolute;
-  inset: -18px -10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.carousel-indicator:hover {
+.carousel-indicator:hover::before {
   background: rgba(255, 255, 255, 0.7);
 }
 
-.carousel-indicator.active {
+.carousel-indicator.active::before {
   background: rgba(255, 255, 255, 0.95);
 }
 
@@ -134,8 +146,11 @@
 .carousel-fullscreen-indicators {
   position: absolute;
   bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  /* 水平居中交给定位和自动外边距，避免入场动画覆盖 transform 后向右偏移。 */
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  transform: none;
   gap: 10px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -145,19 +160,19 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
-.carousel-fullscreen-indicators .carousel-indicator {
+.carousel-fullscreen-indicators .carousel-indicator::before {
   width: 10px;
   height: 10px;
   background: rgba(255, 255, 255, 0.4);
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.carousel-fullscreen-indicators .carousel-indicator:hover {
+.carousel-fullscreen-indicators .carousel-indicator:hover::before {
   background: rgba(255, 255, 255, 0.7);
   transform: scale(1.3);
 }
 
-.carousel-fullscreen-indicators .carousel-indicator.active {
+.carousel-fullscreen-indicators .carousel-indicator.active::before {
   background: rgba(255, 255, 255, 0.95);
   width: 24px;
   border-radius: 4px;
@@ -178,12 +193,12 @@
     gap: 8px;
   }
 
-  .carousel-fullscreen-indicators .carousel-indicator {
+  .carousel-fullscreen-indicators .carousel-indicator::before {
     width: 8px;
     height: 8px;
   }
 
-  .carousel-fullscreen-indicators .carousel-indicator.active {
+  .carousel-fullscreen-indicators .carousel-indicator.active::before {
     width: 20px;
   }
 }
