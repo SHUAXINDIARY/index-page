@@ -1,4 +1,6 @@
 import './App.css';
+import H5 from './H5';
+import PC from './PC';
 import { UserCard } from './components/UserCard';
 import { ImageCard } from './components/ImageCard';
 import { WelcomeCard } from './components/WelcomeCard';
@@ -8,15 +10,12 @@ import { ArticleCard } from './components/ArticleCard';
 import { OpenSourceCard } from './components/OpenSourceCard';
 import { MusicPlayer } from './components/MusicPlayer';
 import { SocialLinks } from './components/SocialLinks';
-import { ThemeToggle } from './components/ThemeToggle';
 import type { InfiniteCanvasItem } from './components/InfiniteCanvasView';
 import { contentConfig } from './config/content';
 import {
   Expand,
-  Github,
   LocateFixed,
   Minimize2,
-  Shuffle,
 } from 'lucide-react';
 import blogData from './config/blog-data.json';
 import { useRandomLayout, type CardConfig } from './hooks/useRandomLayout';
@@ -32,41 +31,10 @@ import {
   type CSSProperties,
 } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-
-/** GitHub 仓库地址 */
-const GITHUB_REPO_URL = 'https://github.com/SHUAXINDIARY/index-page';
-const BACKGROUND_EXIT_DURATION_MS = 380;
-
-
-/** 卡片尺寸配置 - PC 端 */
-const CARD_SIZES: Record<string, { width: number; height: number }> = {
-  user: { width: 280, height: 314 },
-  article: { width: 280, height: 165 },
-  openSource: { width: 320, height: 190 },
-  social: { width: 280, height: 136 },
-  image: { width: 240, height: 180 },
-  welcome: { width: 320, height: 329 },
-  worldMap: { width: 320, height: 200 },
-  location: { width: 120, height: 40 },
-  clock: { width: 195, height: 72 },
-  calendar: { width: 300, height: 330 },
-  music: { width: 320, height: 86 },
-};
-
-/** 移动端/平板端布局 - 渲染顺序 */
-const COMPACT_CARD_ORDER = [
-  'welcome',
-  'user',
-  'clock',
-  'location',
-  'image',
-  'calendar',
-  'article',
-  'openSource',
-  'music',
-  'worldMap',
-  'social',
-] as const;
+import {
+  BACKGROUND_EXIT_DURATION_MS,
+  CARD_SIZES,
+} from './constant';
 
 /** 延迟加载日历组件，避免阻塞首屏渲染 */
 const LazyCalendar = lazy(async () => {
@@ -208,29 +176,6 @@ const App = () => {
     />
   ) : null;
 
-  /** 生成卡片位置目标值 - PC 端随机布局 */
-  const getCardMotionProps = (cardId: string) => {
-    const pos = layout.positions[cardId];
-    if (!pos) return { style: {} as CSSProperties, animate: {} };
-    return {
-      style: {
-        position: 'absolute' as const,
-        width: pos.width,
-        height: pos.height,
-      },
-      animate: {
-        x: pos.x,
-        y: pos.y,
-      },
-      transition: {
-        type: 'spring' as const,
-        stiffness: 200,
-        damping: 28,
-        mass: 0.8,
-      },
-    };
-  };
-
   /** 渲染卡片内容 */
   const renderCard = (cardId: string) => {
     switch (cardId) {
@@ -329,188 +274,34 @@ const App = () => {
 
   /** 移动端 & 平板端紧凑布局 */
   if (isCompact) {
-    /** 可见卡片索引计数器 */
-    let visibleIndex = 0;
     return (
-      <div
-        className={`app-container app-container--compact${backgroundImage ? ' app-container--with-background' : ''}${backgroundImageEnabled ? ' app-container--background-visible' : ''} ${breakpoint === 'tablet' ? 'app-container--tablet' : 'app-container--mobile'}`}
-        style={appContainerStyle}
-      >
-        {backgroundLayer}
-        <div className="compact-layout">
-          {COMPACT_CARD_ORDER.map((cardId) => {
-            if (cardId === 'worldMap' && !contentConfig.worldMap) return null;
-            const content = renderCard(cardId);
-            if (!content) return null;
-            const staggerIndex = visibleIndex++;
-            return (
-              <motion.div
-                key={cardId}
-                className={`compact-card compact-card--${cardId}`}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.5,
-                  delay: staggerIndex * 0.06,
-                  ease: [0.25, 1, 0.5, 1],
-                }}
-              >
-                {content}
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* 底部固定工具栏 */}
-        <motion.div
-          className="fixed-toolbar"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6, ease: [0.25, 1, 0.5, 1] }}
-        >
-          <ThemeToggle
-            variant="badge"
-            backgroundImageEnabled={backgroundImageEnabled}
-            onBackgroundImageChange={handleBackgroundImageChange}
-          />
-          <button
-            className="toolbar-badge shuffle-btn"
-            onClick={refreshLayout}
-            title="重新布局 (Cmd/Ctrl + R)"
-          >
-            <Shuffle size={14} />
-            <span>重新布局</span>
-          </button>
-          <a
-            href={GITHUB_REPO_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="toolbar-badge"
-          >
-            <Github size={14} />
-            <span>使用同款</span>
-          </a>
-        </motion.div>
-      </div>
+      <H5
+        breakpoint={breakpoint}
+        hasBackgroundImage={Boolean(backgroundImage)}
+        backgroundImageEnabled={backgroundImageEnabled}
+        containerStyle={appContainerStyle}
+        backgroundLayer={backgroundLayer}
+        renderCard={renderCard}
+        onBackgroundImageChange={handleBackgroundImageChange}
+        onRefreshLayout={refreshLayout}
+      />
     );
   }
 
   /** PC 端随机布局 */
   return (
-    <div
-      className={`app-container${backgroundImage ? ' app-container--with-background' : ''}${backgroundImageEnabled ? ' app-container--background-visible' : ''}`}
-      style={appContainerStyle}
-    >
-      {backgroundLayer}
-      <div
-        className="random-layout-container"
-        style={{
-          position: 'relative',
-          width: layout.totalWidth,
-          height: layout.totalHeight,
-          transform: `scale(${layout.scale})`,
-          transformOrigin: 'center center',
-        }}
-      >
-        {/* User Card */}
-        <motion.div {...getCardMotionProps('user')}>
-          <UserCard config={contentConfig.user} />
-        </motion.div>
-
-        {/* Article Card */}
-        <motion.div {...getCardMotionProps('article')}>
-          <ArticleCard
-            config={{
-              ...contentConfig.article,
-              ...(blogData.latestPost || {}),
-            }}
-          />
-        </motion.div>
-
-        {/* Open Source Projects */}
-        <motion.div {...getCardMotionProps('openSource')}>
-          <OpenSourceCard config={contentConfig.openSource} />
-        </motion.div>
-
-        {/* Social Links */}
-        <motion.div {...getCardMotionProps('social')}>
-          <SocialLinks links={contentConfig.socialLinks} />
-        </motion.div>
-
-        {/* Image Card */}
-        <motion.div {...getCardMotionProps('image')}>
-          <ImageCard images={contentConfig.images} />
-        </motion.div>
-
-        {/* Welcome Card */}
-        <motion.div {...getCardMotionProps('welcome')}>
-          <WelcomeCard config={contentConfig.welcome} />
-        </motion.div>
-
-        {/* World Map */}
-        {contentConfig.worldMap && (
-          <motion.div {...getCardMotionProps('worldMap')}>
-            <Suspense fallback={<DeferredCardFallback cardId="worldMap" />}>
-              <LazyWorldMap config={contentConfig.worldMap} />
-            </Suspense>
-          </motion.div>
-        )}
-
-        {/* Location Button */}
-        <motion.div {...getCardMotionProps('location')}>
-          <ActionButton icon={<LocateFixed size={16} />} label="中国 | 北京" />
-        </motion.div>
-
-        {/* Clock */}
-        <motion.div {...getCardMotionProps('clock')}>
-          <Clock />
-        </motion.div>
-
-        {/* Calendar */}
-        <motion.div {...getCardMotionProps('calendar')}>
-          <Suspense fallback={<DeferredCardFallback cardId="calendar" />}>
-            <LazyCalendar />
-          </Suspense>
-        </motion.div>
-
-        {/* Music Player */}
-        <motion.div {...getCardMotionProps('music')}>
-          <MusicPlayer config={contentConfig.music} />
-        </motion.div>
-      </div>
-
-      {/* 底部固定工具栏 */}
-      <motion.div
-        className="fixed-toolbar"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.6, ease: [0.25, 1, 0.5, 1] }}
-      >
-        <ThemeToggle
-          variant="badge"
-          backgroundImageEnabled={backgroundImageEnabled}
-          onBackgroundImageChange={handleBackgroundImageChange}
-        />
-        {infiniteCanvasButton}
-        <button
-          className="toolbar-badge shuffle-btn"
-          onClick={refreshLayout}
-          title="重新布局 (Cmd/Ctrl + R)"
-        >
-          <Shuffle size={14} />
-          <span>重新布局</span>
-        </button>
-        <a
-          href={GITHUB_REPO_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="toolbar-badge"
-        >
-          <Github size={14} />
-          <span>使用同款</span>
-        </a>
-      </motion.div>
-    </div>
+    <PC
+      cards={cardConfigs}
+      layout={layout}
+      hasBackgroundImage={Boolean(backgroundImage)}
+      backgroundImageEnabled={backgroundImageEnabled}
+      containerStyle={appContainerStyle}
+      backgroundLayer={backgroundLayer}
+      infiniteCanvasButton={infiniteCanvasButton}
+      renderCard={renderCard}
+      onBackgroundImageChange={handleBackgroundImageChange}
+      onRefreshLayout={refreshLayout}
+    />
   );
 };
 
