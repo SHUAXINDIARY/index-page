@@ -15,6 +15,8 @@ type DeferredCardId =
 interface DeferredCardProps {
   /** 对应 CARD_SIZES 中的尺寸配置 */
   cardId: DeferredCardId;
+  /** 首屏关键内容立即挂载，其余内容接近视口后挂载 */
+  loadMode?: 'immediate' | 'visible';
   /** 尚未接近视口时不挂载，避免触发内部动态导入和请求 */
   children: ReactNode;
 }
@@ -69,19 +71,24 @@ class CardLoadBoundary extends Component<
 }
 
 /** 接近视口后才挂载次要卡片；加载完成后保留实例，避免滚动重建状态 */
-export const DeferredCard = ({ cardId, children }: DeferredCardProps) => {
+export const DeferredCard = ({
+  cardId,
+  children,
+  loadMode = 'visible',
+}: DeferredCardProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  // 当前入口为客户端渲染；不支持可见性观察时首轮直接挂载，避免 Effect 追加一次渲染。
+  // 首屏关键内容和不支持可见性观察的环境直接挂载，避免 Effect 追加一次渲染。
   const [ready, setReady] = useState(
-    () => typeof IntersectionObserver === 'undefined',
+    () => loadMode === 'immediate' || typeof IntersectionObserver === 'undefined',
   );
+  const shouldLoad = loadMode === 'immediate' || ready;
   const style: DeferredCardStyle = {
     '--deferred-card-base-height': `${CARD_SIZES[cardId].height}px`,
   };
 
   useEffect(() => {
     const container = containerRef.current;
-    if (ready || !container || typeof IntersectionObserver === 'undefined') return;
+    if (shouldLoad || !container || typeof IntersectionObserver === 'undefined') return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -95,7 +102,7 @@ export const DeferredCard = ({ cardId, children }: DeferredCardProps) => {
     );
     observer.observe(container);
     return () => observer.disconnect();
-  }, [ready]);
+  }, [shouldLoad]);
 
   return (
     <div
@@ -103,7 +110,7 @@ export const DeferredCard = ({ cardId, children }: DeferredCardProps) => {
       className={`deferred-card deferred-card--${cardId}`}
       style={style}
     >
-      {ready ? (
+      {shouldLoad ? (
         <CardLoadBoundary>
           <Suspense fallback={cardPlaceholder}>{children}</Suspense>
         </CardLoadBoundary>

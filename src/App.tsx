@@ -210,8 +210,14 @@ const App = () => {
         return <SocialLinks links={contentConfig.socialLinks} />;
       case 'image':
         return contentConfig.images.length > 0 ? (
-          <DeferredCard cardId="image">
-            <ImageCard images={contentConfig.images} />
+          <DeferredCard
+            cardId="image"
+            loadMode={isCompact ? 'visible' : 'immediate'}
+          >
+            <ImageCard
+              images={contentConfig.images}
+              firstImagePriority={isCompact ? undefined : 'high'}
+            />
           </DeferredCard>
         ) : null;
       case 'welcome':

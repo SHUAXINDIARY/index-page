@@ -18,9 +18,15 @@ interface ImageCardProps {
   images: ImageItem[];
   /** 轮播间隔（毫秒），默认 3000ms */
   interval?: number;
+  /** 桌面首屏图片的请求优先级；移动端屏外轮播沿用浏览器默认值 */
+  firstImagePriority?: 'high';
 }
 
-export const ImageCard = ({ images, interval = 3000 }: ImageCardProps) => {
+export const ImageCard = ({
+  images,
+  interval = 3000,
+  firstImagePriority,
+}: ImageCardProps) => {
   /** 将图片数据转换为轮播项 */
   const carouselItems: CarouselItem[] = useMemo(
     () =>
@@ -32,6 +38,7 @@ export const ImageCard = ({ images, interval = 3000 }: ImageCardProps) => {
             alt={image.alt || '展示图片'}
             className="image-card-img"
             loading={index === 0 ? 'eager' : 'lazy'}
+            fetchPriority={index === 0 ? firstImagePriority : 'low'}
             decoding="async"
             draggable={false}
           />
@@ -47,7 +54,7 @@ export const ImageCard = ({ images, interval = 3000 }: ImageCardProps) => {
           />
         ),
       })),
-    [images],
+    [images, firstImagePriority],
   );
 
   if (images.length === 0) {

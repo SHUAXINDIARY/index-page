@@ -781,9 +781,6 @@
   --color-recommend-desc: #a1a1aa;
 }
 
-/* 引入 Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Averia+Gruesa+Libre&display=swap');
-
 body {
   margin: 0;
   color: var(--color-primary);

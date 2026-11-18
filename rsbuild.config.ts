@@ -38,5 +38,20 @@ export default defineConfig({
   ],
   html: {
     template: './public/index.html',
+    // React 18 没有稳定版资源提示 API，在 HTML 中提前暴露首屏头像，避免等待布局分包渲染。
+    tags: [
+      {
+        tag: 'link',
+        head: true,
+        append: false,
+        publicPath: false,
+        attrs: {
+          rel: 'preload',
+          as: 'image',
+          href: contentConfig.welcome.avatar,
+          fetchpriority: 'high',
+        },
+      },
+    ],
   },
 });

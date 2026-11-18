@@ -75,7 +75,8 @@ const PC = ({
           const content = renderCard(id);
           if (!content) return null;
           return (
-            <motion.div key={id} {...getCardMotionProps(id)}>
+            // 首帧直接落在计算好的坐标，避免卡片从原点重叠飞入后才完整显示。
+            <motion.div key={id} initial={false} {...getCardMotionProps(id)}>
               {content}
             </motion.div>
           );
