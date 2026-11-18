@@ -27,7 +27,7 @@ export const ImageCard = ({
   interval = 3000,
   firstImagePriority,
 }: ImageCardProps) => {
-  /** 将图片数据转换为轮播项 */
+  /** 将图片数据转换为轮播项；React 18 通过小写属性透传图片优先级，使用展开语法兼容现有类型定义。 */
   const carouselItems: CarouselItem[] = useMemo(
     () =>
       images.map((image, index) => ({
@@ -38,7 +38,7 @@ export const ImageCard = ({
             alt={image.alt || '展示图片'}
             className="image-card-img"
             loading={index === 0 ? 'eager' : 'lazy'}
-            fetchPriority={index === 0 ? firstImagePriority : 'low'}
+            {...{ fetchpriority: index === 0 ? firstImagePriority : 'low' }}
             decoding="async"
             draggable={false}
           />
