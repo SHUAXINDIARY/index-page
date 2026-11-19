@@ -125,9 +125,13 @@
 .calendar-day {
   min-height: 0;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* 所有日期统一预留标记行，无标记日也不折叠，保证数字始终处在同一水平线。 */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 1em 3px;
+  align-content: center;
+  justify-items: center;
+  row-gap: 3px;
   font-size: 14px;
   color: var(--color-primary);
   border-radius: var(--radius-md);
@@ -137,6 +141,7 @@
 }
 
 .calendar-day-number {
+  grid-area: 1 / 1;
   line-height: 1;
 }
 
@@ -189,16 +194,15 @@
 }
 
 .event-dots {
-  position: absolute;
-  top: calc(50% + 10px);
-  transform: translateY(-50%);
+  grid-area: 2 / 1;
   display: flex;
+  align-items: center;
   gap: 2px;
 }
 
 .event-dot {
-  width: 4px;
-  height: 4px;
+  width: 3px;
+  height: 3px;
   border-radius: var(--radius-full);
 }
 
