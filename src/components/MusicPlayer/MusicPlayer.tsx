@@ -1,11 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { Play, Pause, SkipForward, Loader2 } from 'lucide-react';
+import { Play, Pause, SkipForward } from 'lucide-react';
 import { Card } from '../Card';
+import '../LoadingIndicator/LoadingIndicator.css';
 import './MusicPlayer.css';
 import type { MusicInfo, MusicTrack } from '../../config/content';
 
+/** 已完成列表加载的播放器配置 */
 interface MusicPlayerProps {
+  /** 播放文案与可用曲目 */
   config: MusicInfo;
 }
 
@@ -15,6 +18,7 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
   const [currentTrack, setCurrentTrack] = useState<MusicTrack | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasTracks = Boolean(config.urlList?.length);
 
   // 随机选择一首音乐
   const getRandomTrack = (): MusicTrack | null => {
@@ -154,7 +158,13 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
       <div className="music-info">
         <span className="music-label">{config.label}</span>
         <h4 className="music-title" aria-level={2}>
-          {currentTrack ? currentTrack.name : config.title}
+          {isLoading
+            ? '正在加载音乐…'
+            : currentTrack
+              ? currentTrack.name
+              : hasTracks
+                ? config.title
+                : '暂无可播放的音乐'}
         </h4>
         <div
           className="music-progress"
@@ -179,7 +189,7 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
           aria-busy={isLoading}
           className="music-play-button"
           onClick={togglePlay}
-          disabled={isLoading}
+          disabled={isLoading || !hasTracks}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.92 }}
         >
@@ -193,7 +203,10 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
                 exit={{ scale: 0.5, opacity: 0 }}
                 transition={{ duration: 0.15 }}
               >
-                <Loader2 size={24} className="music-loading-icon" />
+                <progress
+                  className="loading-indicator__spinner"
+                  aria-label="正在加载音乐"
+                />
               </motion.span>
             ) : isPlaying ? (
               <motion.span
@@ -225,15 +238,11 @@ export const MusicPlayer = ({ config }: MusicPlayerProps) => {
           aria-label="下一首音乐"
           className="music-next-button"
           onClick={playNext}
-          disabled={isLoading || !config.urlList || config.urlList.length === 0}
+          disabled={isLoading || !hasTracks}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.92 }}
         >
-          {isLoading ? (
-            <Loader2 size={20} className="music-loading-icon" />
-          ) : (
-            <SkipForward size={20} />
-          )}
+          <SkipForward size={20} aria-hidden="true" />
         </motion.button>
       </div>
     </Card>

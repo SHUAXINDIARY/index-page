@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent, PointerEvent, ReactElement } from 'react';
 import worldMapBaseSvgUrl from './assets/map-light.svg';
 import { loadThemedWorldMapImage } from './worldMapSvgLoader';
+import { LoadingIndicator } from '../LoadingIndicator/LoadingIndicator';
 import {
   MAP_ZOOM_STEP,
   MAX_MAP_SCALE,
@@ -22,6 +23,9 @@ import {
 import type { MapCanvasPalette, MapCanvasRenderMetrics, ViewportTransform } from './canvasMap';
 import type { AnnotatedWorldMapProps, CanvasWorldMapMarker } from './canvasTypes';
 import './AnnotatedWorldMap.css';
+
+/** 底图下载与解码的最长等待时间（毫秒） */
+const MAP_IMAGE_LOAD_TIMEOUT_MS = 30_000;
 
 /** 底图离屏缓存失效判断键 */
 interface MapLayerCacheKey {
@@ -98,6 +102,9 @@ export const AnnotatedWorldMap = ({
     height: 0,
   });
   const [isWorldMapImageReady, setIsWorldMapImageReady] = useState(false);
+  const [hasMapLoadError, setHasMapLoadError] = useState(false);
+  const [loadAttempt, setLoadAttempt] = useState(0);
+  const isMapLoading = !isWorldMapImageReady && !hasMapLoadError;
 
   const dragStateRef = useRef<MapDragState | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -145,6 +152,7 @@ export const AnnotatedWorldMap = ({
     className,
     isMapZoomed ? 'annotated-world-map--zoomed' : '',
     isDraggingMap ? 'annotated-world-map--dragging' : '',
+    !isWorldMapImageReady ? 'annotated-world-map--pending' : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -177,25 +185,26 @@ export const AnnotatedWorldMap = ({
 
   useEffect((): (() => void) | undefined => {
     let isCancelled = false;
+    const controller = new AbortController();
+    // 慢网或资源无响应时结束等待，保留卡片内重试入口。
+    const timeout = window.setTimeout(
+      () => controller.abort(),
+      MAP_IMAGE_LOAD_TIMEOUT_MS,
+    );
 
     worldMapImageRef.current = null;
     mapLayerCacheRef.current = null;
     mapLayerCacheKeyRef.current = null;
+    setIsWorldMapImageReady(false);
+    setHasMapLoadError(false);
 
     const loadImage = async (): Promise<void> => {
       try {
         const image = await loadThemedWorldMapImage({
           svgAssetUrl: worldMapBaseSvgUrl,
           mode: themeMode,
+          signal: controller.signal,
         });
-
-        if (isCancelled) {
-          return;
-        }
-
-        if (typeof image.decode === 'function') {
-          await image.decode();
-        }
 
         if (isCancelled) {
           return;
@@ -208,7 +217,10 @@ export const AnnotatedWorldMap = ({
         if (!isCancelled) {
           worldMapImageRef.current = null;
           setIsWorldMapImageReady(false);
+          setHasMapLoadError(true);
         }
+      } finally {
+        window.clearTimeout(timeout);
       }
     };
 
@@ -216,8 +228,10 @@ export const AnnotatedWorldMap = ({
 
     return (): void => {
       isCancelled = true;
+      controller.abort();
+      window.clearTimeout(timeout);
     };
-  }, [themeMode, themeColor]);
+  }, [themeMode, themeColor, loadAttempt]);
 
   useEffect((): (() => void) | undefined => {
     const container = mapContainerRef.current;
@@ -361,6 +375,8 @@ export const AnnotatedWorldMap = ({
     const context = canvas.getContext('2d');
 
     if (context === null) {
+      setIsWorldMapImageReady(false);
+      setHasMapLoadError(true);
       return;
     }
 
@@ -472,6 +488,7 @@ export const AnnotatedWorldMap = ({
 
   const zoomMapFromWheel = useCallback(
     (event: WheelEvent): void => {
+      if (!isWorldMapImageReady) return;
       event.preventDefault();
       event.stopPropagation();
 
@@ -508,7 +525,7 @@ export const AnnotatedWorldMap = ({
         );
       });
     },
-    [updateViewport],
+    [isWorldMapImageReady, updateViewport],
   );
 
   useEffect((): (() => void) | undefined => {
@@ -527,6 +544,7 @@ export const AnnotatedWorldMap = ({
 
   const startMapDrag = (event: PointerEvent): void => {
     if (
+      !isWorldMapImageReady ||
       event.button !== 0 ||
       !isMapZoomed ||
       (event.target instanceof Element &&
@@ -586,6 +604,7 @@ export const AnnotatedWorldMap = ({
   };
 
   const updatePointerOverMap = (clientX: number, clientY: number): void => {
+    if (!isWorldMapImageReady) return;
     const container = mapContainerRef.current;
 
     if (container === null || containerSize.width === 0) {
@@ -653,6 +672,7 @@ export const AnnotatedWorldMap = ({
   };
 
   const handleCanvasKeyDown = (event: KeyboardEvent): void => {
+    if (!isWorldMapImageReady) return;
     // 复用原有视口约束，为滚轮缩放和拖动补充键盘等价操作。
     if (['+', '=', '-', 'Home'].includes(event.key) || (event.shiftKey && event.key.startsWith('Arrow'))) {
       event.preventDefault();
@@ -708,6 +728,7 @@ export const AnnotatedWorldMap = ({
     <div
       ref={mapContainerRef}
       className={mapClassName}
+      aria-busy={isMapLoading}
       onPointerDown={startMapDrag}
       onPointerMove={handleCanvasPointerMove}
       onPointerUp={stopMapDrag}
@@ -726,10 +747,31 @@ export const AnnotatedWorldMap = ({
         role="group"
         aria-roledescription="交互地图"
         aria-label={mapCanvasLabel}
-        tabIndex={0}
+        aria-hidden={!isWorldMapImageReady}
+        tabIndex={isWorldMapImageReady ? 0 : -1}
         onKeyDown={handleCanvasKeyDown}
       />
-      {tooltipMarker && markerTooltipStyle ? (
+      {!isWorldMapImageReady ? (
+        <div className="annotated-world-map__feedback">
+          {hasMapLoadError ? (
+            <div className="annotated-world-map__error">
+              <span role="status">地图加载失败</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setHasMapLoadError(false);
+                  setLoadAttempt((attempt) => attempt + 1);
+                }}
+              >
+                重新加载
+              </button>
+            </div>
+          ) : (
+            <LoadingIndicator label="正在加载地图…" />
+          )}
+        </div>
+      ) : null}
+      {isWorldMapImageReady && tooltipMarker && markerTooltipStyle ? (
         <div
           className="annotated-world-map__tooltip"
           style={markerTooltipStyle}

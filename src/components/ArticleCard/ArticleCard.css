@@ -5,6 +5,13 @@
   cursor: pointer;
 }
 
+.article-card--loading {
+  min-height: var(--deferred-card-height, 165px);
+  display: grid;
+  place-items: center;
+  cursor: default;
+}
+
 .article-tag {
   position: absolute;
   top: var(--spacing-lg);

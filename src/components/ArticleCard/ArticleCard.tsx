@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Card } from '../Card';
+import { LoadingIndicator } from '../LoadingIndicator/LoadingIndicator';
 import './ArticleCard.css';
 import type { ArticleInfo } from '../../config/content';
 
@@ -16,14 +17,19 @@ const BLOCKED_TITLES: readonly string[] = ['笔记', '标签', '关于'];
 
 /** 运行时博客文章结构（与插件一致） */
 interface RuntimeBlogPost {
+  /** 文章标题 */
   title: string;
+  /** 发布日期 */
   date: string;
+  /** 文章地址 */
   link: string;
 }
 
 /** 运行时博客数据结构（与插件一致） */
 interface RuntimeBlogData {
+  /** 最新文章 */
   latestPost?: RuntimeBlogPost;
+  /** 数据更新时间 */
   fetchedAt?: string;
 }
 
@@ -144,35 +150,55 @@ const parseLatestPostFromHtml = (html: string): RuntimeBlogPost | null => {
   return null;
 };
 
-/** 带超时控制的 fetch */
-const fetchWithTimeout = async (
+/** 超时覆盖响应体下载，避免收到响应头后卡片仍无限等待。 */
+const fetchTextWithTimeout = async (
   input: RequestInfo | URL,
   init: RequestInit = {},
   timeoutMs = FETCH_TIMEOUT_MS,
-): Promise<Response> => {
+): Promise<string | null> => {
   const controller = new AbortController();
   const timeoutId = window.setTimeout(() => {
     controller.abort();
   }, timeoutMs);
 
   try {
-    return await fetch(input, {
+    const response = await fetch(input, {
       ...init,
       signal: controller.signal,
     });
+    return response.ok ? await response.text() : null;
   } finally {
     window.clearTimeout(timeoutId);
   }
+};
+
+/** 运行时 JSON 来自网络，先收窄字段类型再用于卡片展示。 */
+const isRuntimeBlogData = (value: unknown): value is RuntimeBlogData => {
+  if (typeof value !== 'object' || value === null) return false;
+  if ('fetchedAt' in value && typeof value.fetchedAt !== 'string') return false;
+  if (!('latestPost' in value)) return true;
+  const post = value.latestPost;
+  return (
+    typeof post === 'object' &&
+    post !== null &&
+    'title' in post &&
+    typeof post.title === 'string' &&
+    'date' in post &&
+    typeof post.date === 'string' &&
+    'link' in post &&
+    typeof post.link === 'string'
+  );
 };
 
 /** 优先读取运行时 JSON（插件同结构） */
 const fetchLatestPostFromJson = async (): Promise<RuntimeBlogPost | null> => {
   for (const path of BLOG_DATA_PATHS) {
     try {
-      const response = await fetchWithTimeout(path, { cache: 'no-store' }, FETCH_TIMEOUT_MS);
-      if (!response.ok) continue;
+      const json = await fetchTextWithTimeout(path, { cache: 'no-store' }, FETCH_TIMEOUT_MS);
+      if (!json) continue;
 
-      const data = (await response.json()) as RuntimeBlogData;
+      const data: unknown = JSON.parse(json);
+      if (!isRuntimeBlogData(data)) continue;
       if (data.fetchedAt) {
         console.info('[ArticleCard] 运行时博客数据更新时间:', data.fetchedAt);
       }
@@ -194,10 +220,9 @@ const fetchLatestPostFromJson = async (): Promise<RuntimeBlogPost | null> => {
 /** 兜底读取博客首页并在客户端解析 */
 const fetchLatestPostFromHtml = async (): Promise<RuntimeBlogPost | null> => {
   try {
-    const response = await fetchWithTimeout(BLOG_URL, {}, FETCH_TIMEOUT_MS);
-    if (!response.ok) return null;
+    const html = await fetchTextWithTimeout(BLOG_URL, {}, FETCH_TIMEOUT_MS);
+    if (!html) return null;
 
-    const html = await response.text();
     return parseLatestPostFromHtml(html);
   } catch {
     return null;
@@ -214,7 +239,9 @@ const fetchLatestPostRuntime = async (): Promise<RuntimeBlogPost | null> => {
   return fetchLatestPostFromHtml();
 };
 
+/** 文章卡片的基础内容 */
 interface ArticleCardProps {
+  /** 请求失败或无有效数据时展示的配置 */
   config: ArticleInfo;
 }
 
@@ -234,6 +261,7 @@ export const ArticleCard = ({ config }: ArticleCardProps) => {
 
   useEffect(() => {
     let active = true;
+    setIsLoading(true);
 
     const loadLatestPost = async () => {
       let nextRuntimePost: RuntimeBlogPost | null = null;
@@ -256,6 +284,16 @@ export const ArticleCard = ({ config }: ArticleCardProps) => {
     };
   }, [config]);
 
+  if (isLoading) {
+    return (
+      <Card className="article-card article-card--loading">
+        <div aria-busy="true">
+          <LoadingIndicator label="正在加载最新文章…" />
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <Card className="article-card">
       {articleData.link && (
@@ -270,9 +308,7 @@ export const ArticleCard = ({ config }: ArticleCardProps) => {
       <div className="article-tag">{articleData.tag}</div>
       <div className="article-icon" aria-hidden="true">{articleData.icon}</div>
       <h4 className="article-title" aria-level={2}>{articleData.title}</h4>
-      {isLoading ? (
-        <p className="article-category">正在加载最新文章...</p>
-      ) : articleData.category ? (
+      {articleData.category ? (
         <p className="article-category">{articleData.category}</p>
       ) : null}
       <p className="article-date">{articleData.date}</p>

@@ -3,7 +3,6 @@
  * 所有卡片的数据统一在此管理
  */
 
-import bgmData from './bgm-data.json';
 import cardImgData from './card-img-data.json';
 
 export interface UserInfo {
@@ -78,15 +77,23 @@ export interface RecommendInfo {
   avatar: string;
 }
 
+/** 音乐列表中的单首曲目信息 */
 export interface MusicTrack {
+  /** 曲目名称 */
   name: string;
+  /** 音频资源地址 */
   url: string;
 }
 
+/** 音乐卡片配置，未手动提供列表时按需加载生成的 JSON */
 export interface MusicInfo {
+  /** 卡片标签 */
   label: string;
+  /** 尚未播放时的标题 */
   title: string;
-  progress: number; // 0-100
+  /** 初始展示进度，范围 0–100 */
+  progress: number;
+  /** 可选的自定义曲目列表，优先于自动生成的数据 */
   urlList?: MusicTrack[];
 }
 
@@ -335,7 +342,6 @@ export const contentConfig: ContentConfig = {
     label: '随机播放',
     title: '塞壬唱片',
     progress: 0,
-    urlList: bgmData.urlList,
   },
 
   // 社交链接

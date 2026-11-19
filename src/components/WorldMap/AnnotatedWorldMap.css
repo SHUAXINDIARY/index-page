@@ -16,6 +16,45 @@
   cursor: grabbing;
 }
 
+/* 资源未就绪时保留尺寸，并允许触屏用户继续滚动页面。 */
+.annotated-world-map--pending {
+  touch-action: auto;
+}
+
+.annotated-world-map--pending .annotated-world-map__canvas {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.annotated-world-map__feedback {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  padding: var(--spacing-xl);
+}
+
+.annotated-world-map__error {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  color: var(--color-primary);
+  font-size: 12px;
+}
+
+.annotated-world-map__error button {
+  min-height: 44px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-card);
+  color: var(--color-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
 .annotated-world-map::before {
   position: absolute;
   inset: 1.25rem;

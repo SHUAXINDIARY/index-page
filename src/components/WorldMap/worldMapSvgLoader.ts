@@ -7,6 +7,8 @@ export interface LoadThemedWorldMapImageOptions {
   svgAssetUrl: string;
   /** 当前明暗模式 */
   mode: 'light' | 'dark';
+  /** 主题切换、卸载或超时时取消旧资源的下载与图片加载 */
+  signal?: AbortSignal;
 }
 
 /**
@@ -15,8 +17,9 @@ export interface LoadThemedWorldMapImageOptions {
 export const loadThemedWorldMapImage = async ({
   svgAssetUrl,
   mode,
+  signal,
 }: LoadThemedWorldMapImageOptions): Promise<HTMLImageElement> => {
-  const response = await fetch(svgAssetUrl);
+  const response = await fetch(svgAssetUrl, { signal });
 
   if (!response.ok) {
     throw new Error('世界地图 SVG 资源加载失败');
@@ -30,17 +33,42 @@ export const loadThemedWorldMapImage = async ({
 
   return new Promise((resolve, reject): void => {
     const image = new Image();
-
-    image.onload = (): void => {
+    const cleanup = (): void => {
+      image.onload = null;
+      image.onerror = null;
+      signal?.removeEventListener('abort', handleAbort);
       URL.revokeObjectURL(objectUrl);
-      resolve(image);
+    };
+    const handleAbort = (): void => {
+      cleanup();
+      image.src = '';
+      reject(new DOMException('地图加载已取消', 'AbortError'));
+    };
+
+    image.onload = async (): Promise<void> => {
+      try {
+        // 解码完成前保留取消监听，使超时也能终止等待，而不只是终止下载。
+        if (typeof image.decode === 'function') {
+          await image.decode();
+        }
+        cleanup();
+        resolve(image);
+      } catch (error: unknown) {
+        cleanup();
+        reject(error);
+      }
     };
 
     image.onerror = (): void => {
-      URL.revokeObjectURL(objectUrl);
+      cleanup();
       reject(new Error('世界地图 SVG 解码失败'));
     };
 
+    if (signal?.aborted) {
+      handleAbort();
+      return;
+    }
+    signal?.addEventListener('abort', handleAbort, { once: true });
     image.src = objectUrl;
   });
 };

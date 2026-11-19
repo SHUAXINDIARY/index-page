@@ -1,0 +1,84 @@
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  min-width: 0;
+  color: var(--color-primary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.loading-indicator__spinner:indeterminate {
+  --spinner-duration: 1.2s;
+  appearance: none;
+  display: block;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: conic-gradient(var(--color-accent) 270deg, transparent 0)
+    var(--color-primary-alpha-010);
+  background-origin: border-box;
+  animation: loading-indicator-spin var(--spinner-duration) linear infinite;
+}
+
+.loading-indicator__spinner:indeterminate::-webkit-progress-bar {
+  display: none;
+  background: none;
+}
+
+.loading-indicator__spinner:indeterminate::-webkit-progress-value {
+  display: none;
+  background: none;
+}
+
+.loading-indicator__spinner:indeterminate::-moz-progress-bar {
+  display: none;
+  background: none;
+}
+
+.loading-indicator__spinner:indeterminate::slider-fill {
+  display: none;
+  background: none;
+}
+
+@supports (background-clip: border-area) {
+  .loading-indicator__spinner:indeterminate {
+    background-clip: border-area;
+  }
+}
+
+/* Firefox 等尚不支持 border-area 的浏览器使用遮罩保留空心圆环。 */
+@supports not (background-clip: border-area) {
+  .loading-indicator__spinner:indeterminate {
+    border: 0;
+    mask-image: radial-gradient(
+      farthest-side,
+      transparent calc(100% - 2px),
+      currentColor 0
+    );
+  }
+}
+
+@keyframes loading-indicator-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-indicator__spinner:indeterminate {
+    --spinner-duration: 6s;
+  }
+}
+
+@media (forced-colors: active) {
+  .loading-indicator__spinner:indeterminate {
+    forced-color-adjust: none;
+    background-image: conic-gradient(CanvasText 270deg, transparent 0);
+    background-color: Canvas;
+  }
+}

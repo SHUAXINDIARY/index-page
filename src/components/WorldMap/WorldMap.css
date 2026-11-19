@@ -55,6 +55,12 @@
   right: var(--spacing-lg);
 }
 
+/* 底图尚未就绪时隐藏图例，避免遮挡加载提示或误以为地图可以交互。 */
+.world-map-card:has(.annotated-world-map--pending) .world-map-legend,
+.world-map-fullscreen:has(.annotated-world-map--pending) .world-map-fullscreen-legend {
+  display: none;
+}
+
 .world-map-fullscreen-legend {
   bottom: var(--spacing-lg);
   right: var(--spacing-lg);

@@ -127,20 +127,18 @@
   cursor: not-allowed;
 }
 
-.music-loading-icon {
-  animation: spin 1s linear infinite;
-  color: var(--color-text-on-dark);
+.music-play-button .loading-indicator__spinner:indeterminate {
+  background-image: conic-gradient(var(--color-text-on-dark) 270deg, transparent 0);
+  background-color: var(--color-accent);
 }
 
-.music-next-button .music-loading-icon {
-  color: var(--color-primary);
+.music-play-button:disabled {
+  cursor: not-allowed;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+@media (forced-colors: active) {
+  .music-play-button .loading-indicator__spinner:indeterminate {
+    background-image: conic-gradient(ButtonText 270deg, transparent 0);
+    background-color: ButtonFace;
   }
 }

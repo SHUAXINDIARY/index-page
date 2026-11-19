@@ -38,6 +38,19 @@
   border-bottom: 1px solid var(--color-primary-alpha-010);
 }
 
+.calendar-card--loading {
+  min-height: var(--deferred-card-height, 330px);
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-load-error {
+  margin: -2px 0 var(--spacing-md);
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--color-primary);
+}
+
 .calendar-date {
   font-size: 14px;
   color: var(--color-primary);

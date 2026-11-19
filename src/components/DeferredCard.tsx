@@ -1,6 +1,7 @@
 import { Component, Suspense, useEffect, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { CARD_SIZES } from '../constant';
+import { LoadingIndicator } from './LoadingIndicator/LoadingIndicator';
 
 /** 支持按可见性加载的次要卡片标识 */
 type DeferredCardId =
@@ -31,6 +32,14 @@ interface DeferredCardStyle extends CSSProperties {
 const cardPlaceholder = (
   <div className="deferred-card-placeholder" aria-hidden="true" />
 );
+
+/** 为有独立数据加载过程的卡片统一模块下载提示。 */
+const CARD_LOADING_LABELS: Partial<Record<DeferredCardId, string>> = {
+  worldMap: '正在加载地图…',
+  music: '正在加载音乐列表…',
+  article: '正在加载最新文章…',
+  calendar: '正在加载日历…',
+};
 
 /** 卡片加载边界的输入 */
 interface CardLoadBoundaryProps {
@@ -85,6 +94,12 @@ export const DeferredCard = ({
   const style: DeferredCardStyle = {
     '--deferred-card-base-height': `${CARD_SIZES[cardId].height}px`,
   };
+  const loadingLabel = CARD_LOADING_LABELS[cardId];
+  const loadingPlaceholder = loadingLabel ? (
+    <div className="deferred-card-placeholder deferred-card-loading" aria-busy="true">
+      <LoadingIndicator label={loadingLabel} />
+    </div>
+  ) : cardPlaceholder;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -112,7 +127,7 @@ export const DeferredCard = ({
     >
       {shouldLoad ? (
         <CardLoadBoundary>
-          <Suspense fallback={cardPlaceholder}>{children}</Suspense>
+          <Suspense fallback={loadingPlaceholder}>{children}</Suspense>
         </CardLoadBoundary>
       ) : (
         cardPlaceholder

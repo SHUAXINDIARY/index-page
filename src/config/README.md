@@ -6,7 +6,7 @@
 
 | 文件 | 用途 | 维护方式 |
 | --- | --- | --- |
-| `content.ts` | 类型定义、手动内容、音乐和图片数据入口 | 编辑对应配置项 |
+| `content.ts` | 类型定义、手动内容和图片数据入口 | 编辑对应配置项 |
 | `content.example.ts` | 配置字段示例 | 参考字段，合并到正式配置 |
 | `blog-data.json` | 最新文章及抓取时间 | FetchBlogPlugin 在构建前生成 |
 | `bgm-data.json` | 音乐列表及生成时间 | BgmListPlugin 在构建前扫描 `public/bgm` 生成 |
@@ -144,7 +144,7 @@ openSource: {
 | `progress` | `number` | 未播放时使用的进度值，范围 0–100 |
 | `urlList?` | `MusicTrack[]` | 每项包含 `name: string` 和 `url: string` |
 
-正式配置通过 `urlList: bgmData.urlList` 读取生成列表。添加本地音乐：
+未配置 `urlList` 时，音乐卡片按需并行加载播放器代码与 `bgm-data.json`，等待下载和解析期间显示加载提示；模块加载失败时可刷新页面重试。手动提供 `urlList` 时优先使用该列表，空列表会禁用播放按钮。添加本地音乐：
 
 1. 将音频放入 `public/bgm`，支持 `.wav`、`.mp3`、`.ogg`、`.flac`、`.m4a`。
 2. 执行 `pnpm build` 重新生成 `bgm-data.json`。仅启动开发服务器不会重新扫描音乐。

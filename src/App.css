@@ -869,6 +869,12 @@ body {
   color: var(--color-primary);
 }
 
+.deferred-card-loading {
+  display: grid;
+  place-items: center;
+  padding: var(--spacing-lg);
+}
+
 /* 地图在窄屏样式中为 400px，占位同步预留，不能沿用桌面的 200px。 */
 @media (max-width: 768px) {
   .deferred-card--worldMap {

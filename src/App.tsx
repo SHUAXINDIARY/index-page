@@ -6,7 +6,7 @@ import { ActionButton } from './components/ActionButton';
 import { DeferredCard } from './components/DeferredCard';
 import { SocialLinks } from './components/SocialLinks';
 import type { InfiniteCanvasItem } from './components/InfiniteCanvasView';
-import { contentConfig } from './config/content';
+import { contentConfig, type MusicInfo } from './config/content';
 import {
   Expand,
   LocateFixed,
@@ -49,8 +49,22 @@ const OpenSourceCard = lazy(async () => {
   return { default: module.OpenSourceCard };
 });
 const MusicPlayer = lazy(async () => {
-  const module = await import('./components/MusicPlayer');
-  return { default: module.MusicPlayer };
+  // 组件与列表并行下载，Suspense 覆盖两者的下载和解析，避免先显示不可用的播放按钮。
+  const [module, { default: musicData }] = await Promise.all([
+    import('./components/MusicPlayer'),
+    import('./config/bgm-data.json'),
+  ]);
+  /** 音乐卡片的基础配置 */
+  interface LoadedMusicPlayerProps {
+    /** 手动配置的列表优先于自动生成列表 */
+    config: MusicInfo;
+  }
+  const LoadedMusicPlayer = ({ config }: LoadedMusicPlayerProps) => (
+    <module.MusicPlayer
+      config={{ ...config, urlList: config.urlList ?? musicData.urlList }}
+    />
+  );
+  return { default: LoadedMusicPlayer };
 });
 
 /** 构建期文章数据保持稳定引用，避免背景等状态变化重复触发文章请求 */
