@@ -103,7 +103,7 @@ const App = () => {
       { id: 'article', size: CARD_SIZES.article },
       { id: 'openSource', size: CARD_SIZES.openSource },
       { id: 'social', size: CARD_SIZES.social },
-      { id: 'image', size: CARD_SIZES.image },
+      // { id: 'image', size: CARD_SIZES.image },
       { id: 'welcome', size: CARD_SIZES.welcome },
       ...(contentConfig.worldMap
         ? [{ id: 'worldMap', size: CARD_SIZES.worldMap }]
